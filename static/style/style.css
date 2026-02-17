@@ -1,0 +1,26 @@
+
+:root {
+    background-color: var(--primary-bg-color);
+    --primary-bg-color: rgb(8, 24, 37); 
+    --primary-color: rgb(16, 36, 54);
+    --border-color: rgb(161, 255, 203);
+    --text-color: rgb(175, 228, 216);
+}
+
+
+.grid {
+    
+    display: grid;
+    gap: 10px;
+}
+
+.motorTile {
+    color: var(--text-color);
+
+    background-color: var(--primary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+
+    padding: 5px;
+
+}

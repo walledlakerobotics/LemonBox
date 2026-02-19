@@ -1,4 +1,5 @@
 const tileGrid = document.getElementById("motor-grid"); 
+let networkConnected = false;
 
 function createTile(motor) {
 
@@ -64,13 +65,13 @@ function getDisplay(motor) {
 function getImage(motor) {
     switch (motor.type) {
         case "sparkmax":
-            return "imgs/placeHolder.png"
+            return "imgs/sparkmax.png"
         case "krakenx60":
-            return "imgs/placeHolder.png"
+            return "imgs/krakenX60.png"
         case "krakenx44":
-            return "imgs/placeHolder.png"
+            return "imgs/krakenX44.png"
         case "falcon500":
-            return "imgs/placeHolder.png"
+            return "imgs/falcon500.png"
         default:
             return "imgs/placeHolder.png"
     }
@@ -104,7 +105,7 @@ function updateMotors() {
         .then(response => response.json())
         .then(data => {
             motors.push(data)
-        });
+    })
     
     // creating the tiles without repeats Uwu
     motors.forEach(motor => {

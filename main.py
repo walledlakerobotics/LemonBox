@@ -12,7 +12,7 @@ def index():
 if __name__ == "__main__":
     app.run()
 
-#--- network setup UW0 
+#--- network setup UW0
 
 NetworkTables.setServerTeam(308, 1735) # 1735 the deafult port
 NetworkTables.initialize()

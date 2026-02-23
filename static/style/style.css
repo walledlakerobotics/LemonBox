@@ -54,7 +54,7 @@ body {
 
     padding: 5px;
 
-    transition: 0.05s;
+    transition: 0.08s;
 
     font-size: 5dvh;
 
@@ -84,11 +84,53 @@ body {
     /* border: 10px solid var(--border-color); */
 }
 
-
-.panel {
-    background-color: var(--primary-color);
-}
-
 .hidden {
     display: none !important;
+}
+
+
+#motor-menu {
+    font-family:monospace;
+        
+    color: var(--text-color);
+}
+
+#properties {
+    background-color: var(--primary-color);
+    border: solid var(--border-color) 1px;
+
+    display: flex;
+    flex-direction: column;
+    
+    padding: 15px;
+    border-radius: 5px;
+
+    button { 
+
+        padding: 10px;
+
+        color: var(--text-color);
+        background-color: var(--primary-color);
+        border: solid 1px var(--border-color);
+
+        border-radius: 2px;
+
+        transition: 0.08s;
+
+    }
+
+    button:active {
+        background-color: var(--active-color);
+        color: var(--active-text-color);
+    }
+
+    input {
+        accent-color: var(--text-color);
+        border: 1px solid var(--border-color);
+        transition: border-color 0.2s ease;
+    }
+
+    input:active {
+        border-color: var(--text-color);
+    }
 }

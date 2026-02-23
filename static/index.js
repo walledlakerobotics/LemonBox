@@ -1,4 +1,5 @@
 const tileGrid = document.getElementById("motor-grid"); 
+const warning = document.getElementById("warning");
 const motorMenu = document.getElementById("motor-menu");
 
 function createTile(motor) {
@@ -33,17 +34,34 @@ function settings(motor) {
     tileGrid.classList.add("hidden"); 
 
     let id = motor.id; 
-    let name = getDisplay(motor);
+
+    let nameHeader = document.getElementById("motor-name"); 
+    nameHeader.innerHTML = getDisplay(motor); 
+
+    let idHeader = document.getElementById("motor-id"); 
+    idHeader.innerHTML = "CAN id " + id; 
+    
+    let motorImage = document.getElementById("motor-img"); 
+    motorImage.setAttribute("src", getImage(motor)); 
 
     let back = document.getElementById("back-button"); 
+    let apply = document.getElementById("apply-button");
 
     let slider = document.getElementById("speed-slider"); 
-    let apply = document.getElementById("apply-button"); 
+    slider.value = motor.speed;
 
+    
     apply.addEventListener("click", () => {
         let speed = slider.value;
+        // this is sending over json Im not sure if this is actully setting the speed of the motor
 
-        console.log(speed); 
+        fetch("/speed/" + id, {
+            method: "POST",
+            body: JSON.stringify({ 
+                speed: speed, 
+            })
+        });
+
     }); 
 
     back.addEventListener("click", () => {
@@ -100,18 +118,18 @@ let motors = [
         {
             id: 0,
             type: "sparkmax",
-            disabled: false,
+            speed: 0,
         }, 
 
         {
             id: 1,
             type: "krakenx60",
-            disabled: false,
+            speed: 0,
         }
     ];
 
 function includesMotor(array, motor) {
-    return array.some(m => m.id == motor.id && m.type == motor.type)
+    return array.some(m => m.id == motor.id && m.type == motor.type);
 }
 
 function updateMotors() {

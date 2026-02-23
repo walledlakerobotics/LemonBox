@@ -6,7 +6,6 @@ app = Flask(__name__, static_url_path="")
 def set_team(number): 
     NetworkTables.setServerTeam(number)
 
-
 set_team(308)
 NetworkTables.initialize()
 table = NetworkTables.getTable("LemonStation")
@@ -27,7 +26,8 @@ def motors():
         {
             "id": int(sub_name),
             "type": sub_table.getString("motorType", ""),
-            "speed": sub_table.getNumber("speed", 0)
+            "speed": sub_table.getNumber("speed", 0), 
+            # "state": sub_table.getString("break", "Unknown")
         })
     
 

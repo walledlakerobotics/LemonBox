@@ -25,6 +25,7 @@ def motors():
         json_data.append(
         {
             "id": int(sub_name),
+            "brushless": sub_table.getBoolean("bushless", False), 
             "type": sub_table.getString("motorType", ""),
             "speed": sub_table.getNumber("speed", 0), 
             # "state": sub_table.getString("break", "Unknown")

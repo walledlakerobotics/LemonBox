@@ -31,12 +31,22 @@ function settings(motor) {
   tileGrid.classList.add("hidden");
 
   let id = motor.id;
+  let invertedValue = 1;
 
   let nameHeader = document.getElementById("motor-name");
   nameHeader.innerHTML = getDisplay(motor);
 
   let idHeader = document.getElementById("motor-id");
   idHeader.innerHTML = "CAN id " + id;
+
+  //properties
+
+  let back = document.getElementById("back-button");
+  let invertButton = document.getElementById("inverted-input");
+
+  let speedSlider = document.getElementById("speed-slider");
+  speedSlider.value = motor.speed;
+
 
   if (getDisplay(motor) == "SPARK MAX") {
     let dropdown = document.createElement("input");
@@ -46,22 +56,33 @@ function settings(motor) {
     dropdown.innerHTML = "<a brushed </a> <a brushless </a>";
 
     dropdown.addEventListener("input", () => {
-      fetch(`/speed/${id}?v=${dropdown.value}`, {
+      fetch(`/brushless/${id}?v=${dropdown.value}`, {
         method: "POST",
       });
     });
   }
 
-  // let motorImage = document.getElementById("motor-img");
-  // motorImage.setAttribute("src", getImage(motor));
+  // dash
 
-  let back = document.getElementById("back-button");
+  let motorImage = document.getElementById("motor-img");
+  motorImage.setAttribute("src", getImage(motor));
 
-  let slider = document.getElementById("speed-slider");
-  slider.value = motor.speed;
+  let output = document.getElementById("output");
+  getOutput(motor, output);
 
-  slider.addEventListener("input", () => {
-    let speed = slider.value;
+
+  speedSlider.addEventListener("input", () => {
+    let speed = speedSlider.value * invertedValue;
+
+    fetch(`/speed/${id}?v=${speed}`, {
+      method: "POST",
+    });
+  });
+
+  invertButton.addEventListener("click", () => {
+    invertedValue *= -1;
+
+    let speed = speedSlider.value * invertedValue;
 
     fetch(`/speed/${id}?v=${speed}`, {
       method: "POST",
@@ -72,6 +93,15 @@ function settings(motor) {
     tileGrid.classList.remove("hidden");
     motorMenu.classList.add("hidden");
   });
+}
+
+function getOutput(motor, text) {
+
+  setInterval(() => {
+    output = motor.output;
+
+    text.innerText = motor.output;
+  }, 200);
 }
 
 function removeTile(motor) {
@@ -114,16 +144,16 @@ function getImage(motor) {
 
 let oldMotors = [];
 let motors = [
-  // {
-  //     id: 0,
-  //     type: "sparkmax",
-  //     speed: 0,
-  // },
-  // {
-  //     id: 1,
-  //     type: "krakenx60",
-  //     speed: 0,
-  // }
+  {
+    id: 0,
+    type: "sparkmax",
+    speed: 0,
+  },
+  {
+    id: 1,
+    type: "krakenx60",
+    speed: 0,
+  }
 ];
 
 function includesMotor(array, motor) {
@@ -143,9 +173,9 @@ function updateMotors() {
     createTile(motor);
   });
 
-  oldMotors.forEach((oldMotor) => {
-    if (!includesMotor(motors, oldMotor)) removeTile(oldMotor);
-  });
+  // oldMotors.forEach((oldMotor) => {
+  //   if (!includesMotor(motors, oldMotor)) removeTile(oldMotor);
+  // });
 
   oldMotors = [...motors];
 }

@@ -32,6 +32,7 @@ def motors():
                 "brushless": sub_table.getBoolean("brushless", False),
                 "type": sub_table.getString("type", ""),
                 "speed": sub_table.getNumber("speed", 0),
+                "output": sub_table.getString("output", ""),
             }
         )
 
@@ -44,9 +45,10 @@ def set_motor_speed(id):
 
     table.getSubTable(str(id)).putNumber("speed", speed)
 
+
 @app.post("/brushless/<int:id>")
 def set_brushless(id):
-    brushless = request.args.get("v") == "brushless";
+    brushless = request.args.get("v") == "brushless"
 
     table.getSubTable(str(id)).putNumber("brushless", brushless)
 

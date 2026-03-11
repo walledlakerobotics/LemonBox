@@ -10,4 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-lemon = "app.run"
+lemon = "main:main"
+
+[tool.setuptools]
+py-modules = ["main"]

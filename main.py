@@ -1,9 +1,25 @@
 from flask import Flask, jsonify, request, send_file
 from networktables import NetworkTables
+import threading
 import time
 
 app = Flask(__name__, static_url_path="")
 table = NetworkTables.getTable("LemonStation")
+
+
+# this is for threading purposes and might improve preformance just a bit.
+def flask_local_server(server):
+    NetworkTables.initialize(server=server)
+    is_connected = NetworkTables.isConnected()
+
+    while not is_connected:
+        is_connected = NetworkTables.isConnected()
+        NetworkTables.initialize(server=server)
+
+        print("not connected!")
+        time.sleep(0.5)
+
+    app.run(port=5000)
 
 
 @app.route("/")
@@ -64,17 +80,10 @@ def set_disabled(id):
 
 
 def main():
-
-    NetworkTables.initialize(server="roboRIO-308-FRC")
-
-    is_connected = NetworkTables.isConnected()
-
-    while not is_connected:
-
-        is_connected = NetworkTables.isConnected()
-        time.sleep(0.5)
-
-    app.run()
+    flask_thread = threading.Thread(
+        target=flask_local_server("roboRIO-308-FRC"), daemon=False
+    )
+    flask_thread.start()
 
 
 # get rid of this when making the pkg

@@ -292,10 +292,6 @@ img {
     font-size: larger;
 }
 
-#motor-dropdown-type {
-    background-color: var();
-}
-
 #warning {
     position: fixed;
     display: flex;
@@ -304,19 +300,33 @@ img {
     gap: 5px;
 }
 
-#notfication {
 
-    background-color: var(--notification-color);
-    border-color: var(--notification-color);
-    border: solid;
 
-    border-width: 2px;
-    border-radius: 10px;
+#motor-dropdown-type {
+    background-color: var(--primary-color);
 
-    transition: 0.5s;
+    width: 100%;
+    border-radius: 5px;
+
+
+    border-color: var(--border-color);
 
 }
 
-#notfication:active {
-    border-color: var(--notification-border-color);
+#addon-properties {
+    background-color: var(--primary-color);
+    border: solid;
+    border-color: var(--border-color);
+    border-width: 1px;
+
+    border-radius: 5px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+
+    padding: 5px;
 }

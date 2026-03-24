@@ -9,17 +9,23 @@
 </head>
 
 <body>
+    <div id="warning"></div>
     <div id="motor-grid"></div>
-
     <div id="motor-menu">
-
         <div class="parent">
 
             <div id="dash-container">
                 <img id="motor-img" />
-                <div id="faults">
+                <div id="faults"></div>
 
-                </div>
+                <div id="addon-properties">
+                    <div id="drop-down-container">
+                        <select name="MotorType" id="motor-dropdown-type">
+                            <option value="brushed" title="brushed"></option>
+                            <option value="brushless" title="brushless"></option>
+                        </select>
+                    </div>
+                </div> <!-- this is for encoders or other inputs or brushed brushless etc -->
             </div>
 
             <div id="properties">
@@ -28,12 +34,7 @@
                 <h2 id="motor-id"></h2>
                 <input type="range" min="-100" max="100" value="0" id="speed-slider" title="speed" />
 
-                <div id="drop-down-container">
-                    <select name="Motor Type" id="motor-dropdown-type">
-                        <option value="brushed" title="brushed"></option>
-                        <option value="brushless" title="brushless"></option>
-                    </select>
-                </div>
+
 
                 <div class="invert-container">
                     <input type="checkbox" id="inverted-input" />

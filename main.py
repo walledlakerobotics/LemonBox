@@ -1,17 +1,10 @@
 from flask import Flask, jsonify, request, send_file
 from networktables import NetworkTables
-import threading
 
 app = Flask(__name__, static_url_path="")
 table = NetworkTables.getTable("LemonStation")
 
 server = "roboRIO-308-FRC"
-
-
-# this is for threading purposes and might improve preformance just a bit.
-def flask_local_server():
-    NetworkTables.initialize(server=server)
-    app.run(port=5000)
 
 
 @app.route("/")
@@ -42,6 +35,7 @@ def motors():
                 "id": int(sub_name),
                 "brushless": sub_table.getBoolean("brushless", False),
                 "disabled": sub_table.getBoolean("disabled", True),
+                "focused": sub_table.getBoolean("focused", False),
                 "type": sub_table.getString("type", ""),
                 "speed": sub_table.getNumber("speed", 0),
                 "faults": sub_table.getString("faults", ""),
@@ -55,7 +49,9 @@ def motors():
 def set_motor_speed(id):
     speed = request.args.get("v") or 0
 
-    table.getSubTable(str(id)).putNumber("speed", speed / 100)
+    table.getSubTable(str(id)).putNumber("speed", speed)
+
+    return jsonify({"speed": speed})
 
 
 @app.post("/brushless/<int:id>")
@@ -64,6 +60,17 @@ def set_brushless(id):
 
     table.getSubTable(str(id)).putBoolean("brushless", brushless)
 
+    return jsonify({"brushless": brushless})
+
+
+@app.post("/focused<int:id>")
+def set_focused(id):
+    focused = request.args.get("v") == "focused"
+
+    table.getSubTable(str(id)).putBoolean("focused", focused)
+
+    return jsonify({"focused": focused})
+
 
 @app.post("/disabled/<int:id>")
 def set_disabled(id):
@@ -71,10 +78,13 @@ def set_disabled(id):
 
     table.getSubTable(str(id)).putBoolean("disabled", disabled)
 
+    return jsonify({"disabled": disabled})
+
 
 def main():
-    flask_thread = threading.Thread(target=flask_local_server(), daemon=False)
-    flask_thread.start()
+
+    NetworkTables.initialize(server=server)
+    app.run(port=5000)
 
 
 # get rid of this when making the pkg

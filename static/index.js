@@ -28,6 +28,11 @@ function createTile(motor) {
 
   tile.addEventListener("click", () => {
     settings(motor);
+
+    fetch(`/focused/${motor.id}?v=${true}`, {
+      method: "POST",
+    });
+
   });
 
   tileGrid.append(tile);
@@ -60,7 +65,6 @@ function settings(motor) {
   let back = document.getElementById("back-button");
   let invertButton = document.getElementById("inverted-input");
   let disableButton = document.getElementById("disabled-input");
-  let brushlessContainer = document.getElementById("drop-down-container");
   let speedSlider = document.getElementById("speed-slider");
 
   speedSlider.value = motor.speed;
@@ -88,7 +92,7 @@ function settings(motor) {
     });
   });
 
-  invertButton.addEventListener("click", () => {
+  invertButton.onclick = function () {
     let invertedValue = 1;
 
     if (invertButton.checked)
@@ -99,7 +103,9 @@ function settings(motor) {
     fetch(`/speed/${id}?v=${speed}`, {
       method: "POST",
     });
-  });
+  };
+
+  let brushlessDropdown = document.getElementById("motor-dropdown-type");
 
   brushlessDropdown.addEventListener("change", () => {
 
@@ -108,25 +114,29 @@ function settings(motor) {
     });
   });
 
-  disableButton.addEventListener("click", () => {
+  disableButton.onclick = function () {
 
     let disabled = disableButton.checked ? "disabled" : "enabled";
 
     fetch(`/disabled/${id}?v=${disabled}`, {
       method: "POST"
     })
-  });
+  };
 
-  back.addEventListener("click", () => {
+  back.onclick = () => {
     tileGrid.classList.remove("hidden");
     motorMenu.classList.add("hidden");
 
     disableButton.checked = true;
 
-    fetch(`/disabled/${id}?v${disableButton.checked}`, {
+    fetch(`/disabled/${id}?v=${disableButton.checked}`, {
       method: "POST"
-    })
-  });
+    });
+
+    fetch(`/focused/${motor.id}?v=${false}`, {
+      method: "POST",
+    });
+  };
 }
 
 // tile removment -------------------------------------------

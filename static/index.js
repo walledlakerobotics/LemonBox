@@ -1,5 +1,6 @@
 const tileGrid = document.getElementById("motor-grid");
 const motorMenu = document.getElementById("motor-menu");
+const speedOutput = document.getElementById("motor-speed-output");
 const dropDownContainer = document.getElementById("drop-down-container");
 const warningContainer = document.getElementById("warning-container");
 
@@ -87,6 +88,8 @@ function settings(motor) {
 
     let speed = speedSlider.value * invertedValue;
 
+    speedOutput.innerHTML = "Speed: " + speed;
+
     fetch(`/speed/${id}?v=${speed}`, {
       method: "POST",
     });
@@ -99,6 +102,8 @@ function settings(motor) {
       invertedValue = -1;
 
     let speed = speedSlider.value * invertedValue;
+
+    speedOutput.innerHTML = "Speed: " + speed;
 
     fetch(`/speed/${id}?v=${speed}`, {
       method: "POST",
@@ -124,18 +129,19 @@ function settings(motor) {
   };
 
   back.onclick = () => {
-    tileGrid.classList.remove("hidden");
-    motorMenu.classList.add("hidden");
 
     disableButton.checked = true;
 
-    fetch(`/disabled/${id}?v=${disableButton.checked}`, {
+    fetch(`/disabled/${id}?v=${true}`, {
       method: "POST"
     });
 
-    fetch(`/focused/${motor.id}?v=${false}`, {
+    fetch(`/focused/${id}?v=${false}`, {
       method: "POST",
     });
+
+    tileGrid.classList.remove("hidden");
+    motorMenu.classList.add("hidden");
   };
 }
 
@@ -178,14 +184,14 @@ function getImage(motor) {
 
 let oldMotors = [];
 let motors = [
-  // {
-  //   "id": 3,
-  //   "brushless": false,
-  //   "disabled": true,
-  //   "type": "sparkmax",
-  //   "speed": 0,
-  //   "faults": "",
-  // }
+  {
+    "id": 3,
+    "brushless": false,
+    "disabled": true,
+    "type": "sparkmax",
+    "speed": 0,
+    "faults": "",
+  }
 ];
 
 function includesMotor(array, motor) {
@@ -217,10 +223,10 @@ function updateMotors() {
     createTile(motor);
   });
 
-  oldMotors.forEach((oldMotor) => {
+  // oldMotors.forEach((oldMotor) => {
 
-    if (!includesMotor(motors, oldMotor)) removeTile(oldMotor || oldMotor.type == "unknown");
-  });
+  //   if (!includesMotor(motors, oldMotor)) removeTile(oldMotor || oldMotor.type == "unknown");
+  // });
 
   oldMotors = [...motors];
 }

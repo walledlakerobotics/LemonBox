@@ -1,8 +1,10 @@
 const tileGrid = document.getElementById("motor-grid");
 const motorMenu = document.getElementById("motor-menu");
 const speedOutput = document.getElementById("motor-speed-output");
+
 const dropDownContainer = document.getElementById("drop-down-container");
 const warningContainer = document.getElementById("warning-container");
+const pidContainer = document.getElementById("pid-container");
 
 // tile creation ----------------------------------------------------
 
@@ -14,16 +16,16 @@ function createTile(motor) {
   if (getDisplay(motor) == "Unknown")
     return;
 
-  let tile = document.createElement("div");
+  const tile = document.createElement("div");
   tile.classList.add("motor-tile");
 
-  let name = document.createElement("h1");
+  const name = document.createElement("h1");
   name.innerHTML = getDisplay(motor);
 
-  let id = document.createElement("h2");
+  const id = document.createElement("h2");
   id.innerHTML = "CAN ID " + motor.id;
 
-  let img = document.createElement("img");
+  const img = document.createElement("img");
   img.setAttribute("src", getImage(motor));
 
   tile.append(name);
@@ -55,30 +57,39 @@ function settings(motor) {
 
   // title
 
-  let nameHeader = document.getElementById("motor-name");
+  const nameHeader = document.getElementById("motor-name");
   nameHeader.innerHTML = getDisplay(motor);
 
-  let idHeader = document.getElementById("motor-id");
+  const idHeader = document.getElementById("motor-id");
   idHeader.innerHTML = "CAN id " + motor.id;
 
   //properties
 
-  let back = document.getElementById("back-button");
-  let invertButton = document.getElementById("inverted-input");
-  let disableButton = document.getElementById("disabled-input");
-  let speedSlider = document.getElementById("speed-slider");
-  let brushlessDropdown = document.getElementById("motor-dropdown-type");
+  const back = document.getElementById("back-button");
+  const invertButton = document.getElementById("inverted-input");
+  const disableButton = document.getElementById("disabled-input");
+  const speedSlider = document.getElementById("speed-slider");
+  const brushlessDropdown = document.getElementById("motor-dropdown-type");
+
+  const pInput = pidContainer.getElementById("p-input");
+  const iInput = pidContainer.getElementById("i-input");
+  const dInput = pidContainer.getElementById("d-input");
+
+  // const applyPidButton = pidContainer.getElementById("apply-button"); 
+  // applyPidButton.onclick = () => setPidControl(motor, pInput.value, iInput.value, dInput.value, disableButton.checked);
 
   speedSlider.value = motor.speed;
   invertButton.checked = motor.inverted;
   brushlessDropdown.value = motor.brushless;
 
+
+
   // dash board
 
-  let motorImage = document.getElementById("motor-img");
+  const motorImage = document.getElementById("motor-img");
   motorImage.setAttribute("src", getImage(motor));
 
-  let faults = document.getElementById("faults");
+  const faults = document.getElementById("faults");
   faults.innerHTML = motor.faults;
 
   speedSlider.onchange = () => setMotorSpeed(motor, speedSlider.value, invertButton.checked);
@@ -110,6 +121,7 @@ function settings(motor) {
 
 function setMotorSpeed(motor, speed, inverted, disabled) {
 
+  // sets the motor speed to 0 if its disabled, and returns.
   if (disabled) {
     fetch(`/speed/${motor.id}?v=${0}`, {
       method: "POST",
@@ -118,19 +130,32 @@ function setMotorSpeed(motor, speed, inverted, disabled) {
     return;
   }
 
-  let invertedValue = 1;
+  const invertedValue = inverted ? -1 : 1;
 
-  if (inverted)
-    invertedValue = -1;
+  // posts the speed over the network
+  fetch(`/speed/${motor.id}?v=${speed * invertedValue}`, {
+    method: "POST",
+  });
 
   speedOutput.innerHTML = "Speed: " + speed * invertedValue;
+}
 
-  fetch(`/speed/${motor.id}?v=${speed * invertedValue}`, {
+function setPidControl(motor, kp, ki, kd, disabled) {
+  if (disabled) {
+
+    fetch(`/pid/${motor.id}?v=${[0, 0, 0]}`, {
+      method: "POST",
+    });
+
+    return;
+  }
+
+  fetch(`/pid/${motor.id}?v=${[kp, ki, kd]}`, {
     method: "POST",
   });
 }
 
-// tile removment -------------------------------------------
+// tile removment -------------------------------------------------
 
 function removeTile(motor) {
   [...tileGrid.querySelectorAll(".motor-tile")].forEach((tile) => {
@@ -164,28 +189,16 @@ function getImage(motor) {
   }
 }
 
-
-// motor logic ----------------------------------------------------------
+// motor logic --------------------------------------------------------
 
 let oldMotors = [];
-let motors = [
-  {
-    "id": 3,
-    "brushless": false,
-    "type": "sparkmax",
-    "speed": 0,
-    "faults": "",
-    "stickyFaults": "",
-    "focused": false
-  }
-];
+let motors = [/* data goes here */];
 
 function includesMotor(array, motor) {
   return array.some((m) => m.id == motor.id && m.type == motor.type);
 }
 
-function updateMotors() {
-
+setInterval(() => {
 
   fetch("/tableConnected")
     .then((response) => response.json())
@@ -197,6 +210,7 @@ function updateMotors() {
         warningContainer.classList.add("hidden");
 
     });
+
   // getting the data from the flask local host
   fetch("/motors")
     .then((response) => response.json())
@@ -209,15 +223,13 @@ function updateMotors() {
     createTile(motor);
   });
 
-  // oldMotors.forEach((oldMotor) => {
+  // REMOVE this for testing!
+  // removes any old motors in the list
+  oldMotors.forEach((oldMotor) => {
 
-  //   if (!includesMotor(motors, oldMotor)) removeTile(oldMotor || oldMotor.type == "unknown");
-  // });
+    if (!includesMotor(motors, oldMotor)) removeTile(oldMotor || oldMotor.type == "unknown");
+  });
 
   oldMotors = [...motors];
-}
 
-setInterval(() => {
-  // checkNotification()
-  updateMotors();
 }, 500);

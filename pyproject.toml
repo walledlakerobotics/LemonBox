@@ -1,7 +1,7 @@
 [project]
-name = "lemonstation"
+name = "lemonBox"
 version = "0.1.0"
-description = "Add your description here"
+description = "GUI for the lemonbox toolkit for testing motors, with a module system easy to add different motors."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

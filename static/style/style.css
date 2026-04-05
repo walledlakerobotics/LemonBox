@@ -14,8 +14,11 @@
     --warning-text-color: rgb(228, 175, 188);
 
     --inside-bg-color: rgb(16, 36, 54);
-    --inside-primary-color: rgb(1, 10, 17);
+    --inside-primary-color: rgb(11, 20, 33);
     --inside-text-color: rgb(154, 226, 209);
+    --inside-border-color: rgb(37, 51, 93);
+
+    --scroll-bar-color: rgb(161, 255, 203);
 }
 
 *,
@@ -23,7 +26,7 @@
 *::after {
     box-sizing: border-box;
     margin: 0;
-    scrollbar-color: #a1ffcb transparent;
+    scrollbar-color: var(--scroll-bar-color) transparent;
 }
 
 body {
@@ -168,7 +171,7 @@ img {
     padding: 15px;
     border-radius: 5px;
     width: 100%;
-    gap: 2dvh;
+    gap: 1dvh;
     flex: 0 1 min-content;
 
     button {
@@ -314,12 +317,10 @@ img {
     overflow: hidden;
     overflow-y: scroll;
 
-
-
     height: 100%;
     width: 100%;
 
-    padding: 5px;
+    padding: 10px;
 }
 
 #warning-container {
@@ -327,12 +328,12 @@ img {
     background-color: var(--warning-primary-color);
 
     position: fixed;
-    display: flex;
-    flex-direction: column;
 
     padding: 5px;
     border-radius: 5px;
     border: solid var(--warning-border-color) 1px;
+
+    margin-bottom: auto;
 
 
 }
@@ -351,6 +352,10 @@ img {
     word-break: break-all;
 
     font-size: larger;
+
+    /* border-color: var(--inside-border-color);
+    border: solid;
+    border-width: 1px; */
 }
 
 #sticky-faults {
@@ -366,6 +371,10 @@ img {
     word-break: break-all;
 
     font-size: larger;
+
+    /* border-color: var(--inside-border-color);
+    border: solid;
+    border-width: 1px; */
 }
 
 #faults-container {
@@ -399,4 +408,11 @@ img {
         border: 1px solid var(--inside-border-color);
         transition: border-color 0.2s ease;
     }
+}
+
+#pid-container {
+    
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }

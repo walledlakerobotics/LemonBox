@@ -9,16 +9,9 @@
 </head>
 
 
-<div id="warning-container">
-    <p>
-        warning NetworkTables are disconnected,
-        make sure you have it plugged in with a link cable,
-        or over a radio!
-    </p>
-</div>
-
 
 <body>
+
     <div id="motor-grid"></div>
     <div id="motor-menu">
         <div class="parent">
@@ -35,10 +28,19 @@
 
                 <div id="addon-properties">
                     <div id="drop-down-container">
+
                         <select name="MotorType" id="motor-dropdown-type">
                             <option value="brushed">Brushed</option>
                             <option value="brushless">Brushless</option>
                         </select>
+
+                        <div id="pid-container">
+                            <input type="number" id="p-input">
+                            <input type="number" id="i-input">
+                            <input type="number" id="d-input">
+
+                            <input type="button" id="apply-button">
+                        </div>
                     </div>
                 </div> <!-- this is for encoders or other inputs or brushed brushless etc -->
             </div>
@@ -65,6 +67,14 @@
                     <button title="back" id="back-button">Back</button>
             </div>
         </div>
+    </div>
+
+    <div id="warning-container">
+        <p>
+            warning NetworkTables are disconnected,
+            make sure you have it plugged in with a link cable,
+            or over a radio!
+        </p>
     </div>
 
     <script src="index.js"></script>

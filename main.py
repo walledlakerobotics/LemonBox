@@ -34,11 +34,12 @@ def motors():
             {
                 "id": int(sub_name),
                 "brushless": sub_table.getBoolean("brushless", False),
+                "focused": sub_table.getBoolean("focused", False),
                 "type": sub_table.getString("type", ""),
-                "speed": sub_table.getNumber("speed", 0),
                 "faults": sub_table.getString("faults", ""),
                 "stickyFaults": sub_table.getString("stickyFaults", ""),
-                "focused": sub_table.getBoolean("focused"),
+                "speed": sub_table.getNumber("speed", 0),
+                "pid": sub_table.getNumberArray("pid", [0, 0, 0]),
             }
         )
 
@@ -64,6 +65,14 @@ def set_focused(id):
     focused = request.args.get("v") == "focused"
 
     table.getSubTable(str(id)).putBoolean("focused", focused)
+
+@app.post("/pid/<int:id>")
+def set_pid(id):
+
+    pid = request.args.get("v") == "pid"
+
+    table.getSubTable(str(id)).putNumberArray("pid", pid)
+
 
 
 def main():

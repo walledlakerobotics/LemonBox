@@ -6,6 +6,8 @@ table = NetworkTables.getTable("LemonBox")
 
 server = "roboRIO-308-FRC"
 
+# flask gui
+
 
 @app.route("/")
 def index():
@@ -20,6 +22,9 @@ def isConnected():
     json_data = {"connected": NetworkTables.isConnected()}
 
     return jsonify(json_data)
+
+
+# getting motors
 
 
 @app.route("/motors")
@@ -38,11 +43,15 @@ def motors():
                 "faults": sub_table.getString("faults", ""),
                 "stickyFaults": sub_table.getString("stickyFaults", ""),
                 "speed": sub_table.getNumber("speed", 0),
-                "pid": sub_table.getNumberArray("pid", [0, 0, 0]),
+                "amps": sub_table.getNumber("amps", 0),
+                "voltage": sub_table.getNumber("volts", 0),
             }
         )
 
     return jsonify(json_data)
+
+
+# setters
 
 
 @app.post("/speed/<int:id>")

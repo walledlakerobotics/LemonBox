@@ -67,10 +67,6 @@ function settings(motor) {
   const speedSlider = document.getElementById("speed-slider");
   const brushlessDropdown = document.getElementById("motor-dropdown-type");
 
-  const pInput = pidContainer.querySelector("#p-input");
-  const iInput = pidContainer.querySelector("#i-input");
-  const dInput = pidContainer.querySelector("#d-input");
-
   // const applyPidButton = pidContainer.getElementById("apply-button"); 
   // applyPidButton.onclick = () => setPidControl(motor, pInput.value, iInput.value, dInput.value, disableButton.checked);
 
@@ -131,20 +127,6 @@ function setMotorSpeed(motor, speed, inverted, disabled) {
   speedOutput.innerHTML = "Speed: " + speed * invertedValue;
 }
 
-function setPidControl(motor, kp, ki, kd, disabled) {
-  if (disabled) {
-
-    fetch(`/pid/${motor.id}?v=${[0, 0, 0]}`, {
-      method: "POST",
-    });
-
-    return;
-  }
-
-  fetch(`/pid/${motor.id}?v=${[kp, ki, kd]}`, {
-    method: "POST",
-  });
-}
 
 // tile removment -------------------------------------------------
 

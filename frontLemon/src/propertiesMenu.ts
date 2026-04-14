@@ -1,5 +1,5 @@
 import { localhost } from "./app";
-import { getMotorTextDisplay, type Motor } from "./TileMenu";
+import { getMotorTextDisplay, type Motor } from "./tileMenu";
 
 const motorName = document.getElementById("motor-name");
 const motorId = document.getElementById("motor-id");

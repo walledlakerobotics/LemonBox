@@ -29,6 +29,7 @@ export type Motor = {
 function createTile(motor: Motor): HTMLElement {
 
     const tile = document.createElement("div");
+    tile.id = "motor-tile";
 
     const motorName = document.createElement("h1");
     motorName.innerHTML = getMotorTextDisplay(motor);
@@ -48,7 +49,7 @@ function createTile(motor: Motor): HTMLElement {
         // set html to properties
 
         // gets values
-        loadProperties(motor);
+        // loadProperties(motor);
     });
 
     return tile;

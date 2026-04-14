@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, send_file
 from networktables import NetworkTables
+import time
 
 app = Flask(__name__, static_url_path="")
 table = NetworkTables.getTable("LemonBox")
@@ -84,6 +85,12 @@ def set_focused(id):
 
 def main():
     NetworkTables.initialize(server=server)
+
+    while not NetworkTables.isConnected:
+        NetworkTables.initialize(server=server)
+        print("networktable is not connecting!")
+        time.sleep(0.5)
+
     app.run(port=5000)
 
 

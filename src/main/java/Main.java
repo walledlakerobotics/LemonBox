@@ -39,9 +39,6 @@ public class Main {
         m_mainTable = inst.getTable("LemonBox");
         // configures local host routes
         Javalin app = Javalin.create(config -> {
-
-            Set<Motor> motors = Motor.getMotors(m_mainTable);
-
             config.staticFiles.enableWebjars();
             config.staticFiles.add("/public");
 
@@ -49,10 +46,12 @@ public class Main {
 
             // returns all motors that are connected to the networktables.
             config.routes.get("/api/motors", ctx -> {
+                Set<Motor> motors = Motor.getMotors(m_mainTable);
                 ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
+                Set<Motor> motors = Motor.getMotors(m_mainTable);
                 String id = ctx.pathParam("id");
 
                 double speed = (double) ctx.req().getAttribute("speed");

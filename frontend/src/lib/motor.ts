@@ -105,15 +105,15 @@ export class Motor {
     public get motorImage(): string {
         switch (this.type) {
             case "sparkmax":
-                return 'src/assets/imgs/sparkmax.png';
+                return '/imgs/sparkmax.png';
             case "falcon500":
-                return 'src/assets/imgs/falcon500.png';
+                return '/imgs/falcon500.png';
             case "krakenx44":
-                return 'src/assets/imgs/krakenX44.png';
+                return '/imgs/krakenX44.png';
             case "krakenx60":
-                return 'src/assets/imgs/krakenX60.png';
+                return '/imgs/krakenX60.png';
             default:
-                return 'src/assets/imgs/placeHolder.png';
+                return '/imgs/placeHolder.png';
         }
     }
 }

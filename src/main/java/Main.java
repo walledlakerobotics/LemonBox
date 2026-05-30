@@ -52,7 +52,7 @@ public class Main {
 
             config.routes.post("/api/motors/{id}", ctx -> {
                 Set<Motor> motors = Motor.getMotors(m_mainTable);
-                String id = ctx.pathParam("id");
+                String id = ctx.pathParam("id"); // gets the id being passed
 
                 double speed = (double) ctx.req().getAttribute("speed");
                 Boolean burshless = (boolean) ctx.req().getAttribute("brushless");

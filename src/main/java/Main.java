@@ -1,0 +1,78 @@
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.opencv.core.Core;
+
+import edu.wpi.first.cscore.CameraServerJNI;
+import edu.wpi.first.cscore.OpenCvLoader;
+import edu.wpi.first.math.jni.EigenJNI;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTablesJNI;
+import edu.wpi.first.util.CombinedRuntimeLoader;
+import edu.wpi.first.util.WPIUtilJNI;
+import io.javalin.Javalin;
+
+public class Main {
+
+    private static NetworkTable m_mainTable;
+
+    public static void main(String[] args) throws IOException {
+
+        // initializing WPIlib
+        NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);
+        WPIUtilJNI.Helper.setExtractOnStaticLoad(false);
+        EigenJNI.Helper.setExtractOnStaticLoad(false);
+        CameraServerJNI.Helper.setExtractOnStaticLoad(false);
+        OpenCvLoader.Helper.setExtractOnStaticLoad(false);
+
+        CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
+                Core.NATIVE_LIBRARY_NAME, "cscorejni");
+
+        // inits network table :3
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        inst.setServerTeam(308);
+        inst.startClient4("LemonBoxClient");
+        m_mainTable = inst.getTable("LemonBox");
+        // configures local host routes
+        Javalin app = Javalin.create(config -> {
+
+            Set<Motor> motors = Motor.getMotors(m_mainTable);
+
+            config.staticFiles.enableWebjars();
+            config.staticFiles.add("/public");
+
+            config.routes.get("/", ctx -> ctx.redirect("index.html"));
+
+            // returns all motors that are connected to the networktables.
+            config.routes.get("/api/motors", ctx -> {
+                ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+            });
+
+            config.routes.post("/api/motors/{id}", ctx -> {
+                String id = ctx.pathParam("id");
+
+                double speed = (double) ctx.req().getAttribute("speed");
+                Boolean burshless = (boolean) ctx.req().getAttribute("brushless");
+
+                // gets the motor with the corresponding id.
+                Optional<Motor> motor = motors.stream()
+                        .filter(m -> m.getId().equals(id))
+                        .findFirst();
+
+                try {
+                    motor.get().setSpeed(speed);
+                    motor.get().setBrushless(burshless);
+                } catch (Exception e) {
+                    System.err.println("couldn't post motor data.");
+                }
+            });
+
+        });
+
+        app.start(7070);
+    }
+}

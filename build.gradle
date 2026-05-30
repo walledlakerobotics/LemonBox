@@ -1,0 +1,74 @@
+plugins {
+    id "java"
+    id 'application'
+    id 'com.gradleup.shadow' version '8.3.5'
+    id "edu.wpi.first.GradleRIO" version "2025.1.1"
+    id 'edu.wpi.first.WpilibTools' version '2.1.0'
+}
+
+application {
+    mainClass = 'Main'
+}
+
+wpilibTools.deps.wpilibVersion = wpi.versions.wpilibVersion.get()
+
+def nativeConfigName = 'wpilibNatives'
+def nativeConfig = configurations.create(nativeConfigName)
+
+def nativeTasks = wpilibTools.createExtractionTasks {
+    configurationName = nativeConfigName
+}
+
+nativeTasks.addToSourceSetResources(sourceSets.main)
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpimath")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpinet")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpiutil")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("ntcore")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("cscore")
+nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation wpilibTools.deps.wpilibJava("wpiutil")
+    implementation wpilibTools.deps.wpilibJava("wpimath")
+    implementation wpilibTools.deps.wpilibJava("wpinet")
+    implementation wpilibTools.deps.wpilibJava("ntcore")
+    implementation wpilibTools.deps.wpilibJava("cscore")
+    implementation wpilibTools.deps.wpilibJava("cameraserver")
+    implementation wpilibTools.deps.wpilibOpenCvJava("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
+
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: wpi.versions.jacksonVersion.get()
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-core", version: wpi.versions.jacksonVersion.get()
+    implementation group: "com.fasterxml.jackson.core", name: "jackson-databind", version: wpi.versions.jacksonVersion.get()
+
+    implementation group: "org.ejml", name: "ejml-simple", version: wpi.versions.ejmlVersion.get()
+    implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get();
+
+    implementation files('lib/open-ds.jar')
+
+    implementation 'io.javalin:javalin:7.2.2'
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+    implementation 'org.webjars.npm:bootstrap:5.3.3'
+         
+         
+}
+
+shadowJar {
+    archiveBaseName = "TestApplication"
+    archiveVersion = ""
+    exclude("module-info.class")
+    archiveClassifier.set(wpilibTools.currentPlatform.platformName)
+}
+
+wrapper {
+    gradleVersion = '8.11'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}

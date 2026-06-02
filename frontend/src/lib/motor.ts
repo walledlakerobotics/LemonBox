@@ -1,5 +1,6 @@
 export class Motor {
 
+
     private _disabled: boolean = true;
 
     constructor(public readonly id: number) { }
@@ -116,16 +117,17 @@ export class Motor {
                 return '/imgs/placeHolder.png';
         }
     }
+
+    /**
+     * gets all the motors posted on the json.
+     * @returns Motors posted. 
+     */
+    public static async getMotors(): Promise<Motor[]> {
+        const response: Response = await fetch(`/api/motors`);
+        const motorIds: string[] = await response.json();
+        const motors: Motor[] = motorIds.map((id) => new Motor(Number.parseInt(id)));
+
+        return motors;
+    }
 }
 
-/**
- * gets all the motors posted on the json.
- * @returns Motors posted. 
- */
-export async function getMotors(): Promise<Motor[]> {
-    const response: Response = await fetch(`/api/motors`);
-    const motorIds: string[] = await response.json();
-    const motors: Motor[] = motorIds.map((id) => new Motor(Number.parseInt(id)));
-
-    return motors;
-}

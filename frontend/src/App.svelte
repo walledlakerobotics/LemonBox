@@ -11,24 +11,31 @@
             uuid: crypto.randomUUID(),
             title: "ah",
             onOpen: () => currentTabuuid == tab.uuid,
-            onClose: () => {},
+            onClose: () =>
+                removeTab(tabs.findIndex((t) => t.uuid == tab.uuid).valueOf()),
         };
 
         tabs.push(tab);
         return tab.uuid;
     }
 
+    function removeTab(index: number) {
+        tabs.splice(index, 1);
+    }
+
     currentTabuuid = addTab();
 </script>
 
-<div class="tabs">
-    {#each tabs as data}
-        <Tab tabData={data} />
-    {/each}
-</div>
+<div id="tabs-container">
+    <div class="tabs">
+        {#each tabs as data}
+            <Tab tabData={data} />
+        {/each}
+    </div>
 
-<div id="tabs-utils">
-    <button id="add" onclick={() => addTab()}>add</button>
+    <div id="tabs-utils">
+        <button id="add" onclick={() => addTab()}>add</button>
+    </div>
 </div>
 
 <div id="display-container">
@@ -37,3 +44,21 @@
         <!-- need to load other content -->
     {/if}
 </div>
+
+<style>
+    .tabs {
+        background-color: var(--fg-color);
+
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+
+        padding: 5px;
+
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+
+    #tabs-container {
+    }
+</style>

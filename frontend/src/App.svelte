@@ -10,6 +10,7 @@
         const tab: TabData = {
             uuid: crypto.randomUUID(),
             title: "Motors",
+            tabComponent: TabContaining,
             onOpen: () => currentTabuuid == tab.uuid,
             onClose: () =>
                 removeTab(tabs.findIndex((t) => t.uuid == tab.uuid).valueOf()),
@@ -40,7 +41,7 @@
 
 <div id="display-container">
     {#if tabs.find((tab) => tab.uuid === currentTabuuid)}
-        <TabContaining></TabContaining>
+        {tabs.find((tab) => tab.uuid === currentTabuuid)?.tabComponent}
     {/if}
 </div>
 

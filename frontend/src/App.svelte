@@ -4,39 +4,36 @@
     import type { TabData } from "./lib/tabdata";
 
     let tabs: TabData[] = $state([]);
-    let activeTabuuid: string = $state("");
-    let activeTab = $derived(tabs.find((tab) => tab.uuid === activeTabuuid));
 
-    function addTab(): string {
+    addTab();
+
+    let activeTab: TabData = $state(tabs[0]);
+
+    function addTab() {
         const tab: TabData = {
             uuid: crypto.randomUUID(),
             title: "Motors",
             component: TabContaining,
-            onOpen: () => (activeTabuuid = tab.uuid),
-            onClose: () =>
-                removeTab(tabs.findIndex((t) => t.uuid == tab.uuid).valueOf()),
+            onOpen: () =>
+                (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
+            onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
         };
 
         tabs.push(tab);
-        return tab.uuid;
     }
 
     function removeTab(index: number) {
-        const removed = tabs[index];
-
+        // prevent removing last tab
         if (tabs.length <= 1) return;
 
         tabs.splice(index, 1);
 
-        if (removed.uuid === activeTabuuid) {
-            activeTabuuid = tabs[Math.max(0, index - 1)].uuid;
-        }
+        tabs = [...tabs];
     }
-
-    activeTabuuid = addTab();
 </script>
 
 <div id="tabs-container">
+    <!-- creates tabs -->
     <div class="tabs">
         {#each tabs as data}
             <Tab tabData={data} />
@@ -47,9 +44,13 @@
 </div>
 
 <div id="active-tab">
-    {#if activeTab}
-        <activeTab.component />
-    {/if}
+    <!-- renders active tab content :3-->
+
+    {#each tabs as t}
+        {#if t.uuid == activeTab.uuid}
+            <t.component />
+        {/if}
+    {/each}
 </div>
 
 <style>

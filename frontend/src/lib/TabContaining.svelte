@@ -4,6 +4,8 @@
     import MotorProperties from "./MotorProperties.svelte";
     import MotorTile from "./MotorTile.svelte";
 
+    let id: string = $state(crypto.randomUUID());
+
     // this will only return the updated array, but it might cause some issues with replicas
     let motors: Motor[] = $state([]);
 
@@ -19,7 +21,7 @@
     <MotorProperties
         motor={m}
         onClose={() => {
-            selectedMotor == null;
+            selectedMotor = null;
         }}
     ></MotorProperties>
 {/snippet}
@@ -30,19 +32,24 @@
             <MotorTile motor={m} onOpen={() => {}}></MotorTile>
         {/each}
 
-        <MotorTile motor={new Motor(0)} onOpen={() => (selectedMotor = null)}
+        <MotorTile
+            motor={new Motor(0)}
+            onOpen={() => (selectedMotor = new Motor(0))}
         ></MotorTile>
     </div>
 {/snippet}
 
 {#if selectedMotor != null}
+    {console.log("rendering motor properties")}
     {@render motorProperties(selectedMotor)}
 {/if}
 
-<!-- if motor equals null -->
-{@render Motors()}
+{#if selectedMotor == null}
+    {console.log("rendering motors")}
+    {@render Motors()}
+{/if}
 
-<p>{crypto.randomUUID()}</p>
+<!-- if motor equals null -->
 
 <style>
     #motor-grid {

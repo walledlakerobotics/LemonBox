@@ -1,6 +1,5 @@
 export class Motor {
 
-
     private _disabled: boolean = true;
 
     constructor(public readonly id: number) { }
@@ -106,15 +105,15 @@ export class Motor {
     public get motorImage(): string {
         switch (this.type) {
             case "sparkmax":
-                return '/imgs/sparkmax.png';
+                return 'assets/imgs/sparkmax.png';
             case "falcon500":
-                return '/imgs/falcon500.png';
+                return 'assets/imgs/falcon500.png';
             case "krakenx44":
-                return '/imgs/krakenX44.png';
+                return 'assets/imgs/krakenX44.png';
             case "krakenx60":
-                return '/imgs/krakenX60.png';
+                return 'assets/imgs/krakenX60.png';
             default:
-                return '/imgs/placeHolder.png';
+                return 'assets/imgs/placeHolder.png';
         }
     }
 

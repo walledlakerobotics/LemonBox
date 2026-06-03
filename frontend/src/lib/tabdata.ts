@@ -3,7 +3,7 @@ import type { Component } from "svelte";
 export type TabData = {
     uuid: string;
     title: string;
-    tabComponent: Component;
+    component: Component;
     onOpen: () => void;
     onClose: () => void;
 };

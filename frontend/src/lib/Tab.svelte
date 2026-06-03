@@ -9,35 +9,41 @@
         {tabData.title}
     </button>
 
-    <button id="remove-button" onclick={tabData.onClose}> X </button>
+    <button id="remove-button" onclick={tabData.onClose} aria-label="Close tab">
+        ×
+    </button>
 </div>
 
 <style>
     #tab {
         display: flex;
         flex-direction: row;
+        color: var(--border-color);
 
         background-color: var(--button-color);
         border: solid;
         border-color: var(--border-color);
         border-width: 1px;
-        padding: 5px;
         border-radius: 5px;
+        padding: 5px;
 
-        gap: 2vw;
-    }
+        gap: 1vw;
 
-    button {
-        border: none;
-    }
-
-    #tab-button {
-        background-color: var(--button-color);
-        color: var(--text-color);
+        transition: 0.2s;
     }
 
     #remove-button {
-        background-color: rgb(207, 0, 62);
-        border-radius: 2px;
+        transition: 0.2s;
+    }
+    #remove-button:active {
+        color: white;
+        background-color: rgb(202, 0, 67);
+        border-radius: 5px;
+    }
+
+    button {
+        color: var(--text-color);
+        border: none;
+        background-color: #00000000;
     }
 </style>

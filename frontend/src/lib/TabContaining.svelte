@@ -27,8 +27,11 @@
 {#snippet Motors()}
     <div id="motor-grid">
         {#each motors as m}
-            <MotorTile motor={m} onOpen={() => (selectedMotor = m)}></MotorTile>
+            <MotorTile motor={m} onOpen={() => {}}></MotorTile>
         {/each}
+
+        <MotorTile motor={new Motor(0)} onOpen={() => (selectedMotor = null)}
+        ></MotorTile>
     </div>
 {/snippet}
 
@@ -36,9 +39,10 @@
     {@render motorProperties(selectedMotor)}
 {/if}
 
-{#if selectedMotor == null}
-    {@render Motors()}
-{/if}
+<!-- if motor equals null -->
+{@render Motors()}
+
+<p>{crypto.randomUUID()}</p>
 
 <style>
     #motor-grid {

@@ -9,7 +9,8 @@
     function addTab(): string {
         const tab: TabData = {
             uuid: crypto.randomUUID(),
-            title: "ah",
+            title: "Motors",
+            currentComponent: Motors,
             onOpen: () => currentTabuuid == tab.uuid,
             onClose: () =>
                 removeTab(tabs.findIndex((t) => t.uuid == tab.uuid).valueOf()),
@@ -40,8 +41,7 @@
 
 <div id="display-container">
     {#if tabs.find((tab) => tab.uuid === currentTabuuid)}
-        <Motors />
-        <!-- need to load other content -->
+        {tabs.find((tab) => tab.uuid === currentTabuuid)?.currentComponent}
     {/if}
 </div>
 

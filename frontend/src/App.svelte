@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Motors from "./lib/Motors.svelte";
     import Tab from "./lib/Tab.svelte";
+    import TabContaining from "./lib/TabContaining.svelte";
     import type { TabData } from "./lib/tabdata";
 
     let tabs: TabData[] = $state([]);
@@ -10,7 +10,6 @@
         const tab: TabData = {
             uuid: crypto.randomUUID(),
             title: "Motors",
-            currentComponent: Motors,
             onOpen: () => currentTabuuid == tab.uuid,
             onClose: () =>
                 removeTab(tabs.findIndex((t) => t.uuid == tab.uuid).valueOf()),
@@ -41,7 +40,7 @@
 
 <div id="display-container">
     {#if tabs.find((tab) => tab.uuid === currentTabuuid)}
-        {tabs.find((tab) => tab.uuid === currentTabuuid)?.currentComponent}
+        <TabContaining></TabContaining>
     {/if}
 </div>
 

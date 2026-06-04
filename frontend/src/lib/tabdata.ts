@@ -1,9 +1,9 @@
-import type { Component } from "svelte";
+import type { Motor } from "./motor";
 
 export type TabData = {
     uuid: string;
     title: string;
-    component: Component;
+    selectedMotor: Motor | null;
     onOpen: () => void;
     onClose: () => void;
 };

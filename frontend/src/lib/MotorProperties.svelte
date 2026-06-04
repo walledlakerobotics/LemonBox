@@ -28,7 +28,7 @@
 <div id="control-panel">
     <input
         id="speed-slider"
-        type="slider"
+        type="range"
         step="0.01"
         min="-1"
         max="1"
@@ -37,9 +37,13 @@
     <input
         id="brushless-checkbox"
         type="checkbox"
-        bind:value={motor.brushless}
+        bind:checked={motor.brushless}
     />
-    <input id="disabled-checkbox" type="checkbox" bind:value={motor.disabled} />
+    <input
+        id="disabled-checkbox"
+        type="checkbox"
+        bind:checked={motor.disabled}
+    />
     <button
         id="close-button"
         onclick={() => {

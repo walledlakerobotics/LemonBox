@@ -1,19 +1,19 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+    import { Motor } from "./lib/motor";
+    import MotorProperties from "./lib/MotorProperties.svelte";
+    import MotorTile from "./lib/MotorTile.svelte";
     import Tab from "./lib/Tab.svelte";
-    import TabContaining from "./lib/TabContaining.svelte";
     import type { TabData } from "./lib/tabdata";
 
     let tabs: TabData[] = $state([]);
-
-    addTab();
-
-    let activeTab: TabData = $state(tabs[0]);
+    let activeTab: TabData = $derived(tabs[0]);
 
     function addTab() {
         const tab: TabData = {
             uuid: crypto.randomUUID(),
             title: "Motors",
-            component: TabContaining,
+            selectedMotor: null,
             onOpen: () =>
                 (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
             onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
@@ -23,13 +23,21 @@
     }
 
     function removeTab(index: number) {
-        // prevent removing last tab
         if (tabs.length <= 1) return;
 
         tabs.splice(index, 1);
-
-        tabs = [...tabs];
     }
+
+    // this will only return the updated array, but it might cause some issues with replicas
+    let motors: Motor[] = $derived([]);
+    let selectedMotorUuids: string[] = $state([]);
+
+    // runs when loaded to DOM.
+    onMount(async () => {
+        motors = await Motor.getMotors();
+    });
+
+    addTab();
 </script>
 
 <div id="tabs-container">
@@ -39,19 +47,52 @@
             <Tab tabData={data} />
         {/each}
 
-        <button id="add-button" onclick={() => addTab()}>+</button>
+        <button id="add-button" onclick={addTab}>+</button>
     </div>
 </div>
 
-<div id="active-tab">
-    <!-- renders active tab content :3-->
+{#snippet motorProperties(m: Motor)}
+    <MotorProperties
+        motor={m}
+        onClose={() => {
+            activeTab.selectedMotor = null;
+            selectedMotorUuids.filter((id) => m.uuid == id);
+        }}
+    ></MotorProperties>
+{/snippet}
 
-    {#each tabs as t}
-        {#if t.uuid == activeTab.uuid}
-            <t.component />
-        {/if}
-    {/each}
-</div>
+{#snippet Motors()}
+    <div id="motor-grid">
+        {#each motors.filter( (m) => selectedMotorUuids.includes(m.uuid), ) as motor}
+            <MotorTile
+                {motor}
+                onOpen={() => {
+                    activeTab.selectedMotor = motor;
+                    selectedMotorUuids.push(motor.uuid);
+                }}
+            ></MotorTile>
+        {/each}
+
+        <!-- test -->
+        <MotorTile
+            motor={new Motor(0)}
+            onOpen={() => {
+                let motor = new Motor(0);
+                activeTab.selectedMotor = motor;
+            }}
+        ></MotorTile>
+    </div>
+{/snippet}
+
+{#if activeTab.selectedMotor != null}
+    {(activeTab.title = `MotorId:${activeTab.selectedMotor.id}`)}
+    {@render motorProperties(activeTab.selectedMotor)}
+{/if}
+
+{#if activeTab.selectedMotor == null}
+    {(activeTab.title = "Motors")}
+    {@render Motors()}
+{/if}
 
 <style>
     .tabs {
@@ -100,5 +141,15 @@
         position: relative;
         margin: 0;
         padding: 0;
+    }
+
+    #motor-grid {
+        gap: 5px;
+        display: flex;
+        flex-direction: row;
+
+        overflow-x: scroll;
+
+        scrollbar-width: 5px;
     }
 </style>

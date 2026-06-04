@@ -1,6 +1,7 @@
 :root {
 
   background-color: var(--bg-color);
+  font-family: Exo;
 
   --bg-color: rgb(9, 12, 11);
   --fg-color: rgb(19, 31, 32);
@@ -12,4 +13,9 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+@font-face {
+  font-family: "Exo";
+  src: "/assets/fonts/Exo/Exo-VariableFont_wght.ttf";
 }

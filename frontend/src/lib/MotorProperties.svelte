@@ -12,7 +12,7 @@
         <img src={motor.motorImage} alt="" />
 
         <div id="properties-container">
-            <h1>{motor.id}</h1>
+            <h1>Id: {motor.id}</h1>
             <h2>{motor.displayName}</h2>
         </div>
     </div>
@@ -36,14 +36,18 @@
     />
     <input
         id="brushless-checkbox"
+        title="brushless"
         type="checkbox"
         bind:checked={motor.brushless}
     />
+
     <input
         id="disabled-checkbox"
+        title="disabled"
         type="checkbox"
         bind:checked={motor.disabled}
     />
+
     <button
         id="close-button"
         onclick={() => {
@@ -55,4 +59,57 @@
 </div>
 
 <style>
+    #dashboard {
+        display: flex;
+        flex-direction: row;
+        gap: 1vw;
+    }
+
+    #display-container {
+        background-color: var(--fg-color);
+        padding: 1vw;
+        border-radius: 5px;
+        border: solid;
+        border-width: 1px;
+        border-color: var(--border-color);
+        color: var(--text-color);
+    }
+
+    #faults {
+        background-color: var(--fg-color);
+        padding: 1vw;
+        border-radius: 5px;
+        border: solid;
+        border-width: 1px;
+        border-color: var(--border-color);
+        color: var(--text-color);
+    }
+
+    #properties-container {
+    }
+
+    #electrical-panel {
+        background-color: var(--fg-color);
+        padding: 1vw;
+        border-radius: 5px;
+        border: solid;
+        border-width: 1px;
+        border-color: var(--border-color);
+        color: var(--text-color);
+    }
+
+    #control-panel {
+        background-color: var(--fg-color);
+        padding: 1vw;
+        border-radius: 5px;
+        border: solid;
+        border-width: 1px;
+        border-color: var(--border-color);
+        color: var(--text-color);
+
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+    }
 </style>

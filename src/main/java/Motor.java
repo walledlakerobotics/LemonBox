@@ -68,24 +68,4 @@ public class Motor {
         return props;
     }
 
-    /**
-     * getting motors
-     * 
-     * @param mainTable main table in the network
-     * @return Motors that exist.
-     */
-    public static Set<Motor> getMotors(String[] subTables) {
-        ArrayList<Motor> motors = new ArrayList<>();
-
-        System.out.println(subTables);
-        System.out.println(mainTable.getInstance().isConnected());
-
-        subTables.forEach((table) -> {
-            NetworkTable subTable = mainTable.getSubTable(table);
-            motors.add(new Motor(table, subTable));
-        });
-
-        return new HashSet<Motor>(motors);
-    }
-
 }

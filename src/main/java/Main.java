@@ -43,10 +43,12 @@ public class Main {
         inst.setServerTeam(308);
 
         while (!inst.isConnected()) {
+            inst.startServer();
             inst.startClient4("LemonBoxClient");
 
             Thread.sleep(100);
         }
+
         // configures local host routes
         Javalin app = Javalin.create(config -> {
             config.staticFiles.enableWebjars();

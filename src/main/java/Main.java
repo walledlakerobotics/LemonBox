@@ -39,18 +39,18 @@ public class Main {
 
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        inst.setServer("roboRIO-308-FRC.local");
 
-        inst.setServerTeam(308);
+        inst.startClient4("LemonClient");
+        inst.startServer();
+
+        m_mainTable = inst.getTable("LemonBox");
 
         while (!inst.isConnected()) {
-            inst.startServer();
-            inst.startClient4("LemonBoxClient");
-
             System.out.println("pending connection");
 
-            Thread.sleep(100);
+            Thread.sleep(800);
         }
-
         // configures local host routes
         Javalin app = Javalin.create(config -> {
             config.staticFiles.enableWebjars();

@@ -20,7 +20,7 @@ public class Main {
 
     private static NetworkTable m_mainTable;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         // initializing WPIlib
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);
@@ -39,10 +39,14 @@ public class Main {
 
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        inst.setServer("LemonBox");
-        // inst.setServerTeam(308);
-        inst.startClient4("LemonBoxClient");
-        m_mainTable = inst.getTable("LemonBox");
+
+        inst.setServerTeam(308);
+
+        while (!inst.isConnected()) {
+            inst.startClient4("LemonBoxClient");
+
+            Thread.sleep(100);
+        }
         // configures local host routes
         Javalin app = Javalin.create(config -> {
             config.staticFiles.enableWebjars();

@@ -79,6 +79,7 @@ public class Motor {
         ArrayList<Motor> motors = new ArrayList<>();
 
         System.out.println(subTables);
+        System.out.println(mainTable.getInstance().isConnected());
 
         subTables.forEach((table) -> {
             NetworkTable subTable = mainTable.getSubTable(table);

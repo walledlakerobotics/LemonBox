@@ -16,7 +16,12 @@
             selectedMotor: null,
             onOpen: () =>
                 (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
-            onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
+            onClose: () => {
+                if (tab.selectedMotor != null)
+                    tab.selectedMotor.disabled = true;
+
+                removeTab(tabs.findIndex((t) => t.uuid == tab.uuid));
+            },
         };
 
         tabs.push(tab);

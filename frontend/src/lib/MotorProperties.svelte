@@ -73,6 +73,10 @@
         border-width: 1px;
         border-color: var(--border-color);
         color: var(--text-color);
+
+        img {
+            border-radius: 5px;
+        }
     }
 
     #faults {
@@ -86,6 +90,9 @@
     }
 
     #properties-container {
+        border-radius: 5px;
+        padding: 5%;
+        background-color: var(--button-color);
     }
 
     #electrical-panel {

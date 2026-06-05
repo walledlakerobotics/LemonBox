@@ -46,6 +46,8 @@ public class Main {
             inst.startServer();
             inst.startClient4("LemonBoxClient");
 
+            System.out.println("pending connection");
+
             Thread.sleep(100);
         }
 

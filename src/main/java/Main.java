@@ -29,18 +29,24 @@ public class Main {
         CameraServerJNI.Helper.setExtractOnStaticLoad(false);
         OpenCvLoader.Helper.setExtractOnStaticLoad(false);
 
-        CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
-                Core.NATIVE_LIBRARY_NAME, "cscorejni");
+        CombinedRuntimeLoader.loadLibraries(
+                Main.class,
+                "wpiutiljni",
+                "wpimathjni",
+                "ntcorejni",
+                Core.NATIVE_LIBRARY_NAME,
+                "cscorejni");
 
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        inst.setServerTeam(308);
+        inst.setServer("LemonBox");
+        // inst.setServerTeam(308);
         inst.startClient4("LemonBoxClient");
         m_mainTable = inst.getTable("LemonBox");
         // configures local host routes
         Javalin app = Javalin.create(config -> {
             config.staticFiles.enableWebjars();
-            config.staticFiles.add("/public");
+            config.staticFiles.add("/dist");
 
             config.routes.get("/", ctx -> ctx.redirect("index.html"));
 

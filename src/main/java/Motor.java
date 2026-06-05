@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public class Motor {
 
     /**
      * 
-     * @param id motor can id
+     * @param id       motor can id
      * @param subTable subtable of the motor
      */
     public Motor(String id, NetworkTable subTable) {
@@ -49,12 +50,13 @@ public class Motor {
     }
 
     /**
-     * gets the properties of the motor. 
+     * gets the properties of the motor.
+     * 
      * @return propertie map
      */
     public Map<String, Object> getProperties() {
         Map<String, Object> props = new HashMap<>();
-        
+
         props.put("speed", m_speedEntry.get());
         props.put("amps", m_ampsEntry.get());
         props.put("voltage", m_voltageEntry.get());
@@ -63,11 +65,12 @@ public class Motor {
         props.put("faults", m_faultsEntry.get());
         props.put("stickyFaults", m_stickyFaults.get());
 
-        return props; 
+        return props;
     }
-    
+
     /**
      * getting motors
+     * 
      * @param mainTable main table in the network
      * @return Motors that exist.
      */
@@ -75,12 +78,14 @@ public class Motor {
         Set<String> subTables = mainTable.getSubTables();
         ArrayList<Motor> motors = new ArrayList<>();
 
+        System.out.println(subTables);
+
         subTables.forEach((table) -> {
-             NetworkTable subTable = mainTable.getSubTable(table); 
-             motors.add(new Motor(table, subTable)); 
+            NetworkTable subTable = mainTable.getSubTable(table);
+            motors.add(new Motor(table, subTable));
         });
 
-        return new HashSet<Motor>(motors) ;
+        return new HashSet<Motor>(motors);
     }
 
-} 
+}

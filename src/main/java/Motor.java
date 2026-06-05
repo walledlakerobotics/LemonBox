@@ -74,8 +74,7 @@ public class Motor {
      * @param mainTable main table in the network
      * @return Motors that exist.
      */
-    public static Set<Motor> getMotors(NetworkTable mainTable) {
-        Set<String> subTables = mainTable.getSubTables();
+    public static Set<Motor> getMotors(String[] subTables) {
         ArrayList<Motor> motors = new ArrayList<>();
 
         System.out.println(subTables);

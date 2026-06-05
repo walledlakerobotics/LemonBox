@@ -1,5 +1,7 @@
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,12 +62,12 @@ public class Main {
 
             // returns all motors that are connected to the networktables.
             config.routes.get("/api/motors", ctx -> {
-                Set<Motor> motors = Motor.getMotors(m_mainTable);
+                Set<Motor> motors = getMotors();
                 ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
-                Set<Motor> motors = Motor.getMotors(m_mainTable);
+                Set<Motor> motors = getMotors();
                 String id = ctx.pathParam("id"); // gets the id being passed
 
                 double speed = (double) ctx.req().getAttribute("speed");
@@ -88,4 +90,26 @@ public class Main {
 
         app.start(7070);
     }
+
+    /**
+     * getting motors
+     * 
+     * @param mainTable main table in the network
+     * @return Motors that exist.
+     */
+    public static Set<Motor> getMotors() {
+        ArrayList<Motor> motors = new ArrayList<>();
+        Set<String> subTables = m_mainTable.getSubTables();
+
+        System.out.println(subTables);
+        System.out.println(m_mainTable.getInstance().isConnected());
+
+        subTables.forEach((table) -> {
+            NetworkTable subTable = m_mainTable.getSubTable(table);
+            motors.add(new Motor(table, subTable));
+        });
+
+        return new HashSet<Motor>(motors);
+    }
+
 }

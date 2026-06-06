@@ -7,22 +7,16 @@
     let voltage = $derived(motor.voltage);
 </script>
 
-<div id="dashboard">
-    <div id="display-container">
-        <img src={motor.motorImage} alt="" />
+<div id="display-container">
+    <img src={motor.motorImage} alt="" />
 
-        <div id="properties-container">
-            <h1>Id: {motor.id}</h1>
-            <h2>{motor.displayName}</h2>
-        </div>
-    </div>
+    <h1>Id: {motor.id}</h1>
+    <h2>{motor.displayName}</h2>
+</div>
 
-    <div id="electrical-panel">
-        <h2>{amps}</h2>
-        <h2>{voltage}</h2>
-    </div>
-
-    <div id="faults"></div>
+<div id="electrical-panel">
+    <h2>Amps: {amps}</h2>
+    <h2>Voltage: {voltage}</h2>
 </div>
 
 <div id="control-panel">
@@ -59,12 +53,6 @@
 </div>
 
 <style>
-    #dashboard {
-        display: flex;
-        flex-direction: row;
-        gap: 1vw;
-    }
-
     #display-container {
         background-color: var(--fg-color);
         padding: 1vw;
@@ -75,6 +63,7 @@
         color: var(--text-color);
 
         img {
+            width: 30vw;
             border-radius: 5px;
         }
     }
@@ -87,12 +76,6 @@
         border-width: 1px;
         border-color: var(--border-color);
         color: var(--text-color);
-    }
-
-    #properties-container {
-        border-radius: 5px;
-        padding: 5%;
-        background-color: var(--button-color);
     }
 
     #electrical-panel {
@@ -116,7 +99,26 @@
 
         position: relative;
 
+        gap: 1dvh;
+        flex: 0 1 min-content;
+
         display: flex;
         flex-direction: column;
+    }
+
+    button {
+        background-color: var(--button-color);
+        color: var(--text-color);
+        border: none;
+        border-radius: 5px;
+
+        transition: 0.2s;
+    }
+
+    button:active {
+        background-color: var(--border-color);
+        color: var(--fg-color);
+        border: none;
+        border-radius: 5px;
     }
 </style>

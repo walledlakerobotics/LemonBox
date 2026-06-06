@@ -2,6 +2,7 @@
 
   background-color: var(--bg-color);
   font-family: Exo;
+  font-size: 2dvh;
 
   --bg-color: rgb(9, 12, 11);
   --fg-color: rgb(19, 31, 32);

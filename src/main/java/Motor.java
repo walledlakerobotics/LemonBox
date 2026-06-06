@@ -1,7 +1,5 @@
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -76,7 +74,7 @@ public class Motor {
      * @return Motors that exist.
      */
     public static Set<Motor> getMotors(NetworkTable table) {
-        return table.getSubTables().stream().map((name) -> new Motor(name, table.getSubTable(name)))
+        return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
     }
 

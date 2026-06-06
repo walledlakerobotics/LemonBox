@@ -1,10 +1,8 @@
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collector;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
@@ -42,18 +40,19 @@ public class Main {
 
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        inst.setServer("roboRIO-308-FRC.local");
+        inst.setServer("roboRIO-308-FRC");
 
         inst.startClient4("LemonClient");
         inst.startServer();
 
-        m_mainTable = inst.getTable("LemonBox");
+        m_mainTable = inst.getTable("LemonBox"); 
 
         while (!inst.isConnected()) {
             System.out.println("pending connection");
 
-            Thread.sleep(800);
+            Thread.sleep(1000);
         }
+
         // configures local host routes
         Javalin app = Javalin.create(config -> {
             config.staticFiles.enableWebjars();
@@ -92,5 +91,8 @@ public class Main {
 
         app.start(7070);
     }
+
+
+
 
 }

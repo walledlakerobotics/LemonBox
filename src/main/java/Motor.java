@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.DoubleEntry;
@@ -66,6 +67,17 @@ public class Motor {
         props.put("stickyFaults", m_stickyFaults.get());
 
         return props;
+    }
+
+    /**
+     * getting motors
+     * 
+     * @param table main table in the network
+     * @return Motors that exist.
+     */
+    public static Set<Motor> getMotors(NetworkTable table) {
+        return table.getSubTables().stream().map((name) -> new Motor(name, table.getSubTable(name)))
+                .collect(Collectors.toSet());
     }
 
 }

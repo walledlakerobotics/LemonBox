@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.networktables.MultiSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StringEntry;
 
 public class Motor {
@@ -70,12 +72,17 @@ public class Motor {
     /**
      * getting motors
      * 
-     * @param table main table in the network
+     * @param mainTable main table in the network
      * @return Motors that exist.
      */
-    public static Set<Motor> getMotors(NetworkTable table) {
-        return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
-                .collect(Collectors.toSet());
+    public static Set<Motor> getMotors(NetworkTable mainTable) {
+        try (MultiSubscriber subscriber = new MultiSubscriber(mainTable.getInstance(), new String[] {"LemonBox"}, PubSubOption.topicsOnly(true))) {
+
+            NetworkTable table = subscriber.getInstance().getTable("LemonBox"); 
+
+            return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
+                    .collect(Collectors.toSet());
+        }
     }
 
 }

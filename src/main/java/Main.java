@@ -45,7 +45,7 @@ public class Main {
         inst.startClient4("LemonClient");
         inst.startServer();
 
-        m_mainTable = inst.getTable("LemonBox"); 
+        m_mainTable = inst.getTable("LemonBox");
 
         while (!inst.isConnected()) {
             System.out.println("pending connection");
@@ -91,8 +91,5 @@ public class Main {
 
         app.start(7070);
     }
-
-
-
 
 }

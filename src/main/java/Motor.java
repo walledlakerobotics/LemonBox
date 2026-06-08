@@ -75,17 +75,14 @@ public class Motor {
      * @param mainTable main table in the network
      * @return Motors that exist.
      */
-    public static Set<Motor> getMotors(NetworkTable mainTable) {
-        try (MultiSubscriber subscriber = new MultiSubscriber(mainTable.getInstance(), new String[] { "/LemonBox" },
-                PubSubOption.topicsOnly(true))) {
+    public static Set<Motor> getMotors(MultiSubscriber subscriber) {
+        NetworkTable table = subscriber.getInstance().getTable("LemonBox");
 
-            NetworkTable table = subscriber.getInstance().getTable("LemonBox");
+        System.out.println(table.getSubTables());
 
-            System.out.println(table.getSubTables());
+        return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
+                .collect(Collectors.toSet());
 
-            return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
-                    .collect(Collectors.toSet());
-        }
     }
 
 }

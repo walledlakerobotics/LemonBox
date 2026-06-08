@@ -34,13 +34,7 @@
     }
 
     // this will only return the updated array, but it might cause some issues with replicas
-    let motors: Motor[] = $derived([]);
     let selectedMotorUuids: string[] = $state([]);
-
-    // runs when loaded to DOM.
-    onMount(async () => {
-        motors = await Motor.getMotors();
-    });
 
     addTab();
 </script>
@@ -68,15 +62,17 @@
 
 {#snippet Motors()}
     <div id="motor-grid">
-        {#each motors.filter( (m) => selectedMotorUuids.includes(m.uuid), ) as motor}
-            <MotorTile
-                {motor}
-                onOpen={() => {
-                    activeTab.selectedMotor = motor;
-                    selectedMotorUuids.push(motor.uuid);
-                }}
-            ></MotorTile>
-        {/each}
+        {#await Motor.getMotors() then motors}
+            {#each motors.filter((m) => !selectedMotorUuids.includes(m.uuid)) as motor}
+                <MotorTile
+                    {motor}
+                    onOpen={() => {
+                        activeTab.selectedMotor = motor;
+                        selectedMotorUuids.push(motor.uuid);
+                    }}
+                ></MotorTile>
+            {/each}
+        {/await}
 
         <!-- test -->
         <MotorTile

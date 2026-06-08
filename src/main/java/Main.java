@@ -10,16 +10,16 @@ import org.opencv.core.Core;
 import edu.wpi.first.cscore.CameraServerJNI;
 import edu.wpi.first.cscore.OpenCvLoader;
 import edu.wpi.first.math.jni.EigenJNI;
+import edu.wpi.first.networktables.MultiSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTablesJNI;
+import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.util.CombinedRuntimeLoader;
 import edu.wpi.first.util.WPIUtilJNI;
 import io.javalin.Javalin;
 
 public class Main {
-
-    private static NetworkTable m_mainTable;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -45,13 +45,14 @@ public class Main {
         inst.startClient4("LemonClient");
         inst.startServer();
 
-        m_mainTable = inst.getTable("LemonBox");
-
         while (!inst.isConnected()) {
             System.out.println("pending connection");
 
             Thread.sleep(1000);
         }
+
+        MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox" },
+                PubSubOption.topicsOnly(true));
 
         // configures local host routes
         Javalin app = Javalin.create(config -> {
@@ -62,13 +63,13 @@ public class Main {
 
             // returns all motors that are connected to the networktables.
             config.routes.get("/api/motors", ctx -> {
-                Set<Motor> motors = Motor.getMotors(m_mainTable);
+                Set<Motor> motors = Motor.getMotors(subscriber);
                 ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
 
-                Set<Motor> motors = Motor.getMotors(m_mainTable);
+                Set<Motor> motors = Motor.getMotors(subscriber);
                 String id = ctx.pathParam("id"); // gets the id being passed
 
                 double speed = (double) ctx.req().getAttribute("speed");

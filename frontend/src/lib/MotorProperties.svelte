@@ -3,20 +3,81 @@
 
     let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
-    let amps = $derived(motor.amps);
-    let voltage = $derived(motor.voltage);
+    let speed: number = $state(0);
+    let voltage: number = $state(0);
+    let amps: number = $state(0);
+    let brushless: boolean = $state(false);
+
+    let faults: string = $state("");
+    let stickyFaults: string = $state("");
+    let displayName: string = $state("unknown");
+    let motorImagePath: string = $state("assets/imgs/placeHolder.png");
+
+    $effect(() => {
+        async () => {
+            motor.speed = speed;
+            speed = await motor.speed;
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            motor.brushless = brushless;
+            brushless = await motor.brushless;
+        };
+    });
+
+    $effect(() => {
+        async () => {};
+    });
+
+    $effect(() => {
+        async () => {
+            voltage = await motor.voltage;
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            amps = await motor.amps;
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            faults = await motor.faults;
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            stickyFaults = await motor.stickyfaults;
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            displayName = await motor.displayName();
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            motorImagePath = await motor.motorImage();
+        };
+    });
+
+    $effect(() => {
+        async () => {
+            stickyFaults = await motor.stickyfaults;
+        };
+    });
 </script>
 
 <div id="display-container">
-    <!-- <img src={motor.motorImage} alt="" /> -->
-
+    <img src={motorImagePath} alt="" />
     <h1>Id: {motor.id}</h1>
-    <h2>{motor.displayName}</h2>
-</div>
-
-<div id="electrical-panel">
-    <h2>Amps: {amps}</h2>
-    <h2>Voltage: {voltage}</h2>
+    <h2>{displayName}</h2>
 </div>
 
 <div id="control-panel">
@@ -26,13 +87,13 @@
         step="0.01"
         min="-1"
         max="1"
-        bind:value={motor.speed}
+        bind:value={speed}
     />
     <input
         id="brushless-checkbox"
         title="brushless"
         type="checkbox"
-        bind:value={motor.brushless}
+        bind:value={brushless}
     />
 
     <input

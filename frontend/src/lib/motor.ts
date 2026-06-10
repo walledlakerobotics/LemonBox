@@ -2,7 +2,6 @@
 
 export class Motor {
 
-
     private _disabled: boolean = true;
     public uuid: string = crypto.randomUUID();
 
@@ -15,14 +14,14 @@ export class Motor {
         return fetch(this.postPath).then(res => res.json()).then(data => data.speed);
     }
 
-    public set speed(s: number) {
+    public set speed(speed: number) {
         if (this.disabled)
             return;
 
         fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({
-                speed: s,
+                speed: speed,
             }),
         });
     }
@@ -31,11 +30,11 @@ export class Motor {
         return fetch(this.postPath).then(res => res.json()).then(data => data.brushless);
     }
 
-    public set brushless(b: boolean) {
+    public set brushless(brushless: boolean) {
         fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({
-                brushless: b,
+                brushless: brushless,
             }),
         });
     }

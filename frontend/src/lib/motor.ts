@@ -3,11 +3,9 @@
 export class Motor {
 
     private _disabled: boolean = true;
-
     public uuid: string = crypto.randomUUID();
 
-
-    constructor(public readonly id: number, private postPath: string = `/api/motors/${this.id}`) { }
+    constructor(public readonly id: string, private postPath: string = `/api/motors/${this.id}`) { }
 
     public get speed(): number {
         fetch(`${this.postPath}/speed`).then(res => {
@@ -127,10 +125,9 @@ export class Motor {
      * @returns Motors posted. 
      */
     public static async getMotors(): Promise<Motor[]> {
-        const res: Response = await fetch("/api/motors");
-        const data: string[] = await res.json();
+        const res = await fetch("/api/motors");
+        const data = await res.json() as Record<string, any>;
 
-        return data.map(id => new Motor(Number.parseInt(id)));
+        return Object.keys(data).map(id => new Motor(id));
     }
 }
-

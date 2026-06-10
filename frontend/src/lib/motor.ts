@@ -124,8 +124,8 @@ export class Motor {
      * @returns Motors posted. 
      */
     public static async getMotors(): Promise<Motor[]> {
-        const response: Response = await fetch(`/api/motors`);
-        const motorIds: string[] = await response.json();
+        const response: Response = await fetch(`/api/motors/`);
+        const motorIds: string[] = await response.json(); // for some reason this just creates a whole new json tree. 
         const motors: Motor[] = motorIds.map((id) => new Motor(Number.parseInt(id)));
 
         return motors;

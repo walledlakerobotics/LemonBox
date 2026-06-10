@@ -2,7 +2,6 @@
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
@@ -11,7 +10,6 @@ import edu.wpi.first.cscore.CameraServerJNI;
 import edu.wpi.first.cscore.OpenCvLoader;
 import edu.wpi.first.math.jni.EigenJNI;
 import edu.wpi.first.networktables.MultiSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.networktables.PubSubOption;

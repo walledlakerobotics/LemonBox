@@ -70,8 +70,8 @@ public class Main {
                 Set<Motor> motors = Motor.getMotors(subscriber);
                 String id = ctx.pathParam("id"); // gets the id being passed
 
-                double speed = (double) ctx.req().getAttribute("speed");
-                Boolean burshless = (boolean) ctx.req().getAttribute("brushless");
+                double speed = Double.parseDouble(ctx.formParam("speed"));
+                boolean brushless = Boolean.parseBoolean(ctx.formParam("brushless"));
 
                 // gets the motor with the corresponding id.
                 Optional<Motor> motor = motors.stream()
@@ -80,7 +80,7 @@ public class Main {
 
                 try {
                     motor.get().setSpeed(speed);
-                    motor.get().setBrushless(burshless);
+                    motor.get().setBrushless(brushless);
                 } catch (Exception e) {
                     System.err.println("couldn't post motor data.");
                 }

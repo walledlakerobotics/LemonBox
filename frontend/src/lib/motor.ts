@@ -1,4 +1,4 @@
-const motorsPostPath: string = "/api/motors";
+
 
 export class Motor {
 
@@ -6,10 +6,11 @@ export class Motor {
 
     public uuid: string = crypto.randomUUID();
 
-    constructor(public readonly id: number) { }
+
+    constructor(public readonly id: number, private postPath: string = `/api/motors/${this.id}`) { }
 
     public get speed(): number {
-        fetch(`${motorsPostPath}/${this.id}/speed`).then(res => {
+        fetch(`${this.postPath}/speed`).then(res => {
             return res.json()
         });
 
@@ -18,18 +19,18 @@ export class Motor {
 
     public set speed(speed: number) {
         if (this.disabled) {
-            fetch(`/motors/${this.id}/speed=${0}`, {
+            fetch(`${this.postPath}/speed=${0}`, {
                 method: "POST",
             });
         } else {
-            fetch(`/motors/${this.id}/speed=${speed}`, {
+            fetch(`${this.postPath}/speed=${speed}`, {
                 method: "POST",
             });
         }
     }
 
     public get brushless(): boolean {
-        fetch(`/api/motors/${this.id}/brushless`).then(res => {
+        fetch(`${this.postPath}/brushless`).then(res => {
             return res.json();
         });
 
@@ -37,13 +38,13 @@ export class Motor {
     }
 
     public set brushless(brushless: boolean) {
-        fetch(`/api/motors/${this.id}/brushless=${brushless}`, {
+        fetch(`${this.postPath}/brushless=${brushless}`, {
             method: "POST",
         });
     }
 
     public get amps(): number {
-        fetch(`/api/motors/${this.id}/amps`).then(res => {
+        fetch(`${this.postPath}/amps`).then(res => {
             return res.json();
         });
 
@@ -51,7 +52,7 @@ export class Motor {
     }
 
     public get voltage(): number {
-        fetch(`/api/motors/${this.id}/voltage`).then(res => {
+        fetch(`${this.postPath}/voltage`).then(res => {
             return res.json();
         });
 
@@ -59,7 +60,7 @@ export class Motor {
     }
 
     public get type(): string {
-        fetch(`/api/motors/${this.id}/type`).then(res => {
+        fetch(`${this.postPath}/type`).then(res => {
             return res.json();
         });
 
@@ -67,7 +68,7 @@ export class Motor {
     }
 
     public get faults(): string {
-        fetch(`/api/motors/${this.id}/faults`).then(res => {
+        fetch(`${this.postPath}/faults`).then(res => {
             return res.json();
         });
 
@@ -75,7 +76,7 @@ export class Motor {
     }
 
     public get stickyFaults(): string {
-        fetch(`/api/motors/${this.id}/stickyFaults`).then(res => {
+        fetch(`${this.postPath}/stickyFaults`).then(res => {
             return res.json();
         });
 

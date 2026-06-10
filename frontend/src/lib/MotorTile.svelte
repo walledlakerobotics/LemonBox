@@ -4,7 +4,7 @@
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-    <img src={motor.motorImage} alt="/imgs/placeholder.png" />
+    <!-- <img src={motor.motorImage} alt="/imgs/placeholder.png" /> -->
     <h1>Type: {motor.type}</h1>
     <h2>Id: {motor.id}</h2>
 </button>

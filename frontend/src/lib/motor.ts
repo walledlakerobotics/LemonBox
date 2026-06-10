@@ -5,80 +5,38 @@ export class Motor {
     private _disabled: boolean = true;
     public uuid: string = crypto.randomUUID();
 
-    constructor(public readonly id: string, private postPath: string = `/api/motors/${this.id}`) { }
+    constructor(
+        public readonly id: string,
+        public readonly postPath: string = `/api/motors/${id}`
+    ) { }
 
-    public get speed(): number {
-        fetch(`${this.postPath}/speed`).then(res => {
-            return res.json()
-        });
-
-        return 0;
+    public get speed(): Promise<number> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.speed);
     }
 
-    public set speed(speed: number) {
-        if (this.disabled) {
-            fetch(`${this.postPath}/speed=${0}`, {
-                method: "POST",
-            });
-        } else {
-            fetch(`${this.postPath}/speed=${speed}`, {
-                method: "POST",
-            });
-        }
-    }
+    public set speed(s: number) {
+        if (this.disabled)
+            return;
 
-    public get brushless(): boolean {
-        fetch(`${this.postPath}/brushless`).then(res => {
-            return res.json();
-        });
-
-        return false;
-    }
-
-    public set brushless(brushless: boolean) {
-        fetch(`${this.postPath}/brushless=${brushless}`, {
+        fetch(this.postPath, {
             method: "POST",
+            body: JSON.stringify({
+                speed: s,
+            }),
         });
     }
 
-    public get amps(): number {
-        fetch(`${this.postPath}/amps`).then(res => {
-            return res.json();
-        });
-
-        return 0;
+    public get brushless(): Promise<boolean> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.brushless);
     }
 
-    public get voltage(): number {
-        fetch(`${this.postPath}/voltage`).then(res => {
-            return res.json();
+    public set brushless(b: boolean) {
+        fetch(this.postPath, {
+            method: "POST",
+            body: JSON.stringify({
+                brushless: b,
+            }),
         });
-
-        return 0;
-    }
-
-    public get type(): string {
-        fetch(`${this.postPath}/type`).then(res => {
-            return res.json();
-        });
-
-        return "unknown";
-    }
-
-    public get faults(): string {
-        fetch(`${this.postPath}/faults`).then(res => {
-            return res.json();
-        });
-
-        return "";
-    }
-
-    public get stickyFaults(): string {
-        fetch(`${this.postPath}/stickyFaults`).then(res => {
-            return res.json();
-        });
-
-        return "";
     }
 
     public get disabled(): boolean {
@@ -90,8 +48,28 @@ export class Motor {
         this.speed = 0;
     }
 
-    public get displayName(): string {
-        switch (this.type) {
+    public get amps(): Promise<number> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.amps);
+    }
+
+    public get voltage(): Promise<number> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.voltage);
+    }
+
+    public get type(): Promise<string> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.type);
+    }
+
+    public get stickyfaults(): Promise<string> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.stickyFaults);
+    }
+
+    public get faults(): Promise<string> {
+        return fetch(this.postPath).then(res => res.json()).then(data => data.faults);
+    }
+
+    public async displayName(): Promise<string> {
+        switch (await this.type) {
             case "sparkmax":
                 return "SPARKmax";
             case "falcon500":
@@ -105,8 +83,8 @@ export class Motor {
         }
     }
 
-    public get motorImage(): string {
-        switch (this.type) {
+    public async motorImage(): Promise<string> {
+        switch (await this.type) {
             case "sparkmax":
                 return 'assets/imgs/sparkmax.png';
             case "falcon500":

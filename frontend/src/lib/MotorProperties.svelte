@@ -8,7 +8,7 @@
 </script>
 
 <div id="display-container">
-    <img src={motor.motorImage} alt="" />
+    <!-- <img src={motor.motorImage} alt="" /> -->
 
     <h1>Id: {motor.id}</h1>
     <h2>{motor.displayName}</h2>
@@ -32,7 +32,7 @@
         id="brushless-checkbox"
         title="brushless"
         type="checkbox"
-        bind:checked={motor.brushless}
+        bind:value={motor.brushless}
     />
 
     <input

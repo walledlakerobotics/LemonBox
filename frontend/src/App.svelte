@@ -63,7 +63,7 @@
 {#snippet Motors()}
     <div id="motor-grid">
         {#await Motor.getMotors() then motors}
-            {#each motors.filter((m) => !selectedMotorUuids.includes(m.uuid)) as motor}
+            {#each motors as motor}
                 <MotorTile
                     {motor}
                     onOpen={() => {
@@ -73,7 +73,6 @@
                 ></MotorTile>
             {/each}
         {/await}
-
         <!-- test -->
         <MotorTile
             motor={new Motor(0)}

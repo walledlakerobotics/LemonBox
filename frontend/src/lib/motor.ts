@@ -1,3 +1,5 @@
+const motorsPostPath: string = "/api/motors";
+
 export class Motor {
 
     private _disabled: boolean = true;
@@ -7,7 +9,7 @@ export class Motor {
     constructor(public readonly id: number) { }
 
     public get speed(): number {
-        fetch(`/motors/${this.id}/speed`).then(res => {
+        fetch(`${motorsPostPath}/${this.id}/speed`).then(res => {
             return res.json()
         });
 
@@ -27,7 +29,7 @@ export class Motor {
     }
 
     public get brushless(): boolean {
-        fetch(`/motors/${this.id}/brushless`).then(res => {
+        fetch(`/api/motors/${this.id}/brushless`).then(res => {
             return res.json();
         });
 
@@ -124,11 +126,10 @@ export class Motor {
      * @returns Motors posted. 
      */
     public static async getMotors(): Promise<Motor[]> {
-        const response: Response = await fetch(`/api/motors`);
-        const motorIds: string[] = await response.json();
-        const motors: Motor[] = motorIds.map((id) => new Motor(Number.parseInt(id)));
+        const res: Response = await fetch("/api/motors");
+        const data: string[] = await res.json();
 
-        return motors;
+        return data.map(id => new Motor(Number.parseInt(id)));
     }
 }
 

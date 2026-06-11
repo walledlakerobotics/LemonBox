@@ -1,25 +1,17 @@
 <script lang="ts">
     import { Motor } from "./motor";
     let { motor, onOpen }: { motor: Motor; onOpen: () => void } = $props();
-    let displayName: string = $state("unknown");
-    let motorImagePath: string = $state("assets/imgs/placeHolder.png");
-
-    $effect(() => {
-        async () => {
-            displayName = await motor.displayName();
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            motorImagePath = await motor.motorImage();
-        };
-    });
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-    <img src={motorImagePath} alt="/imgs/placeholder.png" />
-    <h1>Type: {displayName}</h1>
+    {#await motor.getMotorImage() then image}
+        <img src={image} alt="" />
+    {/await}
+
+    {#await motor.getDisplayName() then name}
+        <h1>Type: {name}</h1>
+    {/await}
+
     <h2>Id: {motor.id}</h2>
 </button>
 

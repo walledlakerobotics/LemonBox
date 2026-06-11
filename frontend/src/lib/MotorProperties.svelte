@@ -1,83 +1,31 @@
 <script lang="ts">
     import type { Motor } from "./motor";
-
     let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
-    let speed: number = $state(0);
-    let voltage: number = $state(0);
-    let amps: number = $state(0);
-    let brushless: boolean = $state(false);
+    let speed = $derived(0);
+    let brushless = $derived(false);
 
-    let faults: string = $state("");
-    let stickyFaults: string = $state("");
-    let displayName: string = $state("unknown");
-    let motorImagePath: string = $state("assets/imgs/placeHolder.png");
+    async () => {
+        speed = await motor.getSpeed();
+        brushless = await motor.getBrushless();
+    };
 
     $effect(() => {
-        async () => {
-            motor.speed = speed;
-            speed = await motor.speed;
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            motor.brushless = brushless;
-            brushless = await motor.brushless;
-        };
-    });
-
-    $effect(() => {
-        async () => {};
-    });
-
-    $effect(() => {
-        async () => {
-            voltage = await motor.voltage;
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            amps = await motor.amps;
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            faults = await motor.faults;
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            stickyFaults = await motor.stickyfaults;
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            displayName = await motor.displayName();
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            motorImagePath = await motor.motorImage();
-        };
-    });
-
-    $effect(() => {
-        async () => {
-            stickyFaults = await motor.stickyfaults;
-        };
+        motor.setSpeed(speed);
+        motor.setBrushless(brushless);
     });
 </script>
 
 <div id="display-container">
-    <img src={motorImagePath} alt="" />
-    <h1>Id: {motor.id}</h1>
-    <h2>{displayName}</h2>
+    {#await motor.getMotorImage() then image}
+        <img src={image} alt="" />
+    {/await}
+
+    {#await motor.getDisplayName() then name}
+        <h1>Type: {name}</h1>
+    {/await}
+
+    <h2>Id: {motor.id}</h2>
 </div>
 
 <div id="control-panel">

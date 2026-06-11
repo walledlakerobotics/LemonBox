@@ -7,18 +7,18 @@ export class Motor {
 
     constructor(
         public readonly id: string,
-        public readonly postPath: string = `/api/motors/${id}`
+        public readonly postPath: string = `/api/motors/${id}/`
     ) { }
 
-    public get speed(): Promise<number> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.speed);
+    public async getSpeed(): Promise<number> {
+        return await fetch(`${this.postPath}/speed`).then(res => res.json());
     }
 
-    public set speed(speed: number) {
+    public async setSpeed(speed: number) {
         if (this.disabled)
             return;
 
-        fetch(this.postPath, {
+        await fetch(`${this.postPath}/speed`, {
             method: "POST",
             body: JSON.stringify({
                 speed: speed,
@@ -26,17 +26,29 @@ export class Motor {
         });
     }
 
-    public get brushless(): Promise<boolean> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.brushless);
+    public async getBrushless(): Promise<boolean> {
+        return await fetch(`${this.postPath}/brushless`).then(res => res.json());
     }
 
-    public set brushless(brushless: boolean) {
-        fetch(this.postPath, {
+    public async setBrushless(brushless: boolean) {
+        await fetch(`${this.postPath}/brushless`, {
             method: "POST",
             body: JSON.stringify({
                 brushless: brushless,
             }),
         });
+    }
+
+    public async getType(): Promise<string> {
+        return await fetch(`${this.postPath}/type`).then(res => res.json());
+    }
+
+    public async getVoltage(): Promise<number> {
+        return await fetch(`${this.postPath}/voltage`).then(res => res.json());
+    }
+
+    public async getAmps(): Promise<number> {
+        return await fetch(`${this.postPath}/amps`).then(res => res.json());
     }
 
     public get disabled(): boolean {
@@ -45,31 +57,11 @@ export class Motor {
 
     public set disabled(disabled: boolean) {
         this._disabled = disabled;
-        this.speed = 0;
+        this.setSpeed(0);
     }
 
-    public get amps(): Promise<number> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.amps);
-    }
-
-    public get voltage(): Promise<number> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.voltage);
-    }
-
-    public get type(): Promise<string> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.type);
-    }
-
-    public get stickyfaults(): Promise<string> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.stickyFaults);
-    }
-
-    public get faults(): Promise<string> {
-        return fetch(this.postPath).then(res => res.json()).then(data => data.faults);
-    }
-
-    public async displayName(): Promise<string> {
-        switch (await this.type) {
+    public async getDisplayName(): Promise<string> {
+        switch (await this.getType()) {
             case "sparkmax":
                 return "SPARKmax";
             case "falcon500":
@@ -83,8 +75,8 @@ export class Motor {
         }
     }
 
-    public async motorImage(): Promise<string> {
-        switch (await this.type) {
+    public async getMotorImage(): Promise<string> {
+        switch (await this.getType()) {
             case "sparkmax":
                 return 'assets/imgs/sparkmax.png';
             case "falcon500":

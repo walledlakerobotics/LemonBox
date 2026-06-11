@@ -74,13 +74,13 @@
             {/each}
         {/await}
         <!-- test -->
-        <!-- <MotorTile
-            motor={new Motor(0)}
+        <MotorTile
+            motor={new Motor("0")}
             onOpen={() => {
-                let motor = new Motor(0);
+                let motor = new Motor("0");
                 activeTab.selectedMotor = motor;
             }}
-        ></MotorTile> -->
+        ></MotorTile>
     </div>
 {/snippet}
 

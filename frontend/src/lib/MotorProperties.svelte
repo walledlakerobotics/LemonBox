@@ -29,6 +29,7 @@
 </div>
 
 <div id="control-panel">
+    <label for="speed-slider">Speed: {speed}</label>
     <input
         id="speed-slider"
         type="range"

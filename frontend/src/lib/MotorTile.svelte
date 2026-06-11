@@ -1,72 +1,80 @@
 <script lang="ts">
-    import { Motor } from "./motor";
-    let { motor, onOpen }: { motor: Motor; onOpen: () => void } = $props();
+  import { Motor } from "./motor";
+  let { motor, onOpen }: { motor: Motor; onOpen: () => void } = $props();
 
-    let imagePath: string = $state("");
-    let name: string = $state("");
-
+  let imagePath: string = $state("assets/imgs/placeHolder.png");
+  let name: string = $state("");
+  {
     async () => {
-        imagePath = await motor.getMotorImage();
-        name = await motor.getDisplayName();
+      imagePath = await motor.getMotorImage();
+      name = await motor.getDisplayName();
 
-        console.log(name);
+      console.log(imagePath);
     };
+  }
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-    <img src={imagePath} alt="" />
-    <h1>Type: {name}</h1>
-    <h2>Id: {motor.id}</h2>
+  <img src={imagePath} alt="" />
+  <h1>Type: {name}</h1>
+  <h2>ID: {motor.id}</h2>
 </button>
 
 <style>
-    #motor-tile {
-        background-color: var(--fg-color);
-        color: var(--text-color);
+  #motor-tile {
+    background-color: var(--fg-color);
+    color: var(--text-color);
 
-        border: solid;
-        border-width: 1px;
-        border-radius: 5px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 5px;
 
-        transition: 0.2s;
+    transition: 0.2s;
 
-        padding: 5px;
+    padding: 5px;
 
-        display: flex;
-        flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-        height: 100%;
+    height: 100%;
 
-        animation: tile-fade-in ease both;
-        animation-timeline: view(inline);
-        animation-range: entry 0% entry 60%;
+    animation: tile-fade-in ease both;
+    animation-timeline: view(inline);
+    animation-range: entry 0% entry 60%;
 
-        font-size: clamp(0.75rem, 2.5dvh, 1.5rem);
+    font-size: clamp(0.75rem, 2.5dvh, 1.5rem);
 
-        img {
-            display: block;
-            margin-top: auto;
+    img {
+      display: block;
+      margin-top: auto;
 
-            max-width: 100%;
-            object-fit: cover;
-            aspect-ratio: 1/1;
-        }
+      max-width: 100%;
+      object-fit: cover;
+      aspect-ratio: 1/1;
+    }
+  }
+
+  #motor-tile h1 {
+    margin: 5px 5px 0 5px;
+  }
+  #motor-tile h2 {
+    margin: 5px 5px 0 5px;
+    opacity: 0.7;
+  }
+  @keyframes tile-fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
     }
 
-    @keyframes tile-fade-in {
-        from {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
+  }
 
-    #motor-tile:active {
-        background-color: var(--border-color);
-        color: var(--bg-color);
-    }
+  #motor-tile:active {
+    background-color: var(--border-color);
+    color: var(--bg-color);
+  }
 </style>

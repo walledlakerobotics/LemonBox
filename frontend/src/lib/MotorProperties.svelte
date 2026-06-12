@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Motor } from "./motor.svelte";
+  import type { Motor } from "./motor.ts";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 </script>
 

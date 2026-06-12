@@ -59,18 +59,29 @@ public class Main {
                 ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
             });
 
+            config.routes.get("/api/motors/{id}", ctx -> {
+                Set<Motor> motors = Motor.getMotors(subscriber);
+                String id = ctx.pathParam("id");
+
+                Optional<Motor> motor = motors.stream()
+                        .filter(m -> m.getId().equals(id))
+                        .findFirst();
+
+                ctx.json(motor.get().getProperties());
+            });
+
             config.routes.post("/api/motors/{id}", ctx -> {
 
                 Set<Motor> motors = Motor.getMotors(subscriber);
-                String id = ctx.pathParam("id"); // gets the id being passed
-
-                double speed = Double.parseDouble(ctx.formParam("speed"));
-                boolean brushless = Boolean.parseBoolean(ctx.formParam("brushless"));
+                String id = ctx.pathParam("id");
 
                 // gets the motor with the corresponding id.
                 Optional<Motor> motor = motors.stream()
                         .filter(m -> m.getId().equals(id))
                         .findFirst();
+
+                double speed = Double.parseDouble(ctx.formParam("speed"));
+                boolean brushless = Boolean.parseBoolean(ctx.formParam("brushless"));
 
                 try {
                     motor.get().setSpeed(speed);

@@ -10,8 +10,9 @@ export class Motor {
     }
 
     private async getSpeed(): Promise<number> {
-        const res = await fetch(`${this.postPath}/speed`);
-        return await res.json();
+        const res = await fetch(`${this.postPath}`);
+        const data = await res.json();
+        return data.speed;
     }
 
     public get speed(): Promise<number> {
@@ -22,7 +23,7 @@ export class Motor {
         if (this.disabled)
             return;
 
-        fetch(`${this.postPath}/speed`, {
+        fetch(`${this.postPath}`, {
             method: "POST",
             body: JSON.stringify({
                 speed: speed,
@@ -31,8 +32,9 @@ export class Motor {
     }
 
     private async getBrushless(): Promise<boolean> {
-        const res = await fetch(`${this.postPath}/brushless`);
-        return await res.json();
+        const res = await fetch(`${this.postPath}`);
+        const data = await res.json();
+        return data.brushless;
     }
 
     public get brushless(): Promise<boolean> {
@@ -40,7 +42,7 @@ export class Motor {
     }
 
     public set brushless(brushless: boolean) {
-        fetch(`${this.postPath}/brushless`, {
+        fetch(`${this.postPath}`, {
             method: "POST",
             body: JSON.stringify({
                 brushless: brushless,
@@ -49,8 +51,10 @@ export class Motor {
     }
 
     private async getType(): Promise<string> {
-        const res = await fetch(`${this.postPath}/type`);
-        return await res.json();
+        const res = await fetch(`${this.postPath}`);
+        const data = await res.json();
+
+        return data.type;
     }
 
     public get type(): Promise<string> {
@@ -58,8 +62,10 @@ export class Motor {
     }
 
     private async getVoltage(): Promise<number> {
-        const res = await fetch(`${this.postPath}/voltage`);
-        return await res.json();
+        const res = await fetch(`${this.postPath}`);
+        const data = await res.json();
+
+        return data.voltage;
     }
 
     public get voltage(): Promise<number> {
@@ -67,8 +73,10 @@ export class Motor {
     }
 
     private async getAmps(): Promise<number> {
-        const res = await fetch(`${this.postPath}/amps`);
-        return await res.json();
+        const res = await fetch(`${this.postPath}`);
+        const data = await res.json();
+
+        return data.amps;
     }
 
     public get amps(): Promise<number> {

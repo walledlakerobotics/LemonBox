@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { Motor } from "./motor";
+  import { Motor } from "./motor.svelte";
   let { motor, onOpen }: { motor: Motor; onOpen: () => void } = $props();
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-  {#await motor.getMotorImage() then motorImage}
+  {#await motor.imageDir then motorImage}
     <img src={motorImage} alt="" />
   {/await}
 
-  {#await motor.getDisplayName() then motorName}
+  {#await motor.displayName then motorName}
     <h1>{motorName}</h1>
   {/await}
 

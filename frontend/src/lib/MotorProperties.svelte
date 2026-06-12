@@ -1,25 +1,14 @@
 <script lang="ts">
-  import type { Motor } from "./motor";
+  import type { Motor } from "./motor.svelte";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
-
-  let speed: number = $state(0);
-  let brushless: boolean = $state(false);
-
-  $effect(() => {
-    motor.setSpeed(speed);
-  });
-
-  $effect(() => {
-    motor.setBrushless(brushless);
-  });
 </script>
 
 <div id="display-container">
-  {#await motor.getMotorImage() then motorImage}
+  {#await motor.imageDir then motorImage}
     <img src={motorImage} alt="" />
   {/await}
 
-  {#await motor.getDisplayName() then displayName}
+  {#await motor.displayName then displayName}
     <h1>{displayName}</h1>
   {/await}
 
@@ -27,7 +16,7 @@
 </div>
 
 <div id="control-panel">
-  <label for="speed-slider">Speed: {speed}</label>
+  <label for="speed-slider">Speed: {motor.speed}</label>
   <div class="controls">
     <input
       id="speed-slider"
@@ -35,15 +24,18 @@
       step="0.01"
       min="-1"
       max="1"
-      bind:value={speed}
+      bind:value={motor.speed}
     />
+
+    <label for="brushless-checkbox">brushless</label>
     <input
       id="brushless-checkbox"
       title="brushless"
       type="checkbox"
-      bind:checked={brushless}
+      bind:value={motor.brushless}
     />
 
+    <label for="disabled-checkbox">disabled</label>
     <input
       id="disabled-checkbox"
       title="disabled"
@@ -58,7 +50,7 @@
       motor.disabled = true;
       onClose();
     }}
-    aria-label="close">CLOSE</button
+    aria-label="close">Close</button
   >
 </div>
 

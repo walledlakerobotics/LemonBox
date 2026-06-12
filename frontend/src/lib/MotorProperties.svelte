@@ -2,30 +2,28 @@
   import type { Motor } from "./motor";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
-  let speed = $derived(0);
-  let brushless = $derived(false);
+  let speed: number = $state(0);
+  let brushless: boolean = $state(false);
 
-  let imagePath: string = $state("assets/imgs/placeHolder.png");
-  let name: string = $state("");
-
-  async function voila() {
-    speed = await motor.getSpeed();
-    brushless = await motor.getBrushless();
-
-    imagePath = await motor.getMotorImage();
-    name = await motor.getDisplayName();
-  }
-  voila();
   $effect(() => {
     motor.setSpeed(speed);
+  });
+
+  $effect(() => {
     motor.setBrushless(brushless);
   });
 </script>
 
 <div id="display-container">
-  <img src={imagePath} alt="" />
-  <h1>Type: {name}</h1>
-  <h2>ID: {motor.id}</h2>
+  {#await motor.getMotorImage() then motorImage}
+    <img src={motorImage} alt="" />
+  {/await}
+
+  {#await motor.getDisplayName() then displayName}
+    <h1>{displayName}</h1>
+  {/await}
+
+  <h2>{motor.id}</h2>
 </div>
 
 <div id="control-panel">

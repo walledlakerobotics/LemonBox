@@ -21,20 +21,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        // initializing WPIlib
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);
         WPIUtilJNI.Helper.setExtractOnStaticLoad(false);
         EigenJNI.Helper.setExtractOnStaticLoad(false);
         CameraServerJNI.Helper.setExtractOnStaticLoad(false);
         OpenCvLoader.Helper.setExtractOnStaticLoad(false);
 
-        CombinedRuntimeLoader.loadLibraries(
-                Main.class,
-                "wpiutiljni",
-                "wpimathjni",
-                "ntcorejni",
-                Core.NATIVE_LIBRARY_NAME,
-                "cscorejni");
+        CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
+                Core.NATIVE_LIBRARY_NAME, "cscorejni");
 
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();

@@ -42,7 +42,7 @@ dependencies {
 
     implementation group: "org.ejml", name: "ejml-simple", version: wpi.versions.ejmlVersion.get()
     implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get();
-    
+
     implementation 'io.javalin:javalin:7.2.2'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
     implementation 'org.webjars.npm:bootstrap:5.3.3'
@@ -53,14 +53,14 @@ shadowJar {
     archiveVersion = ""
     exclude("module-info.class")
     archiveClassifier.set(wpilibTools.currentPlatform.platformName)
+
+    manifest {
+        attributes(
+            'Main-Class': 'Main'
+        )
+    }
 }
 
 wrapper {
     gradleVersion = '8.11'
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17)) 
-    }
 }

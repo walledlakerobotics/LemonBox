@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { Motor } from "./lib/motor";
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";

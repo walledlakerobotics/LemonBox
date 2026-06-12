@@ -7,7 +7,7 @@ export class Motor {
 
     constructor(
         public readonly id: string,
-        public readonly postPath: string = `/api/motors/${id}`
+        private readonly postPath: string = `/api/motors/${id}`
     ) { }
 
     public async getSpeed(): Promise<number> {

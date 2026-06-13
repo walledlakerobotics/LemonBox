@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.MultiSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringEntry;
 
 public class Motor {
@@ -76,8 +77,7 @@ public class Motor {
      * @param mainTable main table in the network
      * @return Motors that exist.
      */
-    public static Set<Motor> getMotors(MultiSubscriber subscriber) {
-        NetworkTable table = subscriber.getInstance().getTable("LemonBox");
+    public static Set<Motor> getMotors(NetworkTable table) {
 
         return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
@@ -87,12 +87,12 @@ public class Motor {
     /**
      * getting the motor with the corresponding id.
      * 
-     * @param id         the motor ID
-     * @param subscriber the current multisubscriber that the table is on.
+     * @param id   the motor ID
+     * @param inst the current multisubscriber that the table is on.
      * @return the motor
      */
-    public static Optional<Motor> getMotor(String id, MultiSubscriber subscriber) {
-        return Motor.getMotors(subscriber)
+    public static Optional<Motor> getMotor(String id, NetworkTable table) {
+        return Motor.getMotors(inst)
                 .stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();

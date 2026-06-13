@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.time.Year;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,48 +44,48 @@ public class Main {
             Thread.sleep(1000);
         }
 
-        MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox" },
-                PubSubOption.topicsOnly(true));
+        try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox" },
+                PubSubOption.topicsOnly(true))) {
+            // configures local host routes
+            Javalin app = Javalin.create(config -> {
+                config.staticFiles.enableWebjars();
+                config.staticFiles.add("/dist");
 
-        // configures local host routes
-        Javalin app = Javalin.create(config -> {
-            config.staticFiles.enableWebjars();
-            config.staticFiles.add("/dist");
+                config.routes.get("/", ctx -> ctx.redirect("index.html"));
 
-            config.routes.get("/", ctx -> ctx.redirect("index.html"));
+                // returns all motors that are connected to the networktables.
+                config.routes.get("/api/motors", ctx -> {
+                    Set<Motor> motors = Motor.getMotors(subscriber.getInstance().getTable("LemonBox"));
+                    ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+                });
 
-            // returns all motors that are connected to the networktables.
-            config.routes.get("/api/motors", ctx -> {
-                Set<Motor> motors = Motor.getMotors(subscriber);
-                ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+                config.routes.get("/api/motors/{id}", ctx -> {
+                    String id = ctx.pathParam("id");
+                    Motor motor = Motor.getMotor(id, subscriber.getInstance().getTable("LemonBox")).get();
+
+                    ctx.json(motor.getProperties());
+                });
+
+                config.routes.post("/api/motors/{id}", ctx -> {
+                    JsonNode json = ctx.bodyAsClass(JsonNode.class);
+                    String id = ctx.pathParam("id");
+
+                    Motor motor = Motor.getMotor(id, subscriber.getInstance().getTable("LemonBox")).get();
+
+                    if (json.has("speed")) {
+                        double speed = json.get("speed").asDouble();
+                        motor.setSpeed(speed);
+                    }
+
+                    if (json.has("brushless")) {
+                        boolean brushless = json.get("brushless").asBoolean();
+                        motor.setBrushless(brushless);
+                    }
+                });
             });
 
-            config.routes.get("/api/motors/{id}", ctx -> {
-                String id = ctx.pathParam("id");
-                Motor motor = Motor.getMotor(id, subscriber).get();
-
-                ctx.json(motor.getProperties());
-            });
-
-            config.routes.post("/api/motors/{id}", ctx -> {
-                JsonNode json = ctx.bodyAsClass(JsonNode.class);
-                String id = ctx.pathParam("id");
-
-                Motor motor = Motor.getMotor(id, subscriber).get();
-
-                if (json.has("speed")) {
-                    double speed = json.get("speed").asDouble();
-                    motor.setSpeed(speed);
-                }
-
-                if (json.has("brushless")) {
-                    boolean brushless = json.get("brushless").asBoolean();
-                    motor.setBrushless(brushless);
-                }
-            });
-        });
-
-        app.start(7070);
+            app.start(7070);
+        }
     }
 
 }

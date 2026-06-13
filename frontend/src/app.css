@@ -1,0 +1,33 @@
+:root {
+
+  background-color: var(--bg-color);
+  font-family: Exo;
+  font-size: 2dvh;
+
+  --bg-color: rgb(9, 12, 11);
+  --fg-color: rgb(19, 31, 32);
+  --button-color: rgb(9, 18, 19);
+  --border-color: rgb(157, 255, 206);
+  --theme-rgb: 170, 255, 220;
+  --text-color: rgb(170, 255, 220);
+}
+
+body {
+  font-family: Exo, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+@font-face {
+  font-family: "Exo";
+  src: "/assets/fonts/Exo/Exo-VariableFont_wght.ttf";
+}

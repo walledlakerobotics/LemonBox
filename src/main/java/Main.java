@@ -35,9 +35,7 @@ public class Main {
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         inst.setServer("roboRIO-308-FRC");
-
         inst.startClient4("LemonClient");
-        inst.startServer();
 
         while (!inst.isConnected()) {
             System.out.println("pending connection");

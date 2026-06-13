@@ -92,7 +92,7 @@ public class Motor {
      * @return the motor
      */
     public static Optional<Motor> getMotor(String id, NetworkTable table) {
-        return Motor.getMotors(inst)
+        return Motor.getMotors(table)
                 .stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();

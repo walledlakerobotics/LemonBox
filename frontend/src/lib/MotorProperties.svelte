@@ -9,13 +9,6 @@
     motor.speed = speed;
     motor.brushless = brushless;
   });
-
-  $effect(() => {
-    async () => {
-      console.log(await motor.type);
-      console.log(await motor.speed);
-    };
-  });
 </script>
 
 <div id="display-container">

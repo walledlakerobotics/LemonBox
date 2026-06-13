@@ -9,14 +9,10 @@ export class Motor {
     ) {
     }
 
-    private async getSpeed(): Promise<number> {
-        const res = await fetch(`${this.postPath}`);
-        const data = await res.json();
-        return data.speed;
-    }
-
     public get speed(): Promise<number> {
-        return this.getSpeed();
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.speed);
     }
 
     public set speed(speed: number) {
@@ -31,17 +27,16 @@ export class Motor {
         });
     }
 
-    private async getBrushless(): Promise<boolean> {
-        const res = await fetch(`${this.postPath}`);
-        const data = await res.json();
-        return data.brushless;
-    }
-
     public get brushless(): Promise<boolean> {
-        return this.getBrushless();
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.brushless);
     }
 
     public set brushless(brushless: boolean) {
+        if (this.disabled)
+            return;
+
         fetch(`${this.postPath}`, {
             method: "POST",
             body: JSON.stringify({
@@ -50,37 +45,22 @@ export class Motor {
         });
     }
 
-    private async getType(): Promise<string> {
-        const res = await fetch(`${this.postPath}`);
-        const data = await res.json();
-
-        return data.type;
-    }
-
     public get type(): Promise<string> {
-        return this.getType();
-    }
-
-    private async getVoltage(): Promise<number> {
-        const res = await fetch(`${this.postPath}`);
-        const data = await res.json();
-
-        return data.voltage;
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.type);
     }
 
     public get voltage(): Promise<number> {
-        return this.getVoltage();
-    }
-
-    private async getAmps(): Promise<number> {
-        const res = await fetch(`${this.postPath}`);
-        const data = await res.json();
-
-        return data.amps;
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.voltage);
     }
 
     public get amps(): Promise<number> {
-        return this.getAmps();
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.amps);
     }
 
     public get disabled(): boolean {
@@ -92,8 +72,8 @@ export class Motor {
         this.speed = 0;
     }
 
-    private async getDisplayName(): Promise<string> {
-        switch (await this.getType()) {
+    public async getDisplayName(): Promise<string> {
+        switch (await this.type) {
             case "sparkmax":
                 return "SPARKmax";
             case "falcon500":
@@ -107,12 +87,8 @@ export class Motor {
         }
     }
 
-    public get displayName(): Promise<string> {
-        return this.getDisplayName();
-    }
-
-    private async getImageDir(): Promise<string> {
-        switch (await this.getType()) {
+    public async getImageDir(): Promise<string> {
+        switch (await this.type) {
             case "sparkmax":
                 return "assets/imgs/sparkmax.png";
             case "falcon500":
@@ -126,9 +102,6 @@ export class Motor {
         }
     }
 
-    public get imageDir(): Promise<string> {
-        return this.getImageDir();
-    }
 
     /**
      * gets all the motors posted on the json.

@@ -1,6 +1,7 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -80,6 +81,14 @@ public class Motor {
         return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
 
+    }
+
+    public static Motor getMotor(String id, Set<Motor> motors) {
+        Optional<Motor> motor = motors.stream()
+                .filter(m -> m.getId().equals(id))
+                .findFirst();
+
+        return motor.get();
     }
 
 }

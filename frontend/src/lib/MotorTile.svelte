@@ -5,11 +5,11 @@
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-  {#await motor.imageDir then motorImage}
+  {#await motor.getImageDir() then motorImage}
     <img src={motorImage} alt="" />
   {/await}
 
-  {#await motor.displayName then motorName}
+  {#await motor.getDisplayName() then motorName}
     <h1>{motorName}</h1>
   {/await}
 

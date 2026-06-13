@@ -71,14 +71,6 @@
         ></MotorTile>
       {/each}
     {/await}
-    <!-- test -->
-    <MotorTile
-      motor={new Motor("0")}
-      onOpen={() => {
-        let motor = new Motor("0");
-        activeTab.selectedMotor = motor;
-      }}
-    ></MotorTile>
   </div>
 {/snippet}
 

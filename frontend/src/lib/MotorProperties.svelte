@@ -1,14 +1,25 @@
 <script lang="ts">
   import type { Motor } from "./motor.ts";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
+
+  let speed: number = $state(0);
+  let brushless: boolean = $state(false);
+
+  $effect(() => {
+    motor.speed = speed;
+  });
+
+  $effect(() => {
+    motor.brushless = brushless;
+  });
 </script>
 
 <div id="display-container">
-  {#await motor.imageDir then motorImage}
+  {#await motor.getImageDir() then motorImage}
     <img src={motorImage} alt="" />
   {/await}
 
-  {#await motor.displayName then displayName}
+  {#await motor.getDisplayName() then displayName}
     <h1>{displayName}</h1>
   {/await}
 
@@ -16,7 +27,7 @@
 </div>
 
 <div id="control-panel">
-  <label for="speed-slider">Speed: {motor.speed}</label>
+  <label for="speed-slider">Speed: {speed}</label>
   <div class="controls">
     <input
       id="speed-slider"
@@ -24,7 +35,7 @@
       step="0.01"
       min="-1"
       max="1"
-      bind:value={motor.speed}
+      bind:value={speed}
     />
 
     <label for="brushless-checkbox">brushless</label>
@@ -32,7 +43,7 @@
       id="brushless-checkbox"
       title="brushless"
       type="checkbox"
-      bind:value={motor.brushless}
+      bind:checked={brushless}
     />
 
     <label for="disabled-checkbox">disabled</label>

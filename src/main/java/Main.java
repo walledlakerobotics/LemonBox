@@ -76,16 +76,14 @@ public class Main {
                 String id = ctx.pathParam("id");
 
                 // gets the motor with the corresponding id.
-                Optional<Motor> motor = motors.stream()
-                        .filter(m -> m.getId().equals(id))
-                        .findFirst();
+                Motor motor = Motor.getMotor(id, motors);
 
                 double speed = Double.parseDouble(ctx.formParam("speed"));
                 boolean brushless = Boolean.parseBoolean(ctx.formParam("brushless"));
 
                 try {
-                    motor.get().setSpeed(speed);
-                    motor.get().setBrushless(brushless);
+                    motor.setSpeed(speed);
+                    motor.setBrushless(brushless);
                 } catch (Exception e) {
                     System.err.println("couldn't post motor data.");
                 }

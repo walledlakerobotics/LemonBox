@@ -56,7 +56,7 @@ public class Main {
             // returns all motors that are connected to the networktables.
             config.routes.get("/api/motors", ctx -> {
                 Set<Motor> motors = Motor.getMotors(subscriber);
-                ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+                ctx.json(motors.stream().map(m -> m.getId()));
             });
 
             config.routes.get("/api/motors/{id}", ctx -> {

@@ -23,7 +23,7 @@ export class Motor {
 
         console.log(speed);
 
-        fetch(`${this.postPath}`, {
+        fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({
                 speed: speed,
@@ -41,7 +41,7 @@ export class Motor {
         if (this.disabled)
             return;
 
-        fetch(`${this.postPath}`, {
+        fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({
                 brushless: brushless,

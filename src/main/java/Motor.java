@@ -12,7 +12,7 @@ import edu.wpi.first.networktables.MultiSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.StringEntry;
 
-public class Motor implements AutoCloseable {
+public class Motor {
 
     private Integer m_id;
     private DoubleEntry m_speedEntry;
@@ -97,10 +97,4 @@ public class Motor implements AutoCloseable {
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();
     }
-
-    @Override
-    public void close() throws Exception {
-
-    }
-
 }

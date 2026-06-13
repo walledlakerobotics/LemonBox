@@ -63,29 +63,25 @@ public class Main {
 
             config.routes.get("/api/motors/{id}", ctx -> {
                 String id = ctx.pathParam("id");
-                try (Motor motor = Motor.getMotor(id, subscriber).get()) {
-                    ctx.json(motor.getProperties());
-                } catch (Exception e) {
-                    System.out.println("get not working");
-                }
+                Motor motor = Motor.getMotor(id, subscriber).get();
+
+                ctx.json(motor.getProperties());
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
                 JsonNode json = ctx.bodyAsClass(JsonNode.class);
                 String id = ctx.pathParam("id");
 
-                try (Motor motor = Motor.getMotor(id, subscriber).get()) {
-                    if (json.has("speed")) {
-                        double speed = json.get("speed").asDouble();
-                        motor.setSpeed(speed);
-                    }
+                Motor motor = Motor.getMotor(id, subscriber).get();
 
-                    if (json.has("brushless")) {
-                        boolean brushless = json.get("brushless").asBoolean();
-                        motor.setBrushless(brushless);
-                    }
-                } catch (Exception e) {
-                    System.out.println("post not working");
+                if (json.has("speed")) {
+                    double speed = json.get("speed").asDouble();
+                    motor.setSpeed(speed);
+                }
+
+                if (json.has("brushless")) {
+                    boolean brushless = json.get("brushless").asBoolean();
+                    motor.setBrushless(brushless);
                 }
             });
         });

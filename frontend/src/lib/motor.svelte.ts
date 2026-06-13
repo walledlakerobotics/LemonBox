@@ -89,7 +89,7 @@ export class Motor {
             case "krakenx60":
                 return "KrakenX60";
             default:
-                return "unknown";
+                return "Unknown";
         }
     }
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Motor } from "./lib/motor";
+  import { Motor } from "./lib/motor.svelte";
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";

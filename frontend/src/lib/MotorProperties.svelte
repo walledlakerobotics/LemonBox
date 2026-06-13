@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Motor } from "./motor.ts";
+  import type { Motor } from "./motor.svelte.ts";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
   let speed: number = $state(0);
@@ -8,6 +8,13 @@
   $effect(() => {
     motor.speed = speed;
     motor.brushless = brushless;
+  });
+
+  $effect(() => {
+    async () => {
+      console.log(await motor.type);
+      console.log(await motor.speed);
+    };
   });
 </script>
 

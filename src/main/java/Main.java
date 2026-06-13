@@ -75,11 +75,15 @@ public class Main {
                 String id = ctx.pathParam("id");
 
                 try (Motor motor = Motor.getMotor(id, subscriber).get()) {
-                    double speed = json.get("speed").asDouble();
-                    boolean brushless = json.get("brushless").asBoolean();
+                    if (json.has("speed")) {
+                        double speed = json.get("speed").asDouble();
+                        motor.setSpeed(speed);
+                    }
 
-                    motor.setSpeed(speed);
-                    motor.setBrushless(brushless);
+                    if (json.has("brushless")) {
+                        boolean brushless = json.get("brushless").asBoolean();
+                        motor.setBrushless(brushless);
+                    }
                 } catch (Exception e) {
                     System.out.println("post not working");
                 }

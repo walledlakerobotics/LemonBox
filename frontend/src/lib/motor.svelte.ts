@@ -7,9 +7,6 @@ export class Motor {
         private readonly postPath: string = `/api/motors/${id}`
 
     ) {
-        async () => {
-            console.log(await this.speed, await this.brushless, await this.type, await this.voltage, await this.amps)
-        }
     }
 
     public get speed(): Promise<number> {

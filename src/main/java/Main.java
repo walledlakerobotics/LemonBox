@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.CameraServerJNI;
 import edu.wpi.first.cscore.OpenCvLoader;
 import edu.wpi.first.math.jni.EigenJNI;
 import edu.wpi.first.networktables.MultiSubscriber;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.networktables.PubSubOption;
@@ -44,6 +45,8 @@ public class Main {
             Thread.sleep(1000);
         }
 
+        NetworkTable lemonTable = inst.getTable("LemonBox");
+
         try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox" },
                 PubSubOption.topicsOnly(true))) {
             // configures local host routes
@@ -55,13 +58,13 @@ public class Main {
 
                 // returns all motors that are connected to the networktables.
                 config.routes.get("/api/motors", ctx -> {
-                    Set<Motor> motors = Motor.getMotors(inst.getTable("LemonBox"));
+                    Set<Motor> motors = Motor.getMotors(lemonTable);
                     ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
                 });
 
                 config.routes.get("/api/motors/{id}", ctx -> {
                     String id = ctx.pathParam("id");
-                    Motor motor = Motor.getMotor(id, inst.getTable("LemonBox")).get();
+                    Motor motor = Motor.getMotor(id, lemonTable).get();
 
                     ctx.json(motor.getProperties());
                 });
@@ -70,7 +73,7 @@ public class Main {
                     JsonNode json = ctx.bodyAsClass(JsonNode.class);
                     String id = ctx.pathParam("id");
 
-                    Motor motor = Motor.getMotor(id, inst.getTable("LemonBox")).get();
+                    Motor motor = Motor.getMotor(id, lemonTable).get();
 
                     if (json.has("speed")) {
                         double speed = json.get("speed").asDouble();

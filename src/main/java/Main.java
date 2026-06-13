@@ -1,10 +1,12 @@
 
 import java.io.IOException;
-import java.util.Optional;
+import java.time.Year;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.wpi.first.cscore.CameraServerJNI;
 import edu.wpi.first.cscore.OpenCvLoader;
@@ -56,27 +58,33 @@ public class Main {
             // returns all motors that are connected to the networktables.
             config.routes.get("/api/motors", ctx -> {
                 Set<Motor> motors = Motor.getMotors(subscriber);
-                ctx.json(motors.stream().map(m -> m.getId()));
+                ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
             });
 
             config.routes.get("/api/motors/{id}", ctx -> {
                 String id = ctx.pathParam("id");
-                Motor motor = Motor.getMotor(id, subscriber);
+                try (Motor motor = Motor.getMotor(id, subscriber).get()) {
+                    ctx.json(motor.getProperties());
+                } catch (Exception e) {
 
-                ctx.json(motor.getProperties());
+                }
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
+                JsonNode json = ctx.bodyAsClass(JsonNode.class);
+
                 String id = ctx.pathParam("id");
-                Motor motor = Motor.getMotor(id, subscriber);
 
-                double speed = Double.parseDouble(ctx.formParam("speed"));
-                boolean brushless = Boolean.parseBoolean(ctx.formParam("brushless"));
+                try (Motor motor = Motor.getMotor(id, subscriber).get()) {
+                    double speed = json.get("speed").asDouble();
+                    boolean brushless = json.get("brushless").asBoolean();
 
-                motor.setSpeed(speed);
-                motor.setBrushless(brushless);
+                    motor.setSpeed(speed);
+                    motor.setBrushless(brushless);
+                } catch (Exception e) {
+
+                }
             });
-
         });
 
         app.start(7070);

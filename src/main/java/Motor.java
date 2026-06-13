@@ -1,6 +1,7 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,7 +12,7 @@ import edu.wpi.first.networktables.MultiSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.StringEntry;
 
-public class Motor {
+public class Motor implements AutoCloseable {
 
     private Integer m_id;
     private DoubleEntry m_speedEntry;
@@ -90,13 +91,16 @@ public class Motor {
      * @param subscriber the current multisubscriber that the table is on.
      * @return the motor
      */
-    public static Motor getMotor(String id, MultiSubscriber subscriber) {
-        Optional<Motor> motor = Motor.getMotors(subscriber)
+    public static Optional<Motor> getMotor(String id, MultiSubscriber subscriber) {
+        return Motor.getMotors(subscriber)
                 .stream()
-                .filter(m -> m.getId() == id)
+                .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();
+    }
 
-        return motor.get();
+    @Override
+    public void close() throws Exception {
+
     }
 
 }

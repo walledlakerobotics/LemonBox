@@ -73,7 +73,9 @@ export class Motor {
 
     public set disabled(disabled: boolean) {
         this._disabled = disabled;
-        this.speed = 0;
+
+        if (disabled)
+            this.speed = 0;
     }
 
     public async getDisplayName(): Promise<string> {

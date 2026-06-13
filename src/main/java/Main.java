@@ -66,13 +66,12 @@ public class Main {
                 try (Motor motor = Motor.getMotor(id, subscriber).get()) {
                     ctx.json(motor.getProperties());
                 } catch (Exception e) {
-
+                    System.out.println("get not working");
                 }
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
                 JsonNode json = ctx.bodyAsClass(JsonNode.class);
-
                 String id = ctx.pathParam("id");
 
                 try (Motor motor = Motor.getMotor(id, subscriber).get()) {
@@ -82,7 +81,7 @@ public class Main {
                     motor.setSpeed(speed);
                     motor.setBrushless(brushless);
                 } catch (Exception e) {
-
+                    System.out.println("post not working");
                 }
             });
         });

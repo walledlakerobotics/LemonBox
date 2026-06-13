@@ -1,12 +1,15 @@
 export class Motor {
-
-    private _disabled: boolean = true;
-    public uuid: string = crypto.randomUUID();
+    public readonly uuid: string = crypto.randomUUID();
+    private _disabled: boolean = $state(true);
 
     constructor(
         public readonly id: string,
         private readonly postPath: string = `/api/motors/${id}`
+
     ) {
+        async () => {
+            console.log(await this.speed, await this.brushless, await this.type, await this.voltage, await this.amps)
+        }
     }
 
     public get speed(): Promise<number> {
@@ -107,7 +110,6 @@ export class Motor {
                 return "assets/imgs/placeHolder.png";
         }
     }
-
 
     /**
      * gets all the motors posted on the json.

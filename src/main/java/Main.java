@@ -45,7 +45,7 @@ public class Main {
 
         NetworkTable lemonTable = inst.getTable("LemonBox");
 
-        try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox" },
+        try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                 PubSubOption.topicsOnly(true))) {
             // configures local host routes
             Javalin app = Javalin.create(config -> {

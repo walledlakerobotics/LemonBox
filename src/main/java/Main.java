@@ -60,33 +60,21 @@ public class Main {
             });
 
             config.routes.get("/api/motors/{id}", ctx -> {
-                Set<Motor> motors = Motor.getMotors(subscriber);
                 String id = ctx.pathParam("id");
+                Motor motor = Motor.getMotor(id, subscriber);
 
-                Optional<Motor> motor = motors.stream()
-                        .filter(m -> m.getId().equals(id))
-                        .findFirst();
-
-                ctx.json(motor.get().getProperties());
+                ctx.json(motor.getProperties());
             });
 
             config.routes.post("/api/motors/{id}", ctx -> {
-
-                Set<Motor> motors = Motor.getMotors(subscriber);
                 String id = ctx.pathParam("id");
-
-                // gets the motor with the corresponding id.
-                Motor motor = Motor.getMotor(id, motors);
+                Motor motor = Motor.getMotor(id, subscriber);
 
                 double speed = Double.parseDouble(ctx.formParam("speed"));
                 boolean brushless = Boolean.parseBoolean(ctx.formParam("brushless"));
 
-                try {
-                    motor.setSpeed(speed);
-                    motor.setBrushless(brushless);
-                } catch (Exception e) {
-                    System.err.println("couldn't post motor data.");
-                }
+                motor.setSpeed(speed);
+                motor.setBrushless(brushless);
             });
 
         });

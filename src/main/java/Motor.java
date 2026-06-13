@@ -83,9 +83,17 @@ public class Motor {
 
     }
 
-    public static Motor getMotor(String id, Set<Motor> motors) {
-        Optional<Motor> motor = motors.stream()
-                .filter(m -> m.getId().equals(id))
+    /**
+     * getting the motor with the corresponding id.
+     * 
+     * @param id         the motor ID
+     * @param subscriber the current multisubscriber that the table is on.
+     * @return the motor
+     */
+    public static Motor getMotor(String id, MultiSubscriber subscriber) {
+        Optional<Motor> motor = Motor.getMotors(subscriber)
+                .stream()
+                .filter(m -> m.getId() == id)
                 .findFirst();
 
         return motor.get();

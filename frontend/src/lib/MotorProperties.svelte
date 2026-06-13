@@ -7,9 +7,6 @@
 
   $effect(() => {
     motor.speed = speed;
-  });
-
-  $effect(() => {
     motor.brushless = brushless;
   });
 </script>

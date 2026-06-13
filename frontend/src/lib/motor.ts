@@ -16,8 +16,12 @@ export class Motor {
     }
 
     public set speed(speed: number) {
-        if (this.disabled)
+        if (this.disabled) {
+            console.log("warning motor is disabled");
             return;
+        }
+
+        console.log(speed);
 
         fetch(`${this.postPath}`, {
             method: "POST",

@@ -55,13 +55,13 @@ public class Main {
 
                 // returns all motors that are connected to the networktables.
                 config.routes.get("/api/motors", ctx -> {
-                    Set<Motor> motors = Motor.getMotors(subscriber.getInstance().getTable("LemonBox"));
+                    Set<Motor> motors = Motor.getMotors(inst.getTable("LemonBox"));
                     ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
                 });
 
                 config.routes.get("/api/motors/{id}", ctx -> {
                     String id = ctx.pathParam("id");
-                    Motor motor = Motor.getMotor(id, subscriber.getInstance().getTable("LemonBox")).get();
+                    Motor motor = Motor.getMotor(id, inst.getTable("LemonBox")).get();
 
                     ctx.json(motor.getProperties());
                 });
@@ -70,7 +70,7 @@ public class Main {
                     JsonNode json = ctx.bodyAsClass(JsonNode.class);
                     String id = ctx.pathParam("id");
 
-                    Motor motor = Motor.getMotor(id, subscriber.getInstance().getTable("LemonBox")).get();
+                    Motor motor = Motor.getMotor(id, inst.getTable("LemonBox")).get();
 
                     if (json.has("speed")) {
                         double speed = json.get("speed").asDouble();

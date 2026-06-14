@@ -81,13 +81,15 @@ export class Motor {
     public async getDisplayName(): Promise<string> {
         switch (await this.type) {
             case "sparkmax":
-                return "SPARKmax";
+                return "SPARKMAX";
             case "falcon500":
                 return "Falcon500";
             case "krakenx44":
                 return "KrakenX44";
             case "krakenx60":
                 return "KrakenX60";
+            case "talonfx":
+                return "TalonFX"
             default:
                 return "Unknown";
         }
@@ -102,6 +104,8 @@ export class Motor {
             case "krakenx44":
                 return "assets/imgs/krakenX44.png";
             case "krakenx60":
+                return "assets/imgs/krakenX60.png";
+            case "talonfx":
                 return "assets/imgs/krakenX60.png";
             default:
                 return "assets/imgs/placeHolder.png";

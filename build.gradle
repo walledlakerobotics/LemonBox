@@ -4,6 +4,8 @@ plugins {
     id 'com.gradleup.shadow' version '8.3.5'
     id "edu.wpi.first.GradleRIO" version "2025.1.1"
     id 'edu.wpi.first.WpilibTools' version '2.1.0'
+
+    id "com.github.node-gradle.node" version "7.1.0"
 }
 
 application {
@@ -68,3 +70,23 @@ shadowJar {
 wrapper {
     gradleVersion = '8.11'
 }
+
+tasks.register("npmInstall", Exec) {
+    workingDir "frontend"
+    commandLine "npm", "install"
+}
+
+tasks.register("npmBuild", Exec) {
+    dependsOn npmInstall
+    workingDir "frontend"
+    commandLine "npm", "run", "build"
+}
+
+task.register("getResources", Copy) {
+    dependsOn npmBuild
+
+    from("frontend/dist")
+    into("build/resources/main")
+}
+
+processResources.dependsOn getResources

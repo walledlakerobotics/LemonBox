@@ -43,9 +43,13 @@ dependencies {
     implementation group: "org.ejml", name: "ejml-simple", version: wpi.versions.ejmlVersion.get()
     implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get();
 
+    // javalin imports
     implementation 'io.javalin:javalin:7.2.2'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
     implementation 'org.webjars.npm:bootstrap:5.3.3'
+
+    // open-ds import 
+    implementation  files('lib/open-ds.jar')
 }
 
 shadowJar {
@@ -64,3 +68,23 @@ shadowJar {
 wrapper {
     gradleVersion = '8.11'
 }
+
+tasks.register("npmInstall", Exec) {
+    workingDir "frontend"
+    commandLine "npm", "install"
+}
+
+tasks.register("npmBuild", Exec) {
+    dependsOn npmInstall
+    workingDir "frontend"
+    commandLine "npm", "run", "build"
+}
+
+task.register("getResources", Copy) {
+    dependsOn npmBuild
+
+    from("frontend/dist")
+    into("build/resources/main")
+}
+
+processResources.dependsOn getResources

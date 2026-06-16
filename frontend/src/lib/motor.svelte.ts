@@ -5,7 +5,6 @@ export class Motor {
     constructor(
         public readonly id: string,
         private readonly postPath: string = `/api/motors/${id}`
-
     ) {
     }
 

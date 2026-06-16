@@ -4,6 +4,7 @@
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
   import type { TabData } from "./lib/tabdata";
+  import TestMotor from "./lib/TestMotor.svelte";
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
@@ -35,6 +36,8 @@
   let selectedMotorUuids: string[] = $state([]);
 
   addTab();
+
+  let testMotor = new Motor("0");
 </script>
 
 <div id="tabs-container">
@@ -71,6 +74,14 @@
         ></MotorTile>
       {/each}
     {/await}
+
+    <TestMotor
+      onOpen={() => {
+        activeTab.selectedMotor = testMotor;
+        selectedMotorUuids.push(testMotor.uuid);
+      }}
+      motor={testMotor}
+    ></TestMotor>
   </div>
 {/snippet}
 

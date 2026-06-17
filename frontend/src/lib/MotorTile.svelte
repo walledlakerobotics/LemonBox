@@ -5,14 +5,8 @@
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-  {#await motor.getImageDir() then motorImage}
-    <img src={motorImage} alt="" />
-  {/await}
-
-  {#await motor.getDisplayName() then motorName}
-    <h1>{motorName}</h1>
-  {/await}
-
+  <img src="assets/imgs/krakenX60.png" alt="" />
+  <h1>TalonFX</h1>
   <h2>{motor.id}</h2>
 </button>
 
@@ -42,11 +36,12 @@
 
     img {
       display: block;
-      margin-top: auto;
-
+      /* margin-top: auto; */
       max-width: 100%;
       object-fit: cover;
-      aspect-ratio: 1/1;
+      aspect-ratio: 1 / 1;
+      flex-grow: 1;
+      height: 70%;
     }
   }
 

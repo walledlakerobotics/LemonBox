@@ -10,6 +10,11 @@
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
 
+  // this will only return the updated array, but it might cause some issues with replicas
+  let selectedMotorUuids: string[] = $state([]);
+
+  addTab();
+
   function addTab() {
     const tab: TabData = {
       uuid: crypto.randomUUID(),
@@ -33,19 +38,21 @@
     tabs.splice(index, 1);
   }
 
-  // this will only return the updated array, but it might cause some issues with replicas
-  let selectedMotorUuids: string[] = $state([]);
+  async function isTableConnected(): Promise<boolean> {
+    const res = await fetch("/api/connected");
+    const data = await res.json();
 
-  addTab();
+    return data;
+  }
 
   let testMotor = new Motor("0");
-
-  let tableConnected = $state(false);
 </script>
 
-{#if !tableConnected}
-  <Warning></Warning>
-{/if}
+{#await isTableConnected() then tableConnected}
+  {#if !tableConnected}
+    <Warning></Warning>
+  {/if}
+{/await}
 
 <div id="tabs-container">
   <!-- creates tabs -->

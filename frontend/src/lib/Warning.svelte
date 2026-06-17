@@ -11,7 +11,7 @@
         border-color: var(--warning-border);
         border-radius: 5px;
 
-        position: fixed;
+        position: relative;
 
         transition: 0.2s;
     }

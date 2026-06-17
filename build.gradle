@@ -1,9 +1,9 @@
 plugins {
     id "java"
-    id 'application'
-    id 'com.gradleup.shadow' version '8.3.5'
+    id "application"
+    id "com.gradleup.shadow" version "8.3.5"
     id "edu.wpi.first.GradleRIO" version "2025.1.1"
-    id 'edu.wpi.first.WpilibTools' version '2.1.0'
+    id "edu.wpi.first.WpilibTools" version "2.1.0"
 }
 
 application {
@@ -20,6 +20,7 @@ def nativeTasks = wpilibTools.createExtractionTasks {
 }
 
 nativeTasks.addToSourceSetResources(sourceSets.main)
+
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpimath")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpinet")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpiutil")
@@ -41,9 +42,9 @@ dependencies {
     implementation group: "com.fasterxml.jackson.core", name: "jackson-databind", version: wpi.versions.jacksonVersion.get()
 
     implementation group: "org.ejml", name: "ejml-simple", version: wpi.versions.ejmlVersion.get()
-    implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get();
+    implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get()
 
-    // javalin imports
+    // Javalin
     implementation 'io.javalin:javalin:7.2.2'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
     implementation 'org.webjars.npm:bootstrap:5.3.3'
@@ -67,23 +68,3 @@ shadowJar {
 wrapper {
     gradleVersion = '8.11'
 }
-
-tasks.register("npmInstall", Exec) {
-    workingDir "frontend"
-    commandLine "npm", "install"
-}
-
-tasks.register("npmBuild", Exec) {
-    dependsOn npmInstall
-    workingDir "frontend"
-    commandLine "npm", "run", "build"
-}
-
-task.register("getResources", Copy) {
-    dependsOn npmBuild
-
-    from("frontend/dist")
-    into("build/resources/main")
-}
-
-processResources.dependsOn getResources

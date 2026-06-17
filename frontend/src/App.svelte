@@ -164,6 +164,7 @@
     gap: 5px;
     display: flex;
     flex-direction: row;
+    margin-bottom: 10px;
 
     overflow-x: scroll;
 

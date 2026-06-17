@@ -1,4 +1,4 @@
-import type { Motor } from "./motor";
+import type { Motor } from "./motor.svelte";
 
 export type TabData = {
     uuid: string;

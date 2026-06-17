@@ -1,10 +1,6 @@
-<script lang="ts">
-    let visable: boolean = $props();
-</script>
-
-<button id="warning" onclick={() => (visable = false)}>
+<div id="warning">
     <p>Warning the Tables are Disconnected!</p>
-</button>
+</div>
 
 <style>
     #warning {
@@ -14,5 +10,9 @@
         border-width: 1px;
         border-color: var(--warning-border);
         border-radius: 5px;
+
+        position: fixed;
+
+        transition: 0.2s;
     }
 </style>

@@ -5,6 +5,7 @@
   import Tab from "./lib/Tab.svelte";
   import type { TabData } from "./lib/tabdata";
   import TestMotor from "./lib/TestMotor.svelte";
+  import Warning from "./lib/Warning.svelte";
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
@@ -38,7 +39,13 @@
   addTab();
 
   let testMotor = new Motor("0");
+
+  let tableConnected = $state(false);
 </script>
+
+{#if !tableConnected}
+  <Warning></Warning>
+{/if}
 
 <div id="tabs-container">
   <!-- creates tabs -->

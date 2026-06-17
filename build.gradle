@@ -49,7 +49,7 @@ dependencies {
     implementation 'org.webjars.npm:bootstrap:5.3.3'
 
     // open-ds import 
-    implementation  files('lib/open-ds.jar')
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
 }
 
 shadowJar {

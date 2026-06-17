@@ -48,7 +48,6 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.16'
     implementation 'org.webjars.npm:bootstrap:5.3.3'
 
-    // open-ds import 
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 }
 

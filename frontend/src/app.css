@@ -10,6 +10,10 @@
   --border-color: rgb(157, 255, 206);
   --theme-rgb: 170, 255, 220;
   --text-color: rgb(170, 255, 220);
+
+  --warning-bg: rgb(32, 4, 10);
+  --warning-border: rgb(245, 106, 136);
+  --warning-text: rgb(255, 172, 190);
 }
 
 body {

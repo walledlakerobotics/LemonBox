@@ -37,12 +37,6 @@ public class Main {
         inst.setServer("roboRIO-308-FRC");
         inst.startClient4("LemonClient");
 
-        while (!inst.isConnected()) {
-            System.out.println("pending connection");
-
-            Thread.sleep(1000);
-        }
-
         NetworkTable lemonTable = inst.getTable("LemonBox");
 
         try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
@@ -53,6 +47,10 @@ public class Main {
                 config.staticFiles.add("/dist");
 
                 config.routes.get("/", ctx -> ctx.redirect("index.html"));
+                
+                config.routes.get("/api/connected", ctx -> {
+                    ctx.json(inst.isConnected());
+                }); 
 
                 // returns all motors that are connected to the networktables.
                 config.routes.get("/api/motors", ctx -> {

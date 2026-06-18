@@ -97,10 +97,10 @@
 {#if activeTab.selectedMotor == null}
   {@render Motors()}
 {/if}
-
+<!-- 
 <div id="utils">
   <button id="refresh-button"></button>
-</div>
+</div> -->
 
 
 <style>

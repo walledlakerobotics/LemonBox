@@ -4,7 +4,7 @@ import java.util.Set;
 
 import edu.wpi.first.networktables.NetworkTable;
 
-public class MotorManager {
+public class MotorManager implements AutoCloseable {
     private Set<Motor> currentMotors;
 
     public MotorManager(NetworkTable table) {
@@ -23,5 +23,10 @@ public class MotorManager {
         return currentMotors.stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();
+    }
+
+    @Override
+    public void close() throws Exception {
+        currentMotors.stream().forEach(m -> m.close());
     }
 }

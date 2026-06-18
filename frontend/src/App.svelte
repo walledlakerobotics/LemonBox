@@ -98,6 +98,11 @@
   {@render Motors()}
 {/if}
 
+<div id="utils">
+  <button id="refresh-button"></button>
+</div>
+
+
 <style>
   .tabs {
     background-color: var(--fg-color);

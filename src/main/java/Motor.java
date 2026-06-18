@@ -6,21 +6,21 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import edu.wpi.first.networktables.BooleanEntry;
-import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.networktables.BooleanSubscriber;
+import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.StringEntry;
+import edu.wpi.first.networktables.StringSubscriber;
 
 public class Motor implements AutoCloseable {
 
     private Integer m_id;
-    private DoubleEntry m_speedEntry;
-    private DoubleEntry m_ampsEntry;
-    private DoubleEntry m_voltageEntry;
-    private BooleanEntry m_brushlessEntry;
-    private StringEntry m_typeEntry;
-    private StringEntry m_faultsEntry;
-    private StringEntry m_stickyFaults;
+    private DoubleSubscriber m_speedSub;
+    private DoubleSubscriber m_ampSub;
+    private DoubleSubscriber m_voltageSub;
+    private BooleanSubscriber m_brushlessSub;
+    private StringSubscriber m_typeSub;
+    private StringSubscriber m_faultsSub;
+    private StringSubscriber m_stickySub;
 
     /**
      * 
@@ -29,21 +29,22 @@ public class Motor implements AutoCloseable {
      */
     public Motor(String id, NetworkTable subTable) {
         this.m_id = Integer.parseInt(id);
-        m_speedEntry = subTable.getDoubleTopic("speed").getEntry(0);
-        m_ampsEntry = subTable.getDoubleTopic("amps").getEntry(0);
-        m_voltageEntry = subTable.getDoubleTopic("voltage").getEntry(0);
-        m_brushlessEntry = subTable.getBooleanTopic("brushless").getEntry(false);
-        m_typeEntry = subTable.getStringTopic("type").getEntry("unknown");
-        m_faultsEntry = subTable.getStringTopic("faults").getEntry("error getting informaton!");
-        m_stickyFaults = subTable.getStringTopic("stickyFaults").getEntry("error getting informaton!");
+        m_speedSub = subTable.getDoubleTopic("speed").subscribe(0);
+        m_ampSub = subTable.getDoubleTopic("amps").subscribe(0);
+        m_voltageSub = subTable.getDoubleTopic("voltage").subscribe(0);
+        m_brushlessSub = subTable.getBooleanTopic("brushless").subscribe(false);
+        m_typeSub = subTable.getStringTopic("type").subscribe("unknown");
+        m_faultsSub = subTable.getStringTopic("faults").subscribe("error getting faults!");
+        m_stickySub = subTable.getStringTopic("stickyFaults").subscribe("error getting stickyFaults");
+
     }
 
     public void setSpeed(double speed) {
-        m_speedEntry.set(speed);
+        m_speedSub.getTopic().getEntry(0).set(speed);
     }
 
     public void setBrushless(boolean brushless) {
-        m_brushlessEntry.set(brushless);
+        m_brushlessSub.getTopic().getEntry(false).set(brushless);
     }
 
     public String getId() {
@@ -58,13 +59,13 @@ public class Motor implements AutoCloseable {
     public Map<String, Object> getProperties() {
         Map<String, Object> props = new HashMap<>();
 
-        props.put("speed", m_speedEntry.get());
-        props.put("amps", m_ampsEntry.get());
-        props.put("voltage", m_voltageEntry.get());
-        props.put("brushless", m_brushlessEntry.get());
-        props.put("type", m_typeEntry.get());
-        props.put("faults", m_faultsEntry.get());
-        props.put("stickyFaults", m_stickyFaults.get());
+        props.put("speed", m_speedSub.get());
+        props.put("amps", m_ampSub.get());
+        props.put("voltage", m_voltageSub.get());
+        props.put("brushless", m_brushlessSub.get());
+        props.put("type", m_typeSub.get());
+        props.put("faults", m_faultsSub.get());
+        props.put("stickyFaults", m_stickySub.get());
 
         return props;
     }
@@ -81,28 +82,14 @@ public class Motor implements AutoCloseable {
 
     }
 
-    /**
-     * getting the motor with the corresponding id.
-     * 
-     * @param id   the motor ID
-     * @param inst the current multisubscriber that the table is on.
-     * @return the motor
-     */
-    public static Optional<Motor> getMotor(String id, NetworkTable table) {
-        return Motor.getMotors(table)
-                .stream()
-                .filter(m -> Objects.equals(m.getId(), id))
-                .findFirst();
-    }
-
     @Override
     public void close() throws Exception {
-        m_speedEntry.close();
-        m_ampsEntry.close();
-        m_voltageEntry.close();
-        m_brushlessEntry.close();
-        m_typeEntry.close();
-        m_faultsEntry.close();
-        m_stickyFaults.close();
+        m_speedSub.close();
+        m_ampSub.close();
+        m_brushlessSub.close();
+        m_voltageSub.close();
+        m_typeSub.close();
+        m_faultsSub.close();
+        m_stickySub.close();
     }
 }

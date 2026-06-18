@@ -1,6 +1,7 @@
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
 
@@ -32,8 +33,6 @@ public class Main {
         CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
                 Core.NATIVE_LIBRARY_NAME, "cscorejni");
 
-        DisplayEndpoint.main(args);
-
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         inst.setServer("roboRIO-308-FRC");
@@ -41,58 +40,56 @@ public class Main {
 
         NetworkTable lemonTable = inst.getTable("LemonBox");
 
+        MotorManager manager = new MotorManager(lemonTable);
+
+        // DisplayEndpoint.main(args);
+
         try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                 PubSubOption.topicsOnly(true))) {
             // configures local host routes
+
             Javalin app = Javalin.create(config -> {
                 config.staticFiles.enableWebjars();
                 config.staticFiles.add("/dist");
 
                 config.routes.get("/", ctx -> ctx.redirect("index.html"));
-                
+
                 config.routes.get("/api/connected", ctx -> {
                     ctx.json(inst.isConnected());
-                }); 
+                });
 
                 // returns all motors that are connected to the networktables.
                 config.routes.get("/api/motors", ctx -> {
-                    Set<Motor> motors = Motor.getMotors(lemonTable);
-                    
-                    ctx.json(motors.stream().map(Motor::getId).toList());
+                    Set<Motor> motors = manager.getMotors(lemonTable);
+
+                    ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
                 });
 
                 config.routes.get("/api/motors/{id}", ctx -> {
                     String id = ctx.pathParam("id");
 
-                    try (Motor motor = Motor.getMotor(id, lemonTable).get()) {   
-                        ctx.json(motor.getProperties());
-                    } catch (Exception e) {
-                        System.err.println("couldn't return motor!");
-                    }
+                    ctx.json(manager.getMotor(id, lemonTable).get().getProperties());
                 });
 
                 config.routes.post("/api/motors/{id}", ctx -> {
                     JsonNode json = ctx.bodyAsClass(JsonNode.class);
                     String id = ctx.pathParam("id");
+                    Motor motor = manager.getMotor(id, lemonTable).get();
 
-                    try (Motor motor = Motor.getMotor(id, lemonTable).get()) {
-                        if (json.has("speed")) {
-                            double speed = json.get("speed").asDouble();
-                            motor.setSpeed(speed);
-                        }
+                    if (json.has("speed")) {
+                        double speed = json.get("speed").asDouble();
+                        motor.setSpeed(speed);
+                    }
 
-                        if (json.has("brushless")) {
-                            boolean brushless = json.get("brushless").asBoolean();
-                            motor.setBrushless(brushless);
-                        }
-                    } catch (Exception e) {
-                        System.err.println("couldn't return motor!");
+                    if (json.has("brushless")) {
+                        boolean brushless = json.get("brushless").asBoolean();
+                        motor.setBrushless(brushless);
                     }
                 });
             });
 
             app.start(7070);
         }
-
     }
+
 }

@@ -11,42 +11,41 @@
   });
 </script>
 
-<div id="display-container">
-  {#await motor.getImageDir() then motorImage}
-    <img src={motorImage} alt="" />
-  {/await}
+<div id="dashboard-container">
+  <div id="display-container">
+    {#await motor.getImageDir() then motorImage}
+      <img src={motorImage} alt="" />
+    {/await}
 
-  {#await motor.getDisplayName() then displayName}
-    <h1>{displayName}</h1>
-  {/await}
+    {#await motor.getDisplayName() then displayName}
+      <h1>{displayName}</h1>
+    {/await}
 
-  <h2>{motor.id}</h2>
+    <h2>{motor.id}</h2>
+  </div>
+
+  <div id="faults-panel">
+    {#await motor.faults then f}
+      <p>{f}</p>
+    {/await}
+
+    <p>Stick-faults----</p>
+
+    {#await motor.stickyFaults then f}
+      <p>{f}</p>
+    {/await}
+  </div>
+
+  <div id="electrical-panel">
+    {#await motor.voltage then v}
+      <p>Applied Voltage: {v}</p>
+    {/await}
+
+    {#await motor.amps then a}
+      <p>Amps: {a}</p>
+    {/await}
+  </div>
 </div>
-
-<div id="faults-panel">
-  {#await motor.faults then f}
-    <p>{f}</p>
-  {/await}
-
-  <p>Stick-faults----</p>
-
-  {#await motor.stickyFaults then f}
-    <p>{f}</p>
-  {/await}
-</div>
-
-<div id="electrical-panel">
-
-  {#await motor.voltage then v}
-    <p>Applied Voltage: {v}</p>
-  {/await}
-
-  {#await motor.amps then a}
-    <p>Amps: {a}</p>
-  {/await}
-
-</div>
-
 
 <div id="control-panel">
   <label for="speed-slider">Speed: {speed}</label>
@@ -88,6 +87,12 @@
 </div>
 
 <style>
+  #dashboard-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+
   #display-container {
     background-color: var(--fg-color);
     padding: 1vw;

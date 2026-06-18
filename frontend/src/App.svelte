@@ -4,7 +4,6 @@
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
   import type { TabData } from "./lib/tabdata";
-  import TestMotor from "./lib/TestMotor.svelte";
   import Warning from "./lib/Warning.svelte";
 
   let tabs: TabData[] = $state([]);
@@ -78,8 +77,8 @@
 {#snippet Motors()}
   <div id="motor-grid">
     {#await Motor.getMotors() then motors}
-    <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter(m => selectedMotorUuids.includes(m.uuid)) as motor} 
+      <!-- need to check if this filter algorithm work UwU -->
+      {#each motors.filter((m) => !selectedMotorUuids.includes(m.uuid)) as motor}
         <MotorTile
           {motor}
           onOpen={() => {
@@ -89,14 +88,6 @@
         ></MotorTile>
       {/each}
     {/await}
-
-    <TestMotor
-      onOpen={() => {
-        activeTab.selectedMotor = testMotor;
-        selectedMotorUuids.push(testMotor.uuid);
-      }}
-      motor={testMotor}
-    ></TestMotor>
   </div>
 {/snippet}
 

@@ -42,7 +42,9 @@ public class Main {
 
         MotorManager manager = new MotorManager(lemonTable);
 
-        // DisplayEndpoint.main(args);
+        DisplayEndpoint.main(args);
+        DisplayEndpoint.TEAM_NUMBER.setText("308");
+        DisplayEndpoint.IS_ENABLED.setEnabled(true);
 
         try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                 PubSubOption.topicsOnly(true))) {

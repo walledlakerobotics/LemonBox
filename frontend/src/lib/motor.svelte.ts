@@ -66,6 +66,18 @@ export class Motor {
             .then(data => data.amps);
     }
 
+    public get faults(): Promise<string> {
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.faults);
+    }
+
+    public get stickyFaults(): Promise<string> {
+        return fetch(this.postPath)
+            .then(res => res.json())
+            .then(data => data.stickyFaults);
+    }
+
     public get disabled(): boolean {
         return this._disabled;
     }
@@ -76,7 +88,7 @@ export class Motor {
         if (disabled)
             this.speed = 0;
     }
-
+    
     public async getDisplayName(): Promise<string> {
         switch (await this.type) {
             case "sparkmax":

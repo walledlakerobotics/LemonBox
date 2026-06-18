@@ -4,6 +4,7 @@ plugins {
     id "com.gradleup.shadow" version "8.3.5"
     id "edu.wpi.first.GradleRIO" version "2025.1.1"
     id "edu.wpi.first.WpilibTools" version "2.1.0"
+    id "com.github.node-gradle.node" version "7.1.0"
 }
 
 application {

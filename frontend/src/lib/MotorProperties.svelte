@@ -23,6 +23,31 @@
   <h2>{motor.id}</h2>
 </div>
 
+<div id="faults-panel">
+  {#await motor.faults then f}
+    <p>{f}</p>
+  {/await}
+
+  <p>Stick-faults----</p>
+
+  {#await motor.stickyFaults then f}
+    <p>{f}</p>
+  {/await}
+</div>
+
+<div id="electrical-panel">
+
+  {#await motor.voltage then v}
+    <p>Applied Voltage: {v}</p>
+  {/await}
+
+  {#await motor.amps then a}
+    <p>Amps: {a}</p>
+  {/await}
+
+</div>
+
+
 <div id="control-panel">
   <label for="speed-slider">Speed: {speed}</label>
   <div class="controls">
@@ -95,7 +120,7 @@
     justify-content: space-between;
   }
 
-  #faults {
+  #faults-panel {
     background-color: var(--fg-color);
     padding: 1vw;
     border-radius: 5px;

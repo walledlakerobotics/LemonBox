@@ -1,7 +1,6 @@
 
 import java.io.IOException;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
 
@@ -33,14 +32,14 @@ public class Main {
         CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
                 Core.NATIVE_LIBRARY_NAME, "cscorejni");
 
+        DisplayEndpoint.main(args);
+
         // inits network table :3
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         inst.setServer("roboRIO-308-FRC");
         inst.startClient4("LemonClient");
 
         NetworkTable lemonTable = inst.getTable("LemonBox");
-
-        DisplayEndpoint.main(args);
 
         try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                 PubSubOption.topicsOnly(true))) {
@@ -71,7 +70,6 @@ public class Main {
                 config.routes.post("/api/motors/{id}", ctx -> {
                     JsonNode json = ctx.bodyAsClass(JsonNode.class);
                     String id = ctx.pathParam("id");
-
                     Motor motor = Motor.getMotor(id, lemonTable).get();
 
                     if (json.has("speed")) {

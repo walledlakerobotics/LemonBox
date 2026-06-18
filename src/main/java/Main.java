@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
 
+import com.boomaa.opends.display.DisplayEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.wpi.first.cscore.CameraServerJNI;
@@ -39,6 +40,8 @@ public class Main {
 
         NetworkTable lemonTable = inst.getTable("LemonBox");
 
+        DisplayEndpoint.main(args);
+
         try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                 PubSubOption.topicsOnly(true))) {
             // configures local host routes
@@ -55,7 +58,7 @@ public class Main {
                 // returns all motors that are connected to the networktables.
                 config.routes.get("/api/motors", ctx -> {
                     Set<Motor> motors = Motor.getMotors(lemonTable);
-                    ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+                    ctx.json(motors.stream().map(Motor::getId).toList());
                 });
 
                 config.routes.get("/api/motors/{id}", ctx -> {

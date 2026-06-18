@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.StringEntry;
 
-public class Motor {
+public class Motor implements AutoCloseable {
 
     private Integer m_id;
     private DoubleEntry m_speedEntry;
@@ -76,7 +76,6 @@ public class Motor {
      * @return Motors that exist.
      */
     public static Set<Motor> getMotors(NetworkTable table) {
-
         return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
 
@@ -94,5 +93,16 @@ public class Motor {
                 .stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();
+    }
+
+    @Override
+    public void close() throws Exception {
+        m_speedEntry.close();
+        m_ampsEntry.close();
+        m_voltageEntry.close();
+        m_brushlessEntry.close();
+        m_typeEntry.close();
+        m_faultsEntry.close();
+        m_stickyFaults.close();
     }
 }

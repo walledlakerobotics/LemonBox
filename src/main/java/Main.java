@@ -57,35 +57,42 @@ public class Main {
                 // returns all motors that are connected to the networktables.
                 config.routes.get("/api/motors", ctx -> {
                     Set<Motor> motors = Motor.getMotors(lemonTable);
+                    
                     ctx.json(motors.stream().map(Motor::getId).toList());
                 });
 
                 config.routes.get("/api/motors/{id}", ctx -> {
                     String id = ctx.pathParam("id");
-                    Motor motor = Motor.getMotor(id, lemonTable).get();
 
-                    ctx.json(motor.getProperties());
+                    try (Motor motor = Motor.getMotor(id, lemonTable).get()) {   
+                        ctx.json(motor.getProperties());
+                    } catch (Exception e) {
+                        System.err.println("couldn't return motor!");
+                    }
                 });
 
                 config.routes.post("/api/motors/{id}", ctx -> {
                     JsonNode json = ctx.bodyAsClass(JsonNode.class);
                     String id = ctx.pathParam("id");
-                    Motor motor = Motor.getMotor(id, lemonTable).get();
 
-                    if (json.has("speed")) {
-                        double speed = json.get("speed").asDouble();
-                        motor.setSpeed(speed);
-                    }
+                    try (Motor motor = Motor.getMotor(id, lemonTable).get()) {
+                        if (json.has("speed")) {
+                            double speed = json.get("speed").asDouble();
+                            motor.setSpeed(speed);
+                        }
 
-                    if (json.has("brushless")) {
-                        boolean brushless = json.get("brushless").asBoolean();
-                        motor.setBrushless(brushless);
+                        if (json.has("brushless")) {
+                            boolean brushless = json.get("brushless").asBoolean();
+                            motor.setBrushless(brushless);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("couldn't return motor!");
                     }
                 });
             });
 
             app.start(7070);
         }
-    }
 
+    }
 }

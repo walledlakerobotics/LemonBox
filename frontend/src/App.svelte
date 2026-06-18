@@ -43,8 +43,6 @@
 
     return data;
   }
-
-  let testMotor = new Motor("0");
 </script>
 
 {#await isTableConnected() then tableConnected}

@@ -78,7 +78,8 @@
 {#snippet Motors()}
   <div id="motor-grid">
     {#await Motor.getMotors() then motors}
-      {#each motors as motor}
+    <!-- need to check if this filter algorithm work UwU -->
+      {#each motors.filter(m => selectedMotorUuids.includes(m.uuid)) as motor} 
         <MotorTile
           {motor}
           onOpen={() => {

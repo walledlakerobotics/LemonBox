@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,12 +63,11 @@ public class Main {
                     });
 
                     // returns all motors that are connected to the networktables.
-                    config.routes.get("/api/motors", ctx -> { 
-
-                        manager.refresh();
+                    config.routes.get("/api/motors", ctx -> {
                         Set<Motor> motors = manager.getMotors();
 
-                        ctx.json(motors.stream().collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+                        ctx.json(motors.stream()
+                                .collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
                     });
 
                     config.routes.get("/api/motors/{id}", ctx -> {

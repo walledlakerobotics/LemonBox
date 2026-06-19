@@ -8,7 +8,7 @@
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
-  
+
   let currentMotors: Promise<Motor[]> = $state(Motor.getMotors()); 
 
   // this will only return the updated array, but it might cause some issues with replicas
@@ -151,7 +151,7 @@
     height: 100%;
     aspect-ratio: 1;
   }
-
+  
   #add-button:active {
     background-color: var(--border-color);
     color: var(--button-color);
@@ -161,6 +161,16 @@
     position: relative;
     margin: 0;
     padding: 0;
+  }
+
+  #motor-utils {
+    background-color: var(--fg-color);
+    border: solid;
+    border-width: 1px;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: row;
   }
 
   #motor-grid {

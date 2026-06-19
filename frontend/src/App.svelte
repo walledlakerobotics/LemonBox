@@ -8,11 +8,13 @@
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
+  
+  let currentMotors: Promise<Motor[]> = $state(Motor.getMotors()); 
 
   // this will only return the updated array, but it might cause some issues with replicas
   let selectedMotorUuids: string[] = $state([]);
-
-  let isTableConnected: boolean = $state(false); 
+  let isTableConnected: boolean = $state(false);
+  
 
   setInterval(async () => {
     const res = await fetch("/api/connected");
@@ -74,8 +76,13 @@
 {/snippet}
 
 {#snippet Motors()}
+
+  <div id="motor-utils">
+      <button onclick={() => currentMotors = Motor.getMotors()}>refresh</button>
+  </div>
+
   <div id="motor-grid">
-    {#await Motor.getMotors() then motors}
+    {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
       {#each motors.filter(m => !selectedMotorUuids.some((uuid) => uuid === m.uuid)) as motor}
         <MotorTile

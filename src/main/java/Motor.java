@@ -1,8 +1,6 @@
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,10 +37,18 @@ public class Motor implements AutoCloseable {
 
     }
 
+    /**
+     * sets the motor entry speed
+     * @param speed
+     */
     public void setSpeed(double speed) {
         m_speedSub.getTopic().getEntry(0).set(speed);
     }
 
+    /**
+     * sets the motor entry brushless
+     * @param brushless
+     */
     public void setBrushless(boolean brushless) {
         m_brushlessSub.getTopic().getEntry(false).set(brushless);
     }

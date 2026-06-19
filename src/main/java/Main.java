@@ -44,7 +44,7 @@ public class Main {
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
             DisplayEndpoint.main(args);
-            DisplayEndpoint.TEAM_NUMBER.setText("308");
+            DisplayEndpoint.TEAM_NUMBER.setText("roboRIO-308-FRC");
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
 
             try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },

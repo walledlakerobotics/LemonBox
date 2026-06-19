@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.StringSubscriber;
 
-public class Motor {
+public class Motor implements AutoCloseable {
 
     private Integer m_id;
     private DoubleSubscriber m_speedSub;
@@ -82,6 +82,7 @@ public class Motor {
 
     }
 
+    @Override
     public void close() {
         m_speedSub.close();
         m_ampSub.close();

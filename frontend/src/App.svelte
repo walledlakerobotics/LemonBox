@@ -67,7 +67,7 @@
     motor={m}
     onClose={() => {
       activeTab.selectedMotor = null;
-      selectedMotorUuids.filter((id) => m.uuid == id);
+      selectedMotorUuids.filter((id) => m.uuid == id); // need to remove uuid 
     }}
   ></MotorProperties>
 {/snippet}

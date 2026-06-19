@@ -3,8 +3,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import edu.wpi.first.networktables.NetworkTable;
+// TODO: issue with mutiple instances of subscribers, which causes an overflow.
 
-public class MotorManager implements AutoCloseable {
+public class MotorManager {
     private Set<Motor> currentMotors;
 
     public MotorManager(NetworkTable table) {
@@ -25,7 +26,6 @@ public class MotorManager implements AutoCloseable {
                 .findFirst();
     }
 
-    @Override
     public void close() throws Exception {
         currentMotors.stream().forEach(m -> m.close());
     }

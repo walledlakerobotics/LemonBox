@@ -85,10 +85,10 @@ export class Motor {
     public set disabled(disabled: boolean) {
         this._disabled = disabled;
 
-        if (disabled)
+        if (this._disabled)
             this.speed = 0;
     }
-    
+
     public async getDisplayName(): Promise<string> {
         switch (await this.type) {
             case "sparkmax":

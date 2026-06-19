@@ -62,7 +62,7 @@ public class Main {
                     });
 
                     // returns all motors that are connected to the networktables.
-                    config.routes.get("/api/motors", ctx -> {
+                    config.routes.get("/api/motors", ctx -> { 
 
                         manager.refresh();
                         Set<Motor> motors = manager.getMotors();

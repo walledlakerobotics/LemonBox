@@ -12,6 +12,16 @@
   // this will only return the updated array, but it might cause some issues with replicas
   let selectedMotorUuids: string[] = $state([]);
 
+  let isTableConnected: boolean = $state(false); 
+
+  setInterval(async () => {
+    const res = await fetch("/api/connected");
+    const data = await res.json();
+
+    isTableConnected = data;
+  }, 300); 
+
+
   addTab();
 
   function addTab() {
@@ -36,20 +46,11 @@
 
     tabs.splice(index, 1);
   }
-
-  async function isTableConnected(): Promise<boolean> {
-    const res = await fetch("/api/connected");
-    const data = await res.json();
-
-    return data;
-  }
 </script>
 
-{#await isTableConnected() then tableConnected}
-  {#if !tableConnected}
+{#if !isTableConnected}
     <Warning></Warning>
-  {/if}
-{/await}
+{/if}
 
 <div id="tabs-container">
   <!-- creates tabs -->

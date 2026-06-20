@@ -15,9 +15,9 @@ public class Motor implements AutoCloseable {
 
     private Integer m_id;
     private DoubleEntry m_speedEntry;
+    private BooleanEntry m_brushlessEntry;
     private DoubleSubscriber m_ampSub;
     private DoubleSubscriber m_voltageSub;
-    private BooleanEntry m_brushlessEntry;
     private StringSubscriber m_typeSub;
     private StringSubscriber m_faultsSub;
     private StringSubscriber m_stickySub;
@@ -30,9 +30,9 @@ public class Motor implements AutoCloseable {
     public Motor(String id, NetworkTable subTable) {
         this.m_id = Integer.parseInt(id);
         m_speedEntry = subTable.getDoubleTopic("speed").getEntry(0);
+        m_brushlessEntry = subTable.getBooleanTopic("brushless").getEntry(false);
         m_ampSub = subTable.getDoubleTopic("amps").subscribe(0);
         m_voltageSub = subTable.getDoubleTopic("voltage").subscribe(0);
-        m_brushlessEntry = subTable.getBooleanTopic("brushless").getEntry(false);
         m_typeSub = subTable.getStringTopic("type").subscribe("unknown");
         m_faultsSub = subTable.getStringTopic("faults").subscribe("error getting faults!");
         m_stickySub = subTable.getStringTopic("stickyFaults").subscribe("error getting stickyFaults");
@@ -70,9 +70,9 @@ public class Motor implements AutoCloseable {
         Map<String, Object> props = new HashMap<>();
 
         props.put("speed", m_speedEntry.get());
+        props.put("brushless", m_brushlessEntry.get());
         props.put("amps", m_ampSub.get());
         props.put("voltage", m_voltageSub.get());
-        props.put("brushless", m_brushlessEntry.get());
         props.put("type", m_typeSub.get());
         props.put("faults", m_faultsSub.get());
         props.put("stickyFaults", m_stickySub.get());
@@ -95,8 +95,8 @@ public class Motor implements AutoCloseable {
     @Override
     public void close() {
         m_speedEntry.close();
-        m_ampSub.close();
         m_brushlessEntry.close();
+        m_ampSub.close();
         m_voltageSub.close();
         m_typeSub.close();
         m_faultsSub.close();

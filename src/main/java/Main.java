@@ -67,12 +67,17 @@ public class Main {
 
                         ctx.json(motors.stream()
                                 .collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+
+                        manager.refresh();
                     });
 
                     config.routes.get("/api/motors/{id}", ctx -> {
                         String id = ctx.pathParam("id");
+                        Motor motor = manager.getMotor(id).get();
 
-                        ctx.json(manager.getMotor(id).get().getProperties());
+                        ctx.json(motor.getProperties());
+
+                        manager.refresh();
                     });
 
                     config.routes.post("/api/motors/{id}", ctx -> {
@@ -90,6 +95,8 @@ public class Main {
                             boolean brushless = json.get("brushless").asBoolean();
                             motor.setBrushless(brushless);
                         }
+
+                        manager.refresh();
                     });
                 });
 

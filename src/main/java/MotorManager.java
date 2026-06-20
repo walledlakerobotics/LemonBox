@@ -26,9 +26,6 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception
      */
     public Set<Motor> getMotors() throws Exception {
-
-        refresh();
-
         return currentMotors;
     }
 
@@ -43,9 +40,6 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception if It can't find the motor, or can't refresh.
      */
     public Optional<Motor> getMotor(String id) throws Exception {
-
-        // refresh(); this causes issues
-
         return currentMotors.stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();
@@ -59,6 +53,7 @@ public class MotorManager implements AutoCloseable {
      */
     public void refresh() throws Exception {
         close();
+
         currentMotors = Motor.getMotors(table);
     }
 

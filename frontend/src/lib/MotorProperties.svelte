@@ -56,7 +56,7 @@
     <input
       id="speed-slider"
       type="range"
-      step="0.01"
+      step="0.001"
       min="-1"
       max="1"
       bind:value={speed}

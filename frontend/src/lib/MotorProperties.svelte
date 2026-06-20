@@ -5,13 +5,13 @@
   let speed: number = $state(0);
   let brushless: boolean = $state(false);
 
-  let amps: number = $state(0); 
-  let voltage: number = $state(0); 
+  let amps: number = $state(0);
+  let voltage: number = $state(0);
 
   setInterval(async () => {
-    amps = await motor.amps; 
-    voltage = await motor.voltage; 
-  }, 100); 
+    amps = await motor.amps;
+    voltage = await motor.voltage;
+  }, 100);
 
   $effect(() => {
     motor.speed = speed;
@@ -46,7 +46,7 @@
 
   <div id="electrical-panel">
     <p>Applied Voltage: {voltage}</p>
-    <p>Amps: {amps}</p>
+    <p>Amps: {Math.round(amps)}</p>
   </div>
 </div>
 

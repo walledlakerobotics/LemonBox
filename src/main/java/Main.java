@@ -45,6 +45,7 @@ public class Main {
 
             DisplayEndpoint.main(args);
             DisplayEndpoint.TEAM_NUMBER.setText("roboRIO-308-FRC");
+            DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
 
             try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
@@ -67,17 +68,14 @@ public class Main {
 
                         ctx.json(motors.stream()
                                 .collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
-
-                        manager.refresh();
                     });
 
                     config.routes.get("/api/motors/{id}", ctx -> {
                         String id = ctx.pathParam("id");
+
                         Motor motor = manager.getMotor(id).get();
 
                         ctx.json(motor.getProperties());
-
-                        manager.refresh();
                     });
 
                     config.routes.post("/api/motors/{id}", ctx -> {
@@ -86,17 +84,12 @@ public class Main {
 
                         Motor motor = manager.getMotor(id).get();
 
-                        if (json.has("speed")) {
-                            double speed = json.get("speed").asDouble();
-                            motor.setSpeed(speed);
-                        }
+                        if (json.has("speed"))
+                            motor.setSpeed(json.get("speed").asDouble());
 
-                        if (json.has("brushless")) {
-                            boolean brushless = json.get("brushless").asBoolean();
-                            motor.setBrushless(brushless);
-                        }
+                        if (json.has("brushless"))
+                            motor.setBrushless(json.get("brushless").asBoolean());
 
-                        manager.refresh();
                     });
                 });
 

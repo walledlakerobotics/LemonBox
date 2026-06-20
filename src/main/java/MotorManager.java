@@ -13,10 +13,11 @@ public class MotorManager implements AutoCloseable {
      * this stores a array of motors managing it.
      * 
      * @param table the network table where the motors are being posted
+     * @throws Exception
      */
-    public MotorManager(NetworkTable table) {
+    public MotorManager(NetworkTable table) throws Exception {
         this.table = table;
-        currentMotors = Motor.getMotors(table);
+        currentMotors = updateMotors();
     }
 
     /**
@@ -26,6 +27,8 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception
      */
     public Set<Motor> getMotors() throws Exception {
+        currentMotors = updateMotors();
+
         return currentMotors;
     }
 
@@ -40,6 +43,8 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception if It can't find the motor, or can't refresh.
      */
     public Optional<Motor> getMotor(String id) throws Exception {
+        currentMotors = updateMotors();
+
         return currentMotors.stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst();
@@ -51,14 +56,20 @@ public class MotorManager implements AutoCloseable {
      * 
      * @throws Exception unable to close the subscribers.
      */
-    public void refresh() throws Exception {
+    private Set<Motor> updateMotors() throws Exception {
         close();
 
-        currentMotors = Motor.getMotors(table);
+        return Motor.getMotors(table);
     }
 
     @Override
     public void close() throws Exception {
-        currentMotors.stream().forEach(m -> m.close());
+        if (currentMotors != null) {
+            for (Motor motor : currentMotors) {
+                motor.close();
+            }
+            currentMotors.clear();
+        }
+        currentMotors.clear();
     }
 }

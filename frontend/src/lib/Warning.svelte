@@ -9,10 +9,11 @@
         border: solid;
         border-width: 1px;
         border-color: var(--warning-border);
-        border-radius: 5px;
 
         position: relative;
 
         transition: 0.2s;
+
+        text-align: center;
     }
 </style>

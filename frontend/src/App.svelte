@@ -9,20 +9,18 @@
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
 
-  let currentMotors: Promise<Motor[]> = $state(Motor.getMotors()); 
+  let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
 
   // this will only return the updated array, but it might cause some issues with replicas
   let selectedMotorUuids: string[] = $state([]);
   let isTableConnected: boolean = $state(false);
-  
 
   setInterval(async () => {
     const res = await fetch("/api/connected");
     const data = await res.json();
 
     isTableConnected = data;
-  }, 300); 
-
+  }, 300);
 
   addTab();
 
@@ -51,7 +49,7 @@
 </script>
 
 {#if !isTableConnected}
-    <Warning></Warning>
+  <Warning></Warning>
 {/if}
 
 <div id="tabs-container">
@@ -70,21 +68,20 @@
     motor={m}
     onClose={() => {
       activeTab.selectedMotor = null;
-      selectedMotorUuids.filter((id) => m.uuid == id); // need to remove uuid 
+      selectedMotorUuids.filter((id) => m.uuid == id); // need to remove uuid
     }}
   ></MotorProperties>
 {/snippet}
 
 {#snippet Motors()}
-
   <div id="motor-utils">
-      <button onclick={() => currentMotors = Motor.getMotors()}>refresh</button>
+    <button onclick={() => (currentMotors = Motor.getMotors())}>refresh</button>
   </div>
 
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter(m => !selectedMotorUuids.some((uuid) => uuid === m.uuid)) as motor}
+      {#each motors.filter((m) => !selectedMotorUuids.some((uuid) => uuid === m.uuid)) as motor}
         <MotorTile
           {motor}
           onOpen={() => {
@@ -98,18 +95,12 @@
 {/snippet}
 
 {#if activeTab.selectedMotor != null}
-  <!--{(activeTab.title = `MotorId:${activeTab.selectedMotor.id}`)}-->
   {@render motorProperties(activeTab.selectedMotor)}
 {/if}
 
 {#if activeTab.selectedMotor == null}
   {@render Motors()}
 {/if}
-<!-- 
-<div id="utils">
-  <button id="refresh-button"></button>
-</div> -->
-
 
 <style>
   .tabs {
@@ -151,7 +142,7 @@
     height: 100%;
     aspect-ratio: 1;
   }
-  
+
   #add-button:active {
     background-color: var(--border-color);
     color: var(--button-color);
@@ -164,13 +155,31 @@
   }
 
   #motor-utils {
-    background-color: var(--fg-color);
-    border: solid;
-    border-width: 1px;
-    border-radius: 5px;
+    margin: 0;
+    background-color: var(--button-color);
+
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 
     display: flex;
     flex-direction: row;
+
+    padding: 5px 10px;
+    button {
+      color: var(--text-color);
+      background-color: var(--button-color);
+      border: solid;
+      border-color: var(--border-color);
+      border-width: 1px;
+      border-radius: 5px;
+
+      transition: 0.2s;
+    }
+
+    button:active {
+      color: var(--button-color);
+      background-color: var(--border-color);
+    }
   }
 
   #motor-grid {

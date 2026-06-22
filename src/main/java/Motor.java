@@ -1,4 +1,5 @@
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +36,6 @@ public class Motor implements AutoCloseable {
         m_typeSub = subTable.getStringTopic("type").subscribe("unknown");
         m_faultsSub = subTable.getStringTopic("faults").subscribe("error getting faults!");
         m_stickySub = subTable.getStringTopic("stickyFaults").subscribe("error getting stickyFaults");
-
     }
 
     /**
@@ -68,6 +68,8 @@ public class Motor implements AutoCloseable {
     public Map<String, Object> getProperties() {
         Map<String, Object> props = new HashMap<>();
 
+        // the get function will return a new subscriber
+
         props.put("speed", m_speedEntry.get());
         props.put("brushless", m_brushlessEntry.get());
         props.put("amps", m_ampSub.get());
@@ -85,10 +87,9 @@ public class Motor implements AutoCloseable {
      * @param mainTable main table in the network
      * @return Motors that exist.
      */
-    public static Set<Motor> getMotors(NetworkTable table) {
+    public static Collection<Motor> getMotors(NetworkTable table) {
         return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
-
     }
 
     @Override

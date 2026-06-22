@@ -1,13 +1,11 @@
-import java.util.Objects;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
-
 import edu.wpi.first.networktables.NetworkTable;
 
 public class MotorManager implements AutoCloseable {
 
-    private NetworkTable table;
-    private Set<Motor> currentMotors;
+    private final NetworkTable k_table;
+    private Collection<Motor> m_currentMotors;
 
     /**
      * this stores a array of motors managing it.
@@ -16,60 +14,29 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception
      */
     public MotorManager(NetworkTable table) throws Exception {
-        this.table = table;
-        currentMotors = updateMotors();
+        this.k_table = table;
+        refresh();
     }
 
-    /**
-     * Returns the current motors that was found in the table.
-     * 
-     * @return motors
-     * @throws Exception
-     */
-    public Set<Motor> getMotors() throws Exception {
-        currentMotors = updateMotors();
-
-        return currentMotors;
+    public Collection<Motor> getMotors() throws Exception {
+        return m_currentMotors;
     }
 
-    /**
-     * 
-     * returns an optional Motor, corresponding to the id of the motor you want to
-     * return.
-     * also updating the currentMotors.
-     * 
-     * @param id the motors id
-     * @return Motor
-     * @throws Exception if It can't find the motor, or can't refresh.
-     */
-    public Optional<Motor> getMotor(String id) throws Exception {
-        currentMotors = updateMotors();
-
-        return currentMotors.stream()
-                .filter(m -> Objects.equals(m.getId(), id))
-                .findFirst();
+    public Motor getMotor(String id) {
+        Optional<Motor> motor = m_currentMotors.stream().filter(m -> m.getId() == id).findFirst();
+        return motor.orElseThrow(() -> new IllegalArgumentException(String.format("Motor {%s} Instance is Null!", id)));
     }
 
-    /**
-     * Updates or Refreshes the current motors with the table, also closes the past
-     * motor subscribers.
-     * 
-     * @throws Exception unable to close the subscribers.
-     */
-    private Set<Motor> updateMotors() throws Exception {
-        close();
-
-        return Motor.getMotors(table);
+    public synchronized void refresh() throws Exception {
+        this.close();
+        m_currentMotors = Motor.getMotors(k_table);
     }
 
     @Override
-    public void close() throws Exception {
-        if (currentMotors != null) {
-            for (Motor motor : currentMotors) {
-                motor.close();
-            }
-            currentMotors.clear();
+    public synchronized void close() throws Exception {
+        if (m_currentMotors != null) {
+            m_currentMotors.forEach(m -> m.close());
+            m_currentMotors.clear();
         }
-        currentMotors.clear();
     }
 }

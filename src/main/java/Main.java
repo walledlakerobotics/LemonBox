@@ -64,25 +64,28 @@ public class Main {
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {
-                        Set<Motor> motors = manager.getMotors();
+                        manager.refresh();
 
-                        ctx.json(motors.stream()
-                                .collect(Collectors.toMap(Motor::getId, Motor::getProperties)));
+                        ctx.json(manager.getMotors().stream()
+                                .collect(Collectors.toMap(Motor::getId, Motor::getId)));
                     });
 
                     config.routes.get("/api/motors/{id}", ctx -> {
+                        manager.refresh();
+
                         String id = ctx.pathParam("id");
 
-                        Motor motor = manager.getMotor(id).get();
-
-                        ctx.json(motor.getProperties());
+                        ctx.json(manager.getMotor(id)
+                                .getProperties());
                     });
 
                     config.routes.post("/api/motors/{id}", ctx -> {
+                        manager.refresh();
+
                         JsonNode json = ctx.bodyAsClass(JsonNode.class);
                         String id = ctx.pathParam("id");
 
-                        Motor motor = manager.getMotor(id).get();
+                        Motor motor = manager.getMotor(id);
 
                         if (json.has("speed"))
                             motor.setSpeed(json.get("speed").asDouble());
@@ -95,8 +98,6 @@ public class Main {
 
                 app.start(7070);
             }
-        } catch (IOException e) {
-            throw e;
         } catch (Exception e) {
             e.printStackTrace();
         }

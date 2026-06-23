@@ -34,7 +34,7 @@ public class MotorManager implements AutoCloseable {
         return m_currentMotors.stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Motor " + id + " cannot be called"));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Motor ID: %s, is Null!", id)));
     }
 
     private synchronized void refresh() throws Exception {

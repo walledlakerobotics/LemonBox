@@ -56,6 +56,7 @@ public class Main {
                     config.staticFiles.enableWebjars();
                     config.staticFiles.add("/dist");
 
+                    // this is directing the root to the html index file.
                     config.routes.get("/", ctx -> ctx.redirect("index.html"));
 
                     config.routes.get("/api/connected", ctx -> {

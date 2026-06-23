@@ -22,7 +22,7 @@ import io.javalin.Javalin;
 
 public class Main {
 
-    // TODO: opends isn't finding the robot.
+    // TODO: opends isn't finding the robot, fix exeptions being thrown.
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -64,24 +64,17 @@ public class Main {
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {
-                        manager.refresh();
-
                         ctx.json(manager.getMotors().stream()
                                 .collect(Collectors.toMap(Motor::getId, Motor::getId)));
                     });
 
                     config.routes.get("/api/motors/{id}", ctx -> {
-                        manager.refresh();
-
                         String id = ctx.pathParam("id");
 
-                        ctx.json(manager.getMotor(id)
-                                .getProperties());
+                        ctx.json(manager.getMotor(id).getProperties());
                     });
 
                     config.routes.post("/api/motors/{id}", ctx -> {
-                        manager.refresh();
-
                         JsonNode json = ctx.bodyAsClass(JsonNode.class);
                         String id = ctx.pathParam("id");
 

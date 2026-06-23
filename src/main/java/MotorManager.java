@@ -1,4 +1,5 @@
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import edu.wpi.first.networktables.NetworkTable;
 
@@ -8,7 +9,7 @@ public class MotorManager implements AutoCloseable {
     private Collection<Motor> m_currentMotors;
 
     /**
-     * this stores a array of motors managing it.
+     * this stores a Collection of motors managing it.
      * 
      * @param table the network table where the motors are being posted
      * @throws Exception
@@ -18,16 +19,25 @@ public class MotorManager implements AutoCloseable {
         refresh();
     }
 
+    /**
+     * Gets the current motors that are cached.
+     * 
+     * @return cached Motors.
+     * @throws Exception
+     */
     public Collection<Motor> getMotors() throws Exception {
+        this.refresh();
         return m_currentMotors;
     }
 
-    public Motor getMotor(String id) {
-        Optional<Motor> motor = m_currentMotors.stream().filter(m -> m.getId() == id).findFirst();
-        return motor.orElseThrow(() -> new IllegalArgumentException(String.format("Motor {%s} Instance is Null!", id)));
+    public Motor getMotor(String id) throws Exception {
+        return m_currentMotors.stream()
+                .filter(m -> Objects.equals(m.getId(), id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Motor " + id + " cannot be called"));
     }
 
-    public synchronized void refresh() throws Exception {
+    private synchronized void refresh() throws Exception {
         this.close();
         m_currentMotors = Motor.getMotors(k_table);
     }

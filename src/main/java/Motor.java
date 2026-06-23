@@ -81,6 +81,17 @@ public class Motor implements AutoCloseable {
         return props;
     }
 
+    @Override
+    public void close() {
+        m_speedEntry.close();
+        m_brushlessEntry.close();
+        m_ampSub.close();
+        m_voltageSub.close();
+        m_typeSub.close();
+        m_faultsSub.close();
+        m_stickySub.close();
+    }
+
     /**
      * getting motors
      * 
@@ -92,14 +103,4 @@ public class Motor implements AutoCloseable {
                 .collect(Collectors.toSet());
     }
 
-    @Override
-    public void close() {
-        m_speedEntry.close();
-        m_brushlessEntry.close();
-        m_ampSub.close();
-        m_voltageSub.close();
-        m_typeSub.close();
-        m_faultsSub.close();
-        m_stickySub.close();
-    }
 }

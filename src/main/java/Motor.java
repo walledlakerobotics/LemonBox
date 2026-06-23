@@ -2,7 +2,6 @@
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import edu.wpi.first.networktables.BooleanEntry;

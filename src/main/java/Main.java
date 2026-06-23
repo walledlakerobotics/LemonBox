@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;

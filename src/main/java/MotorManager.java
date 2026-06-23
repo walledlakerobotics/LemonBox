@@ -1,6 +1,5 @@
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 import edu.wpi.first.networktables.NetworkTable;
 
 public class MotorManager implements AutoCloseable {

@@ -46,6 +46,7 @@ public class Main {
             DisplayEndpoint.TEAM_NUMBER.setText("roboRIO-308-FRC");
             DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
+            // DisplayEndpoint.FRAME.setVisible(false);
 
             try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {

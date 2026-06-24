@@ -46,7 +46,8 @@
   function removeTab(index: number) {
     if (tabs.length <= 1) return;
 
-    // needs to disable the motor on tab close
+    const tab = tabs.at(index);
+    tab?.onClose();
 
     tabs.splice(index, 1);
   }

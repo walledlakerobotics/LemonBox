@@ -4,6 +4,7 @@
 
   let speed: number = $state(0);
   let brushless: boolean = $state(false);
+  let disabled: boolean = $state(true);
 
   let amps: number = $state(0);
   let voltage: number = $state(0);
@@ -17,83 +18,92 @@
     motor.speed = speed;
     motor.brushless = brushless;
   });
+
+  $effect(() => {
+    speed = 0;
+    motor.disabled = disabled;
+  });
 </script>
 
-<div id="dashboard-container">
-  <div id="display-container">
-    {#await motor.getImageDir() then motorImage}
-      <img src={motorImage} alt="" />
-    {/await}
+<div id="wrapper">
+  <div id="dashboard-container">
+    <div id="display-container">
+      {#await motor.getImageDir() then motorImage}
+        <img src={motorImage} alt="" />
+      {/await}
 
-    {#await motor.getDisplayName() then displayName}
-      <h1>{displayName}</h1>
-    {/await}
+      {#await motor.getDisplayName() then displayName}
+        <h1>{displayName}</h1>
+      {/await}
 
-    <h2>{motor.id}</h2>
+      <h2>{motor.id}</h2>
+    </div>
+
+    <div id="faults-panel">
+      {#await motor.faults then f}
+        <p>{f}</p>
+      {/await}
+
+      <p>Stick-faults----</p>
+
+      {#await motor.stickyFaults then f}
+        <p>{f}</p>
+      {/await}
+    </div>
+
+    <div id="electrical-panel">
+      <p>Applied Voltage: {voltage}</p>
+      <p>Amps: {amps}</p>
+    </div>
   </div>
 
-  <div id="faults-panel">
-    {#await motor.faults then f}
-      <p>{f}</p>
-    {/await}
+  <div id="control-panel">
+    <label for="speed-slider">Speed: {speed}</label>
+    <div class="controls">
+      <input
+        id="speed-slider"
+        type="range"
+        step="0.01"
+        min="-1"
+        max="1"
+        bind:value={speed}
+      />
 
-    <p>Stick-faults----</p>
+      <div id="check-boxes">
+        <label for="brushless-checkbox">brushless</label>
+        <input
+          id="brushless-checkbox"
+          title="brushless"
+          type="checkbox"
+          bind:checked={brushless}
+        />
 
-    {#await motor.stickyFaults then f}
-      <p>{f}</p>
-    {/await}
+        <label for="disabled-checkbox">disabled</label>
+        <input
+          id="disabled-checkbox"
+          title="disabled"
+          type="checkbox"
+          bind:checked={disabled}
+        />
+      </div>
+    </div>
+
+    <button
+      id="close-button"
+      onclick={() => {
+        motor.disabled = true;
+        onClose();
+      }}
+      aria-label="close">Close</button
+    >
   </div>
-
-  <div id="electrical-panel">
-    <p>Applied Voltage: {voltage}</p>
-    <p>Amps: {Math.round(amps)}</p>
-  </div>
-</div>
-
-<div id="control-panel">
-  <label for="speed-slider">Speed: {speed}</label>
-  <div class="controls">
-    <input
-      id="speed-slider"
-      type="range"
-      step="0.01"
-      min="-1"
-      max="1"
-      bind:value={speed}
-    />
-
-    <label for="brushless-checkbox">brushless</label>
-    <input
-      id="brushless-checkbox"
-      title="brushless"
-      type="checkbox"
-      bind:checked={brushless}
-    />
-
-    <label for="disabled-checkbox">disabled</label>
-    <input
-      id="disabled-checkbox"
-      title="disabled"
-      type="checkbox"
-      bind:checked={motor.disabled}
-    />
-  </div>
-
-  <button
-    id="close-button"
-    onclick={() => {
-      motor.disabled = true;
-      onClose();
-    }}
-    aria-label="close">Close</button
-  >
 </div>
 
 <style>
   #dashboard-container {
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 1vw;
   }
 
   #display-container {
@@ -185,5 +195,22 @@
     color: var(--fg-color);
     border: none;
     border-radius: 5px;
+  }
+
+  #check-boxes {
+    background-color: var(--button-color);
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    padding: 1vw;
+
+    border-radius: 5px;
+  }
+
+  #wrapper {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1vh;
   }
 </style>

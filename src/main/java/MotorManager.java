@@ -24,18 +24,28 @@ public class MotorManager implements AutoCloseable {
      * @return cached Motors.
      * @throws Exception
      */
-    public Collection<Motor> getMotors() throws Exception {
+    public synchronized Collection<Motor> getMotors() throws Exception {
         this.refresh();
         return m_currentMotors;
     }
 
-    public Motor getMotor(String id) throws Exception {
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public synchronized Motor getMotor(String id) throws Exception {
         return m_currentMotors.stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Motor ID: %s, is Null!", id)));
     }
 
+    /**
+     * 
+     * @throws Exception
+     */
     private synchronized void refresh() throws Exception {
         this.close();
         m_currentMotors = Motor.getMotors(k_table);

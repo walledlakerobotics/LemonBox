@@ -67,8 +67,8 @@
   <MotorProperties
     motor={m}
     onClose={() => {
+      selectedMotorUuids = selectedMotorUuids.filter((id) => id !== m.uuid);
       activeTab.selectedMotor = null;
-      selectedMotorUuids.filter((id) => m.uuid == id); // need to remove uuid
     }}
   ></MotorProperties>
 {/snippet}
@@ -87,6 +87,7 @@
           onOpen={() => {
             activeTab.selectedMotor = motor;
             selectedMotorUuids.push(motor.uuid);
+            console.log(selectedMotorUuids);
           }}
         ></MotorTile>
       {/each}

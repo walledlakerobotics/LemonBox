@@ -20,7 +20,7 @@
   });
 
   $effect(() => {
-    speed = 0;
+    motor.speed = 0;
     motor.disabled = disabled;
   });
 </script>

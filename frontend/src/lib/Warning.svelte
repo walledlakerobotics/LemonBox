@@ -1,5 +1,9 @@
+<script lang="ts">
+    let message: string = $props();
+</script>
+
 <div id="warning">
-    <p>Warning the Tables are Disconnected!</p>
+    <p>{message}</p>
 </div>
 
 <style>

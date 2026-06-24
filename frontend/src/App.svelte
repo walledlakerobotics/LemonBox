@@ -25,6 +25,8 @@
   addTab();
 
   function addTab() {
+    if (tabs.length >= 6) return;
+
     const tab: TabData = {
       uuid: crypto.randomUUID(),
       title: "Motors",
@@ -44,12 +46,18 @@
   function removeTab(index: number) {
     if (tabs.length <= 1) return;
 
+    // needs to disable the motor on tab close
+
     tabs.splice(index, 1);
   }
 </script>
 
 {#if !isTableConnected}
-  <Warning></Warning>
+  <Warning message={"Warning NetworkTables are Disconnected!"}></Warning>
+{/if}
+
+{#if tabs.length >= 6}
+  <Warning message={"Reached Max Amount of Tabs"}></Warning>
 {/if}
 
 <div id="tabs-container">
@@ -67,7 +75,7 @@
   <MotorProperties
     motor={m}
     onClose={() => {
-      selectedMotorUuids = selectedMotorUuids.filter((id) => id !== m.uuid);
+      selectedMotorUuids = selectedMotorUuids.filter((id) => id == m.uuid);
       activeTab.selectedMotor = null;
     }}
   ></MotorProperties>

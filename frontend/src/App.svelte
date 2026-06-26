@@ -10,9 +10,8 @@
   let activeTab: TabData = $derived(tabs[0]);
 
   let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
+  let selectedMotorIds: string[] = $state([]);
 
-  // this will only return the updated array, but it might cause some issues with replicas
-  let selectedMotorUuids: string[] = $state([]);
   let isTableConnected: boolean = $state(false);
 
   setInterval(async () => {
@@ -51,6 +50,10 @@
 
     tabs.splice(index, 1);
   }
+
+  function refresh() {
+    currentMotors = Motor.getMotors();
+  }
 </script>
 
 {#if !isTableConnected}
@@ -76,7 +79,8 @@
   <MotorProperties
     motor={m}
     onClose={() => {
-      selectedMotorUuids = selectedMotorUuids.filter((id) => id == m.uuid);
+      selectedMotorIds.filter((s) => s == activeTab.selectedMotor?.uuid);
+
       activeTab.selectedMotor = null;
     }}
   ></MotorProperties>
@@ -84,19 +88,19 @@
 
 {#snippet Motors()}
   <div id="motor-utils">
-    <button onclick={() => (currentMotors = Motor.getMotors())}>refresh</button>
+    <button onclick={refresh}>refresh</button>
   </div>
 
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter((m) => !selectedMotorUuids.some((uuid) => uuid === m.uuid)) as motor}
+      {#each motors.filter((m) => selectedMotorIds.includes(m.uuid)) as motor}
         <MotorTile
           {motor}
           onOpen={() => {
+            selectedMotorIds = [...selectedMotorIds, motor.uuid]; // also re-inits the vector or array.
             activeTab.selectedMotor = motor;
-            selectedMotorUuids.push(motor.uuid);
-            console.log(selectedMotorUuids);
+            refresh();
           }}
         ></MotorTile>
       {/each}

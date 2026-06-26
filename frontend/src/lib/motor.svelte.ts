@@ -83,6 +83,10 @@ export class Motor {
     }
 
     public set disabled(disabled: boolean) {
+
+        if (disabled)
+            this.speed = 0;
+
         this._disabled = disabled;
     }
 

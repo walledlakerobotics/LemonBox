@@ -30,11 +30,11 @@
       uuid: crypto.randomUUID(),
       title: "Motors",
       selectedMotor: null,
-      onOpen: () =>
-        (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
+      onOpen: () => {
+        activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
+      },
       onClose: () => {
         if (tab.selectedMotor != null) tab.selectedMotor.disabled = true;
-
         removeTab(tabs.findIndex((t) => t.uuid == tab.uuid));
       },
     };
@@ -79,6 +79,7 @@
   <MotorProperties
     motor={m}
     onClose={() => {
+      // removes the uuid from the list
       selectedMotorIds.filter((s) => s == activeTab.selectedMotor?.uuid);
 
       activeTab.selectedMotor = null;

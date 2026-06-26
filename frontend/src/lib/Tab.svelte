@@ -32,8 +32,14 @@
         transition: 0.2s;
     }
 
+    #tab:active {
+        color: var(--button-color);
+        background-color: var(--border-color);
+    }
+
     #remove-button {
         transition: 0.2s;
+        background-color: rgba(0, 0, 0, 0);
     }
     #remove-button:active {
         color: white;

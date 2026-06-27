@@ -42,11 +42,15 @@ public class Main {
         NetworkTable lemonTable = inst.getTable("LemonBox");
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
-            DisplayEndpoint.main(args);
-            DisplayEndpoint.TEAM_NUMBER.setText("roboRIO-308-FRC");
+            DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
             // DisplayEndpoint.FRAME.setVisible(false);
+            DisplayEndpoint.main(args);
+
+            // while (!DisplayEndpoint.IS_ENABLED.isEnabled()) {
+            // DisplayEndpoint.IS_ENABLED.setEnabled(true);
+            // }
 
             try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {

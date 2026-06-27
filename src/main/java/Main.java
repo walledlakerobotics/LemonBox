@@ -35,11 +35,13 @@ public class Main {
                 Core.NATIVE_LIBRARY_NAME, "cscorejni");
 
         // inits network table :3
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        final NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
         inst.setServer("roboRIO-308-FRC");
         inst.startClient4("LemonClient");
 
-        NetworkTable lemonTable = inst.getTable("LemonBox");
+        final NetworkTable lemonTable = inst.getTable("LemonBox");
+
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
             DisplayEndpoint.TEAM_NUMBER.setText("308");
@@ -48,11 +50,11 @@ public class Main {
             DisplayEndpoint.ROBOT_DRIVE_MODE.setEnabled(true);
             DisplayEndpoint.main(args);
 
-            try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
+            try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
                 // configures local host routes
 
-                Javalin app = Javalin.create(config -> {
+                final Javalin app = Javalin.create(config -> {
                     config.staticFiles.enableWebjars();
                     config.staticFiles.add("/dist");
 

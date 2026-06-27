@@ -45,12 +45,8 @@ public class Main {
             DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
-            // DisplayEndpoint.FRAME.setVisible(false);
+            DisplayEndpoint.ROBOT_DRIVE_MODE.setEnabled(true);
             DisplayEndpoint.main(args);
-
-            // while (!DisplayEndpoint.IS_ENABLED.isEnabled()) {
-            // DisplayEndpoint.IS_ENABLED.setEnabled(true);
-            // }
 
             try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {

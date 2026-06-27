@@ -131,6 +131,7 @@
     scrollbar-width: 1px;
     scrollbar-color: var(--border-color);
     scroll-behavior: smooth;
+    scrollbar-width: none;
   }
 
   #add-button {
@@ -177,6 +178,7 @@
     flex-direction: row;
 
     padding: 5px 10px;
+
     button {
       color: var(--text-color);
       background-color: var(--button-color);
@@ -202,7 +204,8 @@
 
     overflow-x: scroll;
 
-    scrollbar-width: 5px;
     padding: 0 10px 0 10px;
+
+    scrollbar-width: none;
   }
 </style>

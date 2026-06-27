@@ -15,9 +15,6 @@
         border-color: var(--warning-border);
 
         position: relative;
-
-        transition: 0.2s;
-
         text-align: center;
     }
 </style>

@@ -20,8 +20,6 @@ export class Motor {
             return;
         }
 
-        this.speed.then(speed => console.log(speed));
-
         fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({

@@ -45,9 +45,6 @@
   function removeTab(index: number) {
     if (tabs.length <= 1) return;
 
-    const tab = tabs.at(index);
-    tab?.onClose();
-
     tabs.splice(index, 1);
   }
 
@@ -57,11 +54,11 @@
 </script>
 
 {#if !isTableConnected}
-  <Warning message={"Warning NetworkTables are Disconnected!"}></Warning>
+  <Warning message="Network Tables are Disconnected!"></Warning>
 {/if}
 
 {#if tabs.length >= 6}
-  <Warning message={"Reached Max Amount of Tabs"}></Warning>
+  <Warning message="Reached Max Amount of Tabs"></Warning>
 {/if}
 
 <div id="tabs-container">

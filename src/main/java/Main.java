@@ -45,7 +45,6 @@ public class Main {
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
             DisplayEndpoint.main(args);
-
             DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);

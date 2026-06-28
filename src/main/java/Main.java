@@ -44,11 +44,12 @@ public class Main {
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
+            DisplayEndpoint.main(args);
+
             DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
             DisplayEndpoint.ROBOT_DRIVE_MODE.setEnabled(true);
-            DisplayEndpoint.main(args);
 
             try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {

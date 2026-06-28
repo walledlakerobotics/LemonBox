@@ -35,37 +35,32 @@ public class Main {
                 Core.NATIVE_LIBRARY_NAME, "cscorejni");
 
         // inits network table :3
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        final NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
         inst.setServer("roboRIO-308-FRC");
         inst.startClient4("LemonClient");
 
-        NetworkTable lemonTable = inst.getTable("LemonBox");
+        final NetworkTable lemonTable = inst.getTable("LemonBox");
+
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
             DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.USB_CONNECT.setEnabled(true);
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
-            // DisplayEndpoint.FRAME.setVisible(false);
+            DisplayEndpoint.ROBOT_DRIVE_MODE.setEnabled(true);
             DisplayEndpoint.main(args);
 
-            // while (!DisplayEndpoint.IS_ENABLED.isEnabled()) {
-            // DisplayEndpoint.IS_ENABLED.setEnabled(true);
-            // }
-
-            try (MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
+            try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
                 // configures local host routes
 
-                Javalin app = Javalin.create(config -> {
+                final Javalin app = Javalin.create(config -> {
                     config.staticFiles.enableWebjars();
                     config.staticFiles.add("/dist");
 
                     // this is directing the root to the html index file.
                     config.routes.get("/", ctx -> ctx.redirect("index.html"));
-
-                    config.routes.get("/api/connected", ctx -> {
-                        ctx.json(inst.isConnected());
-                    });
+                    config.routes.get("/api/connected", ctx -> ctx.json(inst.isConnected()));
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {

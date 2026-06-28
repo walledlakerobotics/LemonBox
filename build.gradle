@@ -62,7 +62,10 @@ shadowJar {
     archiveBaseName = "LemonBox"
     archiveVersion = ""
     exclude("module-info.class")
-    archiveClassifier.set(wpilibTools.currentPlatform.platformName)
+    // archiveClassifier.set(wpilibTools.currentPlatform.platformName)
+
+    // this will need to change back if we're testing or compiling for a different os or architecture
+    archiveClassifier.set("linuxarm64")
 
     manifest {
         attributes(

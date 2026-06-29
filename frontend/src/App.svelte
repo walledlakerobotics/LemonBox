@@ -3,13 +3,13 @@
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
-  import type { TabData } from "./lib/tabdata";
+  import type { TabData } from "./lib/tabdata.svelte";
   import Warning from "./lib/Warning.svelte";
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
-
   let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
+
   let selectedMotorIds: string[] = $state([]);
 
   let isTableConnected: boolean = $state(false);
@@ -77,9 +77,7 @@
   <MotorProperties
     motor={m}
     onClose={() => {
-      // removes the uuid from the list
-      selectedMotorIds.filter((s) => s == activeTab.selectedMotor?.uuid);
-
+      selectedMotorIds.filter((id) => id == m.uuid);
       activeTab.selectedMotor = null;
     }}
   ></MotorProperties>
@@ -97,8 +95,9 @@
         <MotorTile
           {motor}
           onOpen={() => {
-            selectedMotorIds = [...selectedMotorIds, motor.uuid]; // also re-inits the vector or array.
             activeTab.selectedMotor = motor;
+            selectedMotorIds.push(motor.uuid);
+
             refresh();
           }}
         ></MotorTile>
@@ -107,13 +106,15 @@
   </div>
 {/snippet}
 
-{#if activeTab.selectedMotor != null}
-  {@render motorProperties(activeTab.selectedMotor)}
-{/if}
+<div id="content">
+  {#if activeTab.selectedMotor != null}
+    {@render motorProperties(activeTab.selectedMotor)}
+  {/if}
 
-{#if activeTab.selectedMotor == null}
-  {@render Motors()}
-{/if}
+  {#if activeTab.selectedMotor == null}
+    {@render Motors()}
+  {/if}
+</div>
 
 <style>
   .tabs {
@@ -208,5 +209,9 @@
     padding: 0 10px 0 10px;
 
     scrollbar-width: none;
+  }
+
+  #content {
+    transition: 0.2s;
   }
 </style>

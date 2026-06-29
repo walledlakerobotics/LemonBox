@@ -6,7 +6,6 @@ export class Motor {
         public readonly id: string,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
-
         $effect(() => {
             if (this.disabled)
                 this.speed = 0;

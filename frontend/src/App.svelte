@@ -21,6 +21,11 @@
     isTableConnected = data;
   }, 300);
 
+  $effect(() => {
+    tabs.forEach((t) => (t.selected = false));
+    activeTab.selected = true;
+  });
+
   addTab();
 
   function addTab() {
@@ -29,6 +34,7 @@
     const tab: TabData = {
       uuid: crypto.randomUUID(),
       title: "Motors",
+      selected: false,
       selectedMotor: null,
       onOpen: () => {
         activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
@@ -44,7 +50,6 @@
 
   function removeTab(index: number) {
     if (tabs.length <= 1) return;
-
     tabs.splice(index, 1);
   }
 

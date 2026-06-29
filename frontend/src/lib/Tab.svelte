@@ -4,7 +4,7 @@
     let { tabData }: { tabData: TabData } = $props();
 </script>
 
-<div id="tab">
+<div id="tab" class:selected={tabData.selected}>
     <button id="tab-button" onclick={tabData.onOpen}>
         {tabData.title}
     </button>
@@ -15,7 +15,7 @@
 </div>
 
 <style>
-    #tab {
+    div {
         display: flex;
         flex-direction: row;
         color: var(--border-color);
@@ -46,5 +46,15 @@
         color: var(--text-color);
         border: none;
         background-color: #00000000;
+    }
+
+    .selected {
+        color: var(--button-color);
+        background-color: var(--border-color);
+        border-color: var(--border-color);
+
+        button {
+            color: var(--button-color);
+        }
     }
 </style>

@@ -7,25 +7,38 @@ plugins {
     id "com.github.node-gradle.node" version "7.1.0"
 }
 
-node {
-    version = '26.3.1'
-    npmVersion = '11.17.0'
+// node {
+//     version = '26.3.1'
+//     npmVersion = '11.17.0'
 
-    download = true
+//     download = true
 
-}
+// }
 
-npm_run_build {
-    inputs.files fileTree("frontend/public")
-    inputs.files fileTree("frontend/src")
+// npm_run_build {
 
-    inputs.file 'frontend/package.json'
-    inputs.file 'frontend/package-lock.json'
+//     workingDir = file("frontend")
 
-    outputs.dir 'build'
-}
+//     inputs.files fileTree("public")
+//     inputs.files fileTree("src")
 
-assemble.dependsOn npm_run_build
+//     inputs.file 'package.json'
+//     inputs.file 'package-lock.json'
+
+//     outputs.dir 'build'
+// }
+
+// build_copy {
+//     dependsOn npm_run_build
+
+//     from('frontend/dist')
+//     into('src/main/resource')
+// }
+
+
+// assemble.dependsOn npm_run_build
+// assemble.dependsOn build_copy
+
 
 application {
     mainClass = 'Main'

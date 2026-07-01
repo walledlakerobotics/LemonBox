@@ -5,8 +5,14 @@
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-  <img src="assets/imgs/krakenX60.png" alt="" />
-  <h1>TalonFX</h1>
+  {#await motor.getImageDir() then dir}
+    <img src={dir} alt="" />
+  {/await}
+
+  {#await motor.getDisplayName() then display}
+    <h1>{display}</h1>
+  {/await}
+
   <h2>{motor.id}</h2>
 </button>
 

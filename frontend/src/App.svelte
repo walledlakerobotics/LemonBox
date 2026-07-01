@@ -10,8 +10,6 @@
   let activeTab: TabData = $derived(tabs[0]);
   let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
 
-  let selectedMotorIds: string[] = $state([]);
-
   let isTableConnected: boolean = $state(false);
 
   setInterval(async () => {
@@ -77,7 +75,6 @@
   <MotorProperties
     motor={m}
     onClose={() => {
-      selectedMotorIds.filter((id) => id == m.uuid);
       activeTab.selectedMotor = null;
     }}
   ></MotorProperties>
@@ -91,12 +88,11 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter((m) => selectedMotorIds.includes(m.uuid)) as motor}
+      {#each motors as motor}
         <MotorTile
           {motor}
           onOpen={() => {
             activeTab.selectedMotor = motor;
-            selectedMotorIds.push(motor.uuid);
 
             refresh();
           }}

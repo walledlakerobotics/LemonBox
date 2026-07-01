@@ -102,4 +102,3 @@ shadowJar {
 wrapper {
     gradleVersion = '8.11'
 }
-

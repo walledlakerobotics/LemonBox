@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { TabData } from "./tabdata";
+    import type { TabData } from "./tabdata.svelte";
 
     let { tabData }: { tabData: TabData } = $props();
 </script>

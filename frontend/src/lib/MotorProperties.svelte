@@ -18,6 +18,10 @@
     motor.speed = speed;
     motor.brushless = brushless;
   });
+
+  $effect(() => {
+    motor.disabled = disabled;
+  });
 </script>
 
 <div id="wrapper">

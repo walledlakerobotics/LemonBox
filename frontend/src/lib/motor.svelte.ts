@@ -6,10 +6,7 @@ export class Motor {
         public readonly id: string,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
-        // $effect(() => {
-        //     if (this.disabled)
-        //         this.speed = 0;
-        // });
+
     }
 
     public get speed(): Promise<number> {
@@ -19,8 +16,16 @@ export class Motor {
     }
 
     public set speed(speed: number) {
-        if (this.disabled && speed != 0) {
+        if (this.disabled) {
             console.log("warning motor is disabled");
+
+            fetch(this.postPath, {
+                method: "POST",
+                body: JSON.stringify({
+                    speed: 0,
+                }),
+            });
+
             return;
         }
 

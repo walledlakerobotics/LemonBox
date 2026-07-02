@@ -69,13 +69,11 @@
       />
 
       <div id="check-boxes">
-        <label for="brushless-checkbox">brushless</label>
-        <input
-          id="brushless-checkbox"
-          title="brushless"
-          type="checkbox"
-          bind:checked={brushless}
-        />
+        {#await motor.type then t}
+          {#if t == "sparkmax"}
+            {@render brushlessSnip()}
+          {/if}
+        {/await}
 
         <label for="disabled-checkbox">disabled</label>
         <input
@@ -97,6 +95,16 @@
     >
   </div>
 </div>
+
+{#snippet brushlessSnip()}
+  <label for="brushless-checkbox">brushless</label>
+  <input
+    id="brushless-checkbox"
+    title="brushless"
+    type="checkbox"
+    bind:checked={brushless}
+  />
+{/snippet}
 
 <style>
   #dashboard-container {

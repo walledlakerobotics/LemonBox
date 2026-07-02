@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FaultMessage from "./FaultMessage.svelte";
   import type { Motor } from "./motor.svelte.ts";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
@@ -39,14 +40,10 @@
     </div>
 
     <div id="faults-panel">
-      {#await motor.faults then f}
-        <p>{f}</p>
-      {/await}
-
-      <p>Stick-faults----</p>
-
-      {#await motor.stickyFaults then f}
-        <p>{f}</p>
+      {#await motor.faults then faults}
+        {#each faults as f}
+          <FaultMessage fault={f}></FaultMessage>
+        {/each}
       {/await}
     </div>
 
@@ -153,9 +150,17 @@
     border-width: 1px;
     border-color: var(--border-color);
     color: var(--text-color);
+
+    display: flex;
+
+    flex: 1 min-content;
+    flex-direction: column;
+    gap: 5px;
   }
 
   #electrical-panel {
+    display: flex;
+    flex-direction: column;
     background-color: var(--fg-color);
     padding: 1vw;
     border-radius: 5px;
@@ -163,6 +168,8 @@
     border-width: 1px;
     border-color: var(--border-color);
     color: var(--text-color);
+
+    flex: 1 min-content;
   }
 
   #control-panel {

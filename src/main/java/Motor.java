@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.StringArraySubscriber;
 import edu.wpi.first.networktables.StringSubscriber;
 
 public class Motor implements AutoCloseable {
@@ -18,8 +19,8 @@ public class Motor implements AutoCloseable {
     private DoubleSubscriber m_ampSub;
     private DoubleSubscriber m_voltageSub;
     private StringSubscriber m_typeSub;
-    private StringSubscriber m_faultsSub;
-    private StringSubscriber m_stickySub;
+    private StringArraySubscriber m_faultsSub;
+    private StringArraySubscriber m_stickySub;
 
     /**
      * 
@@ -33,8 +34,8 @@ public class Motor implements AutoCloseable {
         m_ampSub = subTable.getDoubleTopic("amps").subscribe(0);
         m_voltageSub = subTable.getDoubleTopic("voltage").subscribe(0);
         m_typeSub = subTable.getStringTopic("type").subscribe("unknown");
-        m_faultsSub = subTable.getStringTopic("faults").subscribe("error getting faults!");
-        m_stickySub = subTable.getStringTopic("stickyFaults").subscribe("error getting stickyFaults");
+        m_faultsSub = subTable.getStringArrayTopic("faults").subscribe(new String[0]);
+        m_stickySub = subTable.getStringArrayTopic("stickyFaults").subscribe(new String[0]);
     }
 
     /**

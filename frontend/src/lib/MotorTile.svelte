@@ -15,6 +15,8 @@
     <h1>Loading...</h1>
   {:then display}
     <h1>{display}</h1>
+  {:catch}
+    <img src="assets/imgs/placeHolder.png" alt="" />
   {/await}
 
   <h2>{motor.id}</h2>

@@ -31,6 +31,8 @@
       <img src="assets/imgs/placeHolder.png" alt="" />
     {:then i}
       <img src={i} alt="" />
+    {:catch}
+      <img src="assets/imgs/placeHolder.png" alt="" />
     {/await}
 
     {#await motor.getDisplayName()}

@@ -48,7 +48,7 @@ public class Main {
             DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.IS_ENABLED.setEnabled(true);
 
-            DisplayEndpoint.FRAME.setVisible(false);
+            // DisplayEndpoint.FRAME.setVisible(false);
 
             try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
@@ -79,11 +79,6 @@ public class Main {
                         String id = ctx.pathParam("id");
 
                         Motor motor = manager.getMotor(id);
-
-                        if (!DisplayEndpoint.IS_ENABLED.isEnabled()) {
-                            DisplayEndpoint.ESTOP_BTN.setEnabled(false);
-                            DisplayEndpoint.IS_ENABLED.setEnabled(true);
-                        }
 
                         if (json.has("speed"))
                             motor.setSpeed(json.get("speed").asDouble());

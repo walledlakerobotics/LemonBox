@@ -44,9 +44,6 @@ export class Motor {
     }
 
     public set brushless(brushless: boolean) {
-        if (this.disabled)
-            return;
-
         fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({

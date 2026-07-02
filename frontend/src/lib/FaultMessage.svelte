@@ -8,10 +8,8 @@
 
 <style>
     #fault {
-        padding-bottom: 1vh;
-        padding-top: 1vh;
-        padding-left: 1vw;
-        padding-right: 1vw;
+        display: flex;
+        flex-direction: column;
 
         background-color: var(--warning-bg);
         color: var(--warning-text);

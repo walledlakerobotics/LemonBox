@@ -27,10 +27,9 @@
 
     transition: 0.2s;
 
-    padding: 5px;
+    padding: 2vh;
 
-    display: flex;
-    flex-direction: column;
+    display: block;
 
     height: 100%;
 
@@ -42,7 +41,6 @@
 
     img {
       display: block;
-      /* margin-top: auto; */
       max-width: 100%;
       object-fit: cover;
       aspect-ratio: 1 / 1;

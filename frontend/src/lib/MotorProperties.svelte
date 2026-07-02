@@ -108,22 +108,24 @@
     display: flex;
     flex-direction: row;
     gap: 1vw;
+    padding: 1vw;
+    margin-bottom: 1vh;
+  }
+
+  #display-container img {
+    width: 100%;
+    max-width: 26vw;
+    height: auto;
   }
 
   #display-container {
     background-color: var(--fg-color);
     padding: 1vw;
     border-radius: 5px;
-    border: solid;
-    border-width: 1px;
-    border-color: var(--border-color);
+    border: 1px solid var(--border-color);
     color: var(--text-color);
-    margin: 0 10px 0 10px;
 
-    img {
-      width: 26vw;
-      border-radius: 5px;
-    }
+    flex: auto;
   }
 
   #display-container h1,
@@ -135,35 +137,28 @@
     flex: 1;
     margin: 2vh;
   }
+
   .controls {
-    width: 100%;
     display: flex;
-    flex-direction: row;
+    gap: 1rem;
     align-items: center;
-    justify-content: space-between;
+  }
+
+  #speed-slider {
+    flex: 1;
+    min-width: 0;
   }
   #faults-panel {
     background-color: var(--fg-color);
-    padding: 1vw;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
     color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
 
     display: flex;
     flex-direction: column;
-    gap: 5px;
 
-    flex: 1;
-
-    position: relative;
-
-    max-width: 400px;
-    max-height: 80vh;
-
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
-
-    scroll-behavior: smooth;
   }
 
   #electrical-panel {
@@ -173,13 +168,16 @@
     border: 1px solid var(--border-color);
     color: var(--text-color);
 
+    height: auto;
+
     display: flex;
-    flex: 1 1 min-content;
     flex-direction: column;
     gap: 5px;
 
     overflow-y: auto;
     overflow-x: hidden;
+
+    flex: auto;
   }
 
   #control-panel {
@@ -192,13 +190,13 @@
     color: var(--text-color);
     margin: 0 10px 10px 10px;
 
-    position: relative;
-
     gap: 1dvh;
     flex: 0 1 min-content;
 
     display: flex;
     flex-direction: column;
+
+    margin-bottom: auto;
   }
 
   #close-button {
@@ -229,12 +227,5 @@
     padding: 1vw;
 
     border-radius: 5px;
-  }
-
-  #wrapper {
-    display: flex;
-    flex-direction: column;
-
-    gap: 1vh;
   }
 </style>

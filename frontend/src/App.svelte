@@ -24,6 +24,10 @@
     activeTab.selected = true;
   });
 
+  $effect(() => {
+    currentMotors = Motor.getMotors();
+  });
+
   addTab();
 
   function addTab() {
@@ -49,10 +53,6 @@
   function removeTab(index: number) {
     if (tabs.length <= 1) return;
     tabs.splice(index, 1);
-  }
-
-  function refresh() {
-    currentMotors = Motor.getMotors();
   }
 </script>
 
@@ -81,10 +81,6 @@
 {/snippet}
 
 {#snippet Motors()}
-  <div id="motor-utils">
-    <button onclick={refresh}>refresh</button>
-  </div>
-
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
@@ -93,8 +89,6 @@
           {motor}
           onOpen={() => {
             activeTab.selectedMotor = motor;
-
-            refresh();
           }}
         ></MotorTile>
       {/each}
@@ -165,49 +159,19 @@
     padding: 0;
   }
 
-  #motor-utils {
-    margin: 0;
-    background-color: var(--button-color);
-
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-
-    display: flex;
-    flex-direction: row;
-
-    padding: 5px 10px;
-
-    button {
-      color: var(--text-color);
-      background-color: var(--button-color);
-      border: solid;
-      border-color: var(--border-color);
-      border-width: 1px;
-      border-radius: 5px;
-
-      transition: 0.2s;
-    }
-
-    button:active {
-      color: var(--button-color);
-      background-color: var(--border-color);
-    }
-  }
-
   #motor-grid {
     gap: 5px;
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
-
     overflow-x: scroll;
-
-    padding: 0 10px 0 10px;
 
     scrollbar-width: none;
   }
 
   #content {
+    display: flex;
+    flex-direction: column;
+
     transition: 0.2s;
   }
 </style>

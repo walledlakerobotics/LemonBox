@@ -29,7 +29,7 @@
   <div id="dashboard-container">
     <div id="display-container">
       {#await motor.getImageDir() then motorImage}
-        <img src={motorImage} alt="" />
+        <img src={motorImage} alt="/assets/imgs/placeholder.png" />
       {/await}
 
       {#await motor.getDisplayName() then displayName}
@@ -133,6 +133,7 @@
   #speed-slider {
     display: flex;
     flex: 1;
+    margin: 2vh;
   }
   .controls {
     width: 100%;
@@ -156,7 +157,9 @@
     flex-direction: column;
     gap: 5px;
 
-    overflow-y: scroll;
+    scroll-behavior: smooth;
+
+    position: relative;
   }
 
   #electrical-panel {

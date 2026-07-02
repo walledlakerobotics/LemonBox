@@ -12,6 +12,15 @@
 
   let isTableConnected: boolean = $state(false);
 
+  let testMotors: Motor[] = [
+    new Motor("0"),
+    new Motor("1"),
+    new Motor("2"),
+    new Motor("3"),
+    new Motor("4"),
+    new Motor("5"),
+  ];
+
   setInterval(async () => {
     const res = await fetch("/api/connected");
     const data = await res.json();
@@ -96,6 +105,15 @@
         ></MotorTile>
       {/each}
     {/await}
+
+    {#each testMotors as motor}
+      <MotorTile
+        {motor}
+        onOpen={() => {
+          activeTab.selectedMotor = motor;
+        }}
+      ></MotorTile>
+    {/each}
   </div>
 {/snippet}
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    let fault: string = $props();
+    let { fault }: { fault: string } = $props();
 </script>
 
 <div id="fault">

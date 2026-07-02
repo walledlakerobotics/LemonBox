@@ -142,34 +142,37 @@
     justify-content: space-between;
   }
 
+  /* fix items to be scollable*/
   #faults-panel {
     background-color: var(--fg-color);
     padding: 1vw;
     border-radius: 5px;
-    border: solid;
-    border-width: 1px;
-    border-color: var(--border-color);
+    border: 1px solid var(--border-color);
     color: var(--text-color);
 
     display: flex;
+    flex: 1 1;
 
-    flex: 1 min-content;
     flex-direction: column;
     gap: 5px;
+
+    overflow-y: scroll;
   }
 
   #electrical-panel {
-    display: flex;
-    flex-direction: column;
     background-color: var(--fg-color);
     padding: 1vw;
     border-radius: 5px;
-    border: solid;
-    border-width: 1px;
-    border-color: var(--border-color);
+    border: 1px solid var(--border-color);
     color: var(--text-color);
 
-    flex: 1 min-content;
+    display: flex;
+    flex: 1 1 min-content;
+    flex-direction: column;
+    gap: 5px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   #control-panel {

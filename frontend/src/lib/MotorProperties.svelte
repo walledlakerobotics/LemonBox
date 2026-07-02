@@ -142,8 +142,6 @@
     align-items: center;
     justify-content: space-between;
   }
-
-  /* fix items to be scollable*/
   #faults-panel {
     background-color: var(--fg-color);
     padding: 1vw;
@@ -152,14 +150,20 @@
     color: var(--text-color);
 
     display: flex;
-    flex: 1 1;
-
     flex-direction: column;
     gap: 5px;
 
-    scroll-behavior: smooth;
+    flex: 1;
 
     position: relative;
+
+    max-width: 400px;
+    max-height: 80vh;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scroll-behavior: smooth;
   }
 
   #electrical-panel {

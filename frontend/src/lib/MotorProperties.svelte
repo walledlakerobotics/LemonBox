@@ -25,61 +25,65 @@
   });
 </script>
 
-<div id="wrapper">
-  <div id="dashboard-container">
-    <div id="display-container">
-      {#await motor.getImageDir() then motorImage}
-        <img src={motorImage} alt="/assets/imgs/placeholder.png" />
-      {/await}
+<div id="dashboard-container">
+  <div id="display-container">
+    {#await motor.getImageDir()}
+      <img src="assets/imgs/placeHolder.png" alt="" />
+    {:then i}
+      <img src={i} alt="" />
+    {/await}
 
-      {#await motor.getDisplayName() then displayName}
-        <h1>{displayName}</h1>
-      {/await}
+    {#await motor.getDisplayName()}
+      <h1>Loading...</h1>
+    {:then display}
+      <h1>{display}</h1>
+    {/await}
 
-      <h2>{motor.id}</h2>
-    </div>
+    <h2>{motor.id}</h2>
+  </div>
 
-    <div id="faults-panel">
+  <div id="faults-container">
+    <div class="faults">
       {#await motor.faults then faults}
         {#each faults as f}
           <FaultMessage fault={f}></FaultMessage>
         {/each}
       {/await}
     </div>
-
-    <div id="electrical-panel">
-      <p>Applied Voltage: {voltage}</p>
-      <p>Amps: {amps}</p>
-    </div>
   </div>
 
-  <div id="control-panel">
+  <div id="electrical-container">
+    <p>Applied Voltage: {voltage}</p>
+    <p>Amps: {amps}</p>
+  </div>
+</div>
+
+<div id="control-container">
+  <div id="controls">
     <label for="speed-slider">Speed: {speed}</label>
-    <div class="controls">
+    <input
+      id="speed-slider"
+      type="range"
+      step="0.01"
+      min="-1"
+      max="1"
+      bind:value={speed}
+    />
+
+    <div id="check-boxes">
+      {#await motor.type then t}
+        {#if t == "sparkmax"}
+          {@render brushlessSnip()}
+        {/if}
+      {/await}
+
+      <label for="disabled-checkbox">disabled</label>
       <input
-        id="speed-slider"
-        type="range"
-        step="0.01"
-        min="-1"
-        max="1"
-        bind:value={speed}
+        id="disabled-checkbox"
+        title="disabled"
+        type="checkbox"
+        bind:checked={disabled}
       />
-
-      <div id="check-boxes">
-        {#await motor.type then t}
-          {#if t == "sparkmax"}
-            {@render brushlessSnip()}
-          {/if}
-        {/await}
-
-        <label for="disabled-checkbox">disabled</label>
-        <input
-          id="disabled-checkbox"
-          title="disabled"
-          type="checkbox"
-          bind:checked={disabled}
-        />
-      </div>
     </div>
 
     <button
@@ -106,10 +110,21 @@
 <style>
   #dashboard-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1vw;
+
+    flex: 1;
+  }
+
+  #display-container {
+    background-color: var(--fg-color);
+    border: solid;
+    border-color: var(--border-color);
+    border-radius: 5px;
+    border-width: 1px;
     padding: 1vw;
-    margin-bottom: 1vh;
+
+    color: var(--text-color);
   }
 
   #display-container img {
@@ -117,110 +132,85 @@
     max-width: 26vw;
     height: auto;
   }
-
-  #display-container {
-    background-color: var(--fg-color);
-    padding: 1vw;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-
-    flex: auto;
-  }
-
-  #display-container h1,
-  #display-container h2 {
-    margin: 2px;
-  }
-  #speed-slider {
-    display: flex;
-    flex: 1;
-    margin: 2vh;
-  }
-
-  .controls {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  #speed-slider {
-    flex: 1;
-    min-width: 0;
-  }
-  #faults-panel {
-    background-color: var(--fg-color);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-
+  #faults-container {
     display: flex;
     flex-direction: column;
+
+    flex: 1;
+
+    background-color: var(--fg-color);
+    border: solid;
+    border-color: var(--border-color);
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 1vw;
+    color: var(--text-color);
+  }
+
+  .faults {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
 
     overflow-y: scroll;
     overflow-x: hidden;
   }
-
-  #electrical-panel {
-    background-color: var(--fg-color);
-    padding: 1vw;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-
-    height: auto;
-
+  #electrical-container {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 
-    overflow-y: auto;
-    overflow-x: hidden;
+    flex: 1;
 
-    flex: auto;
-  }
-
-  #control-panel {
     background-color: var(--fg-color);
-    padding: 1vw;
-    border-radius: 5px;
     border: solid;
-    border-width: 1px;
     border-color: var(--border-color);
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 1vw;
     color: var(--text-color);
-    margin: 0 10px 10px 10px;
+  }
 
-    gap: 1dvh;
-    flex: 0 1 min-content;
-
+  #control-container {
     display: flex;
     flex-direction: column;
 
-    margin-bottom: auto;
+    flex: 1;
+
+    background-color: var(--fg-color);
+    border: solid;
+    border-color: var(--border-color);
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 1vw;
+    color: var(--text-color);
   }
 
-  #close-button {
-    padding: 5px;
-    border: 1px solid rgba(var(--theme-rgb), 0.3);
+  #controls {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1vh;
   }
-  button {
+
+  #controls button {
     background-color: var(--button-color);
     color: var(--text-color);
-    border: none;
+    border: solid;
     border-radius: 5px;
+    border-width: 1px;
+    border-color: var(--border-color);
 
     transition: 0.2s;
   }
 
-  button:active {
+  #controls button:active {
+    color: var(--button-color);
     background-color: var(--border-color);
-    color: var(--fg-color);
-    border: none;
-    border-radius: 5px;
   }
 
   #check-boxes {
     background-color: var(--button-color);
+
     display: flex;
     flex-direction: column;
     gap: 1vh;

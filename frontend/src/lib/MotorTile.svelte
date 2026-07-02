@@ -5,11 +5,15 @@
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-  {#await motor.getImageDir() then dir}
+  {#await motor.getImageDir()}
+    <img src="assets/imgs/placeHolder.png" alt="" />
+  {:then dir}
     <img src={dir} alt="" />
   {/await}
 
-  {#await motor.getDisplayName() then display}
+  {#await motor.getDisplayName()}
+    <h1>Loading...</h1>
+  {:then display}
     <h1>{display}</h1>
   {/await}
 

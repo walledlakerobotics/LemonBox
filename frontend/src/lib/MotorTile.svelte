@@ -25,41 +25,45 @@
     background-color: var(--fg-color);
     color: var(--text-color);
 
-    border: solid;
-    border-width: 1px;
+    border: 1px solid;
     border-radius: 5px;
-
-    transition: 0.2s;
+    box-sizing: border-box;
 
     padding: 2vh;
 
-    display: block;
+    display: flex;
+    flex-direction: column;
 
-    height: 100%;
+    width: 100%;
+    min-width: 0;
+
+    transition: 0.2s;
 
     animation: tile-fade-in ease both;
     animation-timeline: view(inline);
     animation-range: entry 0% entry 60%;
 
     font-size: clamp(0.75rem, 2.5dvh, 1.5rem);
+  }
 
-    img {
-      display: block;
-      max-width: 100%;
-      object-fit: cover;
-      aspect-ratio: 1 / 1;
-      flex-grow: 1;
-      height: 70%;
-    }
+  #motor-tile img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    flex-grow: 1;
+    height: auto;
   }
 
   #motor-tile h1 {
-    margin: 5px 5px 0 5px;
+    margin: 5px 5px 0;
   }
+
   #motor-tile h2 {
-    margin: 5px 5px 0 5px;
+    margin: 5px 5px 0;
     opacity: 0.7;
   }
+
   @keyframes tile-fade-in {
     from {
       opacity: 0;

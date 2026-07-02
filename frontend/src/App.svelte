@@ -75,6 +75,9 @@
   <MotorProperties
     motor={m}
     onClose={() => {
+      if (activeTab.selectedMotor != null)
+        activeTab.selectedMotor.disabled = true;
+
       activeTab.selectedMotor = null;
     }}
   ></MotorProperties>
@@ -160,18 +163,20 @@
   }
 
   #motor-grid {
-    gap: 5px;
+    position: relative;
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
+    gap: 5px;
 
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
     scrollbar-width: none;
   }
 
   #content {
-    display: flex;
-    flex-direction: column;
-
-    transition: 0.2s;
+    padding: 5px;
   }
 </style>

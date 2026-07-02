@@ -11,6 +11,8 @@
         display: flex;
         flex-direction: column;
 
+        text-align: center;
+
         background-color: var(--warning-bg);
         color: var(--warning-text);
 

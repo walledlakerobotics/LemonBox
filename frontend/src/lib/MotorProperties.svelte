@@ -85,16 +85,16 @@
         bind:checked={disabled}
       />
     </div>
-
-    <button
-      id="close-button"
-      onclick={() => {
-        motor.disabled = true;
-        onClose();
-      }}
-      aria-label="close">Close</button
-    >
   </div>
+
+  <button
+    id="close-button"
+    onclick={() => {
+      motor.disabled = true;
+      onClose();
+    }}
+    aria-label="close">Close</button
+  >
 </div>
 
 {#snippet brushlessSnip()}
@@ -110,7 +110,7 @@
 <style>
   #dashboard-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1vw;
 
     flex: 1;
@@ -135,24 +135,24 @@
   #faults-container {
     display: flex;
     flex-direction: column;
-
     flex: 1;
 
     background-color: var(--fg-color);
-    border: solid;
-    border-color: var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    border-width: 1px;
     padding: 1vw;
     color: var(--text-color);
+
+    min-height: 0;
   }
 
   .faults {
     display: flex;
     flex-direction: column;
-    gap: 1vh;
+    gap: 5px;
 
-    overflow-y: scroll;
+    min-height: 0;
+    overflow-y: auto;
     overflow-x: hidden;
   }
   #electrical-container {
@@ -174,7 +174,7 @@
     display: flex;
     flex-direction: column;
 
-    flex: 1;
+    flex: 2;
 
     background-color: var(--fg-color);
     border: solid;
@@ -187,12 +187,12 @@
 
   #controls {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
     gap: 1vh;
   }
 
-  #controls button {
+  button {
     background-color: var(--button-color);
     color: var(--text-color);
     border: solid;
@@ -203,7 +203,7 @@
     transition: 0.2s;
   }
 
-  #controls button:active {
+  button:active {
     color: var(--button-color);
     background-color: var(--border-color);
   }
@@ -216,6 +216,13 @@
     gap: 1vh;
     padding: 1vw;
 
+    margin: 1vw;
+
     border-radius: 5px;
+  }
+
+  #speed-slider {
+    flex: 1;
+    min-width: 0;
   }
 </style>

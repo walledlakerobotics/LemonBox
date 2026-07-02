@@ -9,6 +9,8 @@
     <img src="assets/imgs/placeHolder.png" alt="" />
   {:then dir}
     <img src={dir} alt="" />
+  {:catch}
+    <img src="assets/imgs/placeHolder.png" alt="" />
   {/await}
 
   {#await motor.getDisplayName()}
@@ -16,7 +18,7 @@
   {:then display}
     <h1>{display}</h1>
   {:catch}
-    <img src="assets/imgs/placeHolder.png" alt="" />
+    <h1>Unknown</h1>
   {/await}
 
   <h2>{motor.id}</h2>

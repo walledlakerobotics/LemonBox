@@ -39,6 +39,8 @@
       <h1>Loading...</h1>
     {:then display}
       <h1>{display}</h1>
+    {:catch}
+      <h1>Uknown</h1>
     {/await}
 
     <h2>{motor.id}</h2>

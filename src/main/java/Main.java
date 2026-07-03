@@ -21,8 +21,6 @@ import io.javalin.Javalin;
 
 public class Main {
 
-    // TODO: opends isn't finding the robot.
-
     public static void main(String[] args) throws IOException, InterruptedException {
 
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);

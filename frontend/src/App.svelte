@@ -16,15 +16,6 @@
     tabs.map((t) => t.selectedMotor),
   );
 
-  // let testMotors: Motor[] = [
-  //   new Motor("0"),
-  //   new Motor("1"),
-  //   new Motor("2"),
-  //   new Motor("3"),
-  //   new Motor("4"),
-  //   new Motor("5"),
-  // ];
-
   $effect(() => {
     void (async () => {
       const res = await fetch("/api/connected");
@@ -116,15 +107,6 @@
         ></MotorTile>
       {/each}
     {/await}
-    <!-- 
-    {#each testMotors as motor}
-      <MotorTile
-        {motor}
-        onOpen={() => {
-          activeTab.selectedMotor = motor;
-        }}
-      ></MotorTile>
-    {/each} -->
   </div>
 {/snippet}
 

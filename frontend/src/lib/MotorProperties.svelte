@@ -82,14 +82,15 @@
       {/await}
 
       {@render brushlessSnip()}
-
-      <label for="disabled-checkbox">disabled</label>
-      <input
-        id="disabled-checkbox"
-        title="disabled"
-        type="checkbox"
-        bind:checked={disabled}
-      />
+      <div class="checkbox-option">
+        <label for="disabled-checkbox">disabled</label>
+        <input
+          id="disabled-checkbox"
+          title="disabled"
+          type="checkbox"
+          bind:checked={disabled}
+        />
+      </div>
     </div>
   </div>
 
@@ -104,16 +105,22 @@
 </div>
 
 {#snippet brushlessSnip()}
-  <label for="brushless-checkbox">brushless</label>
-  <input
-    id="brushless-checkbox"
-    title="brushless"
-    type="checkbox"
-    bind:checked={brushless}
-  />
+  <div class="checkbox-option">
+    <label for="brushless-checkbox">brushless</label>
+    <input
+      id="brushless-checkbox"
+      title="brushless"
+      type="checkbox"
+      bind:checked={brushless}
+    />
+  </div>
 {/snippet}
 
 <style>
+  .checkbox-option {
+    display: flex;
+    flex-direction: column;
+  }
   #dashboard-container {
     display: flex;
     flex-direction: row;
@@ -228,9 +235,10 @@
     background-color: var(--button-color);
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1vh;
     padding: 1vw;
+    gap: 5px;
 
     margin: 1vw;
 

@@ -81,6 +81,8 @@
         {/if}
       {/await}
 
+      {@render brushlessSnip()}
+
       <label for="disabled-checkbox">disabled</label>
       <input
         id="disabled-checkbox"

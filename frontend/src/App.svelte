@@ -102,7 +102,11 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter((m) => selectedMotors.includes(m)) as motor}
+      {#each motors.filter((m) => {
+        if (m != null) {
+          selectedMotors.includes(m);
+        }
+      }) as motor}
         <MotorTile
           {motor}
           onOpen={() => {

@@ -2,5 +2,6 @@ todo list
 
 make svelte automatically build when java builds using a task; also install depends. 
 
-opends fix (most likely cause is due to me being on windows)
+make opends automatically enable the robot (having ESTOP issues)
 
+install the jar file on the pi and enabling it with systemd on pi.  

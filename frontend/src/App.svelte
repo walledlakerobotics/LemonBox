@@ -12,6 +12,10 @@
 
   let isTableConnected: boolean = $state(false);
 
+  let selectedMotors: (Motor | null)[] = $derived(
+    tabs.map((t) => t.selectedMotor),
+  );
+
   // let testMotors: Motor[] = [
   //   new Motor("0"),
   //   new Motor("1"),
@@ -96,7 +100,7 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter((m) => m == tabs.find()) as motor}
+      {#each motors.filter((m) => selectedMotors.includes(m)) as motor}
         <MotorTile
           {motor}
           onOpen={() => {

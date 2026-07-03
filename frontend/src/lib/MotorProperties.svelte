@@ -11,12 +11,10 @@
   let amps: number = $state(0);
   let voltage: number = $state(0);
 
-  $effect(() => {
-    void (async () => {
-      amps = await motor.amps;
-      voltage = await motor.voltage;
-    })();
-  });
+  setInterval(async () => {
+    amps = await motor.amps;
+    voltage = await motor.voltage;
+  }, 300);
 
   $effect(() => {
     motor.speed = speed;

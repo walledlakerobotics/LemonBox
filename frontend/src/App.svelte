@@ -12,18 +12,16 @@
 
   let isTableConnected: boolean = $state(false);
 
-  let selectedMotors: (Motor | null)[] = $derived(
-    tabs.map((t) => t.selectedMotor),
+  let selectedMotors: (string | undefined)[] = $derived(
+    tabs.map((t) => t.selectedMotor?.id),
   );
 
-  $effect(() => {
-    void (async () => {
-      const res = await fetch("/api/connected");
-      const data = await res.json();
+  setInterval(async () => {
+    const res = await fetch("/api/connected");
+    const data = await res.json();
 
-      isTableConnected = data;
-    })();
-  });
+    isTableConnected = data;
+  }, 300);
 
   $effect(() => {
     tabs.forEach((t) => (t.selected = false));
@@ -93,11 +91,7 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter((m) => {
-        if (m != null) {
-          selectedMotors.includes(m);
-        }
-      }) as motor}
+      {#each motors as motor}
         <MotorTile
           {motor}
           onOpen={() => {

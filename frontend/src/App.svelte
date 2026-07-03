@@ -169,11 +169,14 @@
 
     transition: 0.2s;
 
-    position: relative;
-
     margin-left: auto;
-    height: 100%;
+    height: 30px;
     aspect-ratio: 1;
+
+    position: sticky;
+    z-index: 100;
+    right: 0;
+    box-shadow: 0px 0px 5px 10px var(--fg-color);
   }
 
   #add-button:active {

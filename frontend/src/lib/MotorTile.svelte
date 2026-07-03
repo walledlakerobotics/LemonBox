@@ -34,6 +34,8 @@
     box-sizing: border-box;
 
     padding: 2vh;
+    flex-shrink: 0.13;
+    gap: 5px;
 
     display: flex;
     flex-direction: column;
@@ -60,7 +62,7 @@
   }
 
   #motor-tile h1 {
-    margin: 5px 5px 0;
+    margin: 0;
   }
 
   #motor-tile h2 {

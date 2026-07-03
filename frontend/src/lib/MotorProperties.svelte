@@ -118,9 +118,14 @@
     gap: 1vw;
 
     flex: 1;
+    min-height: 0;
   }
 
   #display-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
     background-color: var(--fg-color);
     border: solid;
     border-color: var(--border-color);
@@ -132,9 +137,10 @@
   }
 
   #display-container img {
-    width: 100%;
-    max-width: 26vw;
-    height: auto;
+    width: 26vw;
+    flex: 1;
+    min-height: 0;
+    object-fit: contain;
   }
   #faults-container {
     display: flex;
@@ -155,8 +161,10 @@
     flex-direction: column;
     gap: 5px;
 
+    flex: 1;
     min-height: 0;
-    overflow-y: auto;
+    max-height: 100%;
+    overflow-y: scroll;
     overflow-x: hidden;
   }
   #electrical-container {
@@ -179,7 +187,9 @@
     flex-direction: column;
 
     flex: 2;
-
+    box-sizing: border-box;
+    max-height: 112px;
+    min-height: 112px;
     background-color: var(--fg-color);
     border: solid;
     border-color: var(--border-color);

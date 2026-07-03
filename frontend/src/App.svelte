@@ -185,16 +185,22 @@
     display: flex;
     flex-direction: row;
     gap: 5px;
-
-    flex: 1;
+    flex-grow: 1;
     width: 100%;
-    max-width: 100%;
 
-    overflow-x: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
     scrollbar-width: none;
   }
 
   #content {
     padding: 5px;
+    gap: 1vw;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
 </style>

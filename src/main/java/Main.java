@@ -80,6 +80,9 @@ public class Main {
 
                         Motor motor = manager.getMotor(id);
 
+                        if (motor == null)
+                            return;
+
                         if (json.has("speed"))
                             motor.setSpeed(json.get("speed").asDouble());
 

@@ -152,10 +152,9 @@
     overflow-y: hidden;
     height: 30px;
 
-    scrollbar-width: 1px;
-    scrollbar-color: var(--border-color);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
     scroll-behavior: smooth;
-    scrollbar-width: none;
   }
 
   #add-button {

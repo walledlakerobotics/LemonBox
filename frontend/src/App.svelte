@@ -44,7 +44,10 @@
         activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
       },
       onClose: () => {
-        if (tab.selectedMotor != null) tab.selectedMotor.disabled = true;
+        if (tab.selectedMotor != null) {
+          tab.selectedMotor.disabled = true;
+          tab.selectedMotor = null;
+        }
         removeTab(tabs.findIndex((t) => t.uuid == tab.uuid));
       },
     };
@@ -54,6 +57,8 @@
 
   function removeTab(index: number) {
     if (tabs.length <= 1) return;
+    if (activeTab.uuid == tabs[index].uuid) activeTab = tabs[index - 1];
+
     tabs.splice(index, 1);
   }
 </script>

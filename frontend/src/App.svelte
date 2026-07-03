@@ -12,14 +12,14 @@
 
   let isTableConnected: boolean = $state(false);
 
-  let testMotors: Motor[] = [
-    new Motor("0"),
-    new Motor("1"),
-    new Motor("2"),
-    new Motor("3"),
-    new Motor("4"),
-    new Motor("5"),
-  ];
+  // let testMotors: Motor[] = [
+  //   new Motor("0"),
+  //   new Motor("1"),
+  //   new Motor("2"),
+  //   new Motor("3"),
+  //   new Motor("4"),
+  //   new Motor("5"),
+  // ];
 
   setInterval(async () => {
     const res = await fetch("/api/connected");
@@ -105,7 +105,7 @@
         ></MotorTile>
       {/each}
     {/await}
-
+    <!-- 
     {#each testMotors as motor}
       <MotorTile
         {motor}
@@ -113,7 +113,7 @@
           activeTab.selectedMotor = motor;
         }}
       ></MotorTile>
-    {/each}
+    {/each} -->
   </div>
 {/snippet}
 

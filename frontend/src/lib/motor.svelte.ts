@@ -1,5 +1,4 @@
 export class Motor {
-    public readonly uuid: string = crypto.randomUUID();
     private _disabled: boolean = $state(true);
 
     constructor(

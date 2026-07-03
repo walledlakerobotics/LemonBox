@@ -21,12 +21,14 @@
   //   new Motor("5"),
   // ];
 
-  setInterval(async () => {
-    const res = await fetch("/api/connected");
-    const data = await res.json();
+  $effect(() => {
+    void (async () => {
+      const res = await fetch("/api/connected");
+      const data = await res.json();
 
-    isTableConnected = data;
-  }, 300);
+      isTableConnected = data;
+    })();
+  });
 
   $effect(() => {
     tabs.forEach((t) => (t.selected = false));
@@ -40,8 +42,6 @@
   addTab();
 
   function addTab() {
-    if (tabs.length >= 6) return;
-
     const tab: TabData = {
       uuid: crypto.randomUUID(),
       title: "Motors",
@@ -96,7 +96,7 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors as motor}
+      {#each motors.filter((m) => m == tabs.find()) as motor}
         <MotorTile
           {motor}
           onOpen={() => {

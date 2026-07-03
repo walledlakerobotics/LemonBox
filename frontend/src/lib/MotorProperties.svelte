@@ -5,24 +5,29 @@
 
   let speed: number = $state(0);
   let brushless: boolean = $state(false);
-  let disabled: boolean = $state(true);
+
+  loadMotorProps();
 
   let amps: number = $state(0);
   let voltage: number = $state(0);
 
-  setInterval(async () => {
-    amps = await motor.amps;
-    voltage = await motor.voltage;
-  }, 100);
+  $effect(() => {
+    void (async () => {
+      amps = await motor.amps;
+      voltage = await motor.voltage;
+    })();
+  });
 
   $effect(() => {
     motor.speed = speed;
     motor.brushless = brushless;
   });
 
-  $effect(() => {
-    motor.disabled = disabled;
-  });
+  // I know I wish there was a better way of handling this.
+  async function loadMotorProps() {
+    speed = await motor.speed;
+    brushless = await motor.brushless;
+  }
 </script>
 
 <div id="dashboard-container">
@@ -88,7 +93,7 @@
           id="disabled-checkbox"
           title="disabled"
           type="checkbox"
-          bind:checked={disabled}
+          bind:checked={motor.disabled}
         />
       </div>
     </div>

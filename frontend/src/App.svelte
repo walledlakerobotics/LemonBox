@@ -92,6 +92,8 @@
         activeTab.selectedMotor.disabled = true;
 
       activeTab.selectedMotor = null;
+
+      activeTab.title = "Motors";
     }}
   ></MotorProperties>
 {/snippet}
@@ -105,6 +107,7 @@
           {motor}
           onOpen={() => {
             activeTab.selectedMotor = motor;
+            activeTab.title = `Motor: ${motor.id}`;
           }}
         ></MotorTile>
       {/each}

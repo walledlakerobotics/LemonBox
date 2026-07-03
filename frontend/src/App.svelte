@@ -146,7 +146,7 @@
     flex-direction: row;
     gap: 5px;
 
-    padding: 5px 10px;
+    padding: 5px 5px 5px 10px;
 
     overflow-x: scroll;
     overflow-y: hidden;

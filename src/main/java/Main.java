@@ -2,6 +2,8 @@
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+import javax.swing.SwingUtilities;
+
 import org.opencv.core.Core;
 
 import com.boomaa.opends.display.DisplayEndpoint;
@@ -47,9 +49,14 @@ public class Main {
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
             // TODO: issues with passing --headless into args
-            DisplayEndpoint.main(args);
-            DisplayEndpoint.TEAM_NUMBER.setText("308");
-            DisplayEndpoint.IS_ENABLED.setEnabled(true);
+            DisplayEndpoint.main(new String[] { "--headless" });
+
+            // calls when display is ready, async.
+            SwingUtilities.invokeLater(() -> {
+                DisplayEndpoint.TEAM_NUMBER.setText("308");
+                DisplayEndpoint.IS_ENABLED.setEnabled(true);
+                DisplayEndpoint.ESTOP_BTN.setEnabled(false);
+            });
 
             // DisplayEndpoint.FRAME.setVisible(false);
 

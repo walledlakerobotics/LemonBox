@@ -6,8 +6,6 @@
   let speed: number = $state(0);
   let brushless: boolean = $state(false);
 
-  loadMotorProps();
-
   let amps: number = $state(0);
   let voltage: number = $state(0);
 
@@ -20,12 +18,6 @@
     motor.speed = speed;
     motor.brushless = brushless;
   });
-
-  // I know I wish there was a better way of handling this.
-  async function loadMotorProps() {
-    speed = await motor.speed;
-    brushless = await motor.brushless;
-  }
 </script>
 
 <div id="dashboard-container">
@@ -136,6 +128,7 @@
   #display-container {
     display: flex;
     flex-direction: column;
+
     min-height: 0;
 
     background-color: var(--fg-color);

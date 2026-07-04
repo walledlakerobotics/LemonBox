@@ -46,17 +46,9 @@
       title: "Motors",
       selected: false,
       selectedMotor: null,
-      onOpen: () => {
-        activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
-      },
-      onClose: () => {
-        // sets the motor to zero before setting it to null!
-        if (tab.selectedMotor != null) {
-          tab.selectedMotor.disabled = true;
-          tab.selectedMotor = null;
-        }
-        removeTab(tabs.findIndex((t) => t.uuid == tab.uuid));
-      },
+      onOpen: () =>
+        (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
+      onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
     };
 
     tabs.push(tab);
@@ -67,6 +59,11 @@
 
     // cannot have zero tabs open.
     if (tabs.length <= 1) return;
+
+    if (tab.selectedMotor != null) {
+      tab.selectedMotor.disabled = true;
+      tab.selectedMotor = null;
+    }
 
     // if current tab is closed while being in it, it will go to the one backward.
     if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];

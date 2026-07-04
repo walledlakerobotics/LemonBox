@@ -18,7 +18,6 @@ export class Motor {
         if (this.disabled) {
             console.log("warning motor is disabled");
 
-
             // postes the speed to zero if disabled.
             fetch(this.postPath, {
                 method: "POST",
@@ -26,18 +25,15 @@ export class Motor {
                     speed: 0,
                 }),
             });
-
-            return;
+        } else {
+            // posts the speed
+            fetch(this.postPath, {
+                method: "POST",
+                body: JSON.stringify({
+                    speed: speed,
+                }),
+            });
         }
-
-        // posts the speed
-
-        fetch(this.postPath, {
-            method: "POST",
-            body: JSON.stringify({
-                speed: speed,
-            }),
-        });
     }
 
 

@@ -40,8 +40,8 @@
     display: flex;
     flex-direction: column;
 
-    width: 100%;
-    min-width: 0;
+    width: fit-content;
+    min-width: 225px;
 
     transition: 0.2s;
 
@@ -50,24 +50,30 @@
     animation-range: entry 0% entry 60%;
 
     font-size: clamp(0.75rem, 2.5dvh, 1.5rem);
+
+    align-items: center;
+    overflow: hidden;
   }
 
   #motor-tile img {
     display: block;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    flex-grow: 1;
-    height: auto;
+    align-self: stretch;
+    width: 0;
+    min-width: 100%;
+    object-fit: contain;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
   #motor-tile h1 {
     margin: 0;
+    flex-shrink: 0;
   }
 
   #motor-tile h2 {
     margin: 5px 5px 0;
     opacity: 0.7;
+    flex-shrink: 0;
   }
 
   @keyframes tile-fade-in {

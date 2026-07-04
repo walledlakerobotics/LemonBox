@@ -210,6 +210,7 @@
     gap: 5px;
     flex-grow: 1;
     width: 100%;
+    padding: 5px;
 
     overflow-x: scroll;
     overflow-y: hidden;

@@ -41,7 +41,7 @@
     flex-direction: column;
 
     width: fit-content;
-    min-width: 225px;
+    min-width: 275px;
 
     transition: 0.2s;
 

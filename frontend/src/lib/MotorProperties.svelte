@@ -29,16 +29,17 @@
     {:catch}
       <img src="assets/imgs/placeHolder.png" alt="" />
     {/await}
+    <div style="margin-top: 5px;">
+      {#await motor.getDisplayName()}
+        <h1>Loading...</h1>
+      {:then display}
+        <h1>{display}</h1>
+      {:catch}
+        <h1>Unknown</h1>
+      {/await}
 
-    {#await motor.getDisplayName()}
-      <h1>Loading...</h1>
-    {:then display}
-      <h1>{display}</h1>
-    {:catch}
-      <h1>Uknown</h1>
-    {/await}
-
-    <h2>{motor.id}</h2>
+      <h2>{motor.id}</h2>
+    </div>
   </div>
 
   <div id="faults-container">
@@ -59,7 +60,7 @@
 
 <div id="control-container">
   <div id="controls">
-    <label for="speed-slider">Speed: {speed}</label>
+    <p>Speed: <br /> <b>{speed}</b></p>
     <input
       id="speed-slider"
       type="range"
@@ -141,6 +142,10 @@
     color: var(--text-color);
   }
 
+  #display-container h2,
+  #display-container h1 {
+    margin: 0;
+  }
   #display-container img {
     width: 26vw;
     flex: 1;
@@ -210,7 +215,15 @@
 
     gap: 1vh;
   }
-
+  #controls p {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 10px;
+  }
   button {
     background-color: var(--button-color);
     color: var(--text-color);

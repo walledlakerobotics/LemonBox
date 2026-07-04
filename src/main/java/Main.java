@@ -1,13 +1,11 @@
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.stream.Collectors;
-
-import javax.swing.SwingUtilities;
 
 import org.opencv.core.Core;
 
 import com.boomaa.opends.display.DisplayEndpoint;
-import com.boomaa.opends.display.MainJDEC;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.wpi.first.cscore.CameraServerJNI;
@@ -23,9 +21,6 @@ import edu.wpi.first.util.WPIUtilJNI;
 import io.javalin.Javalin;
 
 public class Main {
-
-    // TODO: make opends headless and make it automatically enable the robot.
-    // TODO: make motor ease into the speed.
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -46,20 +41,18 @@ public class Main {
 
         final NetworkTable lemonTable = inst.getTable("LemonBox");
 
-        try (MotorManager manager = new MotorManager(lemonTable)) {
+        int connectionListener = inst.addConnectionListener(false, (event) -> {
+            String input = "h\n 308\n p\n a\n";
+            System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-            // TODO: issues with passing --headless into args
             DisplayEndpoint.main(new String[] { "--headless" });
+        });
 
-            // calls when display is ready, async.
-            SwingUtilities.invokeLater(() -> {
-                DisplayEndpoint.TEAM_NUMBER.setText("308");
-                DisplayEndpoint.IS_ENABLED.setEnabled(true);
-                DisplayEndpoint.ESTOP_BTN.setEnabled(false);
-            });
+        try (MotorManager manager = new MotorManager(lemonTable)) {
 
             try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
+
                 // configures local host routes
 
                 final Javalin app = Javalin.create(config -> {

@@ -20,17 +20,6 @@
     isTableConnected = data;
   }, 300);
 
-  let testMotors: Motor[] = [
-    new Motor(0),
-    new Motor(1),
-    new Motor(3),
-    new Motor(4),
-    new Motor(5),
-    new Motor(6),
-    new Motor(7),
-    new Motor(8),
-  ];
-
   $effect(() => {
     // clears the effect and then applies the effect to the selected tab.
     tabs.forEach((t) => (t.selected = false));
@@ -125,16 +114,6 @@
         ></MotorTile>
       {/each}
     {/await}
-
-    {#each testMotors as motor}
-      <MotorTile
-        {motor}
-        onOpen={() => {
-          activeTab.selectedMotor = motor;
-          activeTab.title = `Motor: ${motor.id}`;
-        }}
-      ></MotorTile>
-    {/each}
   </div>
 {/snippet}
 

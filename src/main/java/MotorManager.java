@@ -30,8 +30,10 @@ public class MotorManager implements AutoCloseable {
     }
 
     /**
+     * returns the motor on the network table corresponding to the CAN ID, that are
+     * cached.
      * 
-     * @param id
+     * @param id the motor id
      * @return
      * @throws Exception
      */
@@ -43,6 +45,7 @@ public class MotorManager implements AutoCloseable {
     }
 
     /**
+     * updates the cached motor on the network table
      * 
      * @throws Exception
      */

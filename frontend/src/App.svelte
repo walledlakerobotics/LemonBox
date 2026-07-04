@@ -11,10 +11,7 @@
   let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
 
   let isTableConnected: boolean = $state(false);
-
-  let selectedIds: (number | undefined)[] = $state([]);
-
-  $effect(() => console.log(selectedIds));
+  let selectedIds: number[] = $state([]);
 
   setInterval(async () => {
     const res = await fetch("/api/connected");
@@ -24,15 +21,18 @@
   }, 300);
 
   $effect(() => {
+    // clears the effect and then applies the effect to the selected tab.
     tabs.forEach((t) => (t.selected = false));
     activeTab.selected = true;
   });
 
   $effect(() => {
+    // gets all the tabs selected motor ids, and filters the undefined ones.
     selectedIds = tabs
       .map((t) => t.selectedMotor?.id)
       .filter((id): id is number => id !== undefined);
 
+    // updates the current motors and filters them by which motors are selected.
     currentMotors = Motor.getMotors().then((motors) =>
       motors.filter((m) => !selectedIds.includes(m.id)),
     );
@@ -50,6 +50,7 @@
         activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
       },
       onClose: () => {
+        // sets the motor to zero before setting it to null!
         if (tab.selectedMotor != null) {
           tab.selectedMotor.disabled = true;
           tab.selectedMotor = null;
@@ -62,8 +63,13 @@
   }
 
   function removeTab(index: number) {
+    const tab = tabs[index];
+
+    // cannot have zero tabs open.
     if (tabs.length <= 1) return;
-    if (activeTab.uuid == tabs[index].uuid) activeTab = tabs[index - 1];
+
+    // if current tab is closed while being in it, it will go to the one backward.
+    if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
 
     tabs.splice(index, 1);
   }
@@ -101,7 +107,6 @@
 {#snippet Motors()}
   <div id="motor-grid">
     {#await currentMotors then motors}
-      <!-- need to check if this filter algorithm work UwU -->
       {#each motors as motor}
         <MotorTile
           {motor}

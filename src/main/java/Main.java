@@ -21,6 +21,8 @@ import io.javalin.Javalin;
 
 public class Main {
 
+    // TODO: make opends headless and make it automatically enable the robot.
+
     public static void main(String[] args) throws IOException, InterruptedException {
 
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);

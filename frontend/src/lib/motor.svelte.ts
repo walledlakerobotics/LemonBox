@@ -18,6 +18,8 @@ export class Motor {
         if (this.disabled) {
             console.log("warning motor is disabled");
 
+
+            // postes the speed to zero if disabled.
             fetch(this.postPath, {
                 method: "POST",
                 body: JSON.stringify({
@@ -28,6 +30,8 @@ export class Motor {
             return;
         }
 
+        // posts the speed
+
         fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({
@@ -36,11 +40,13 @@ export class Motor {
         });
     }
 
+
     public get brushless(): Promise<boolean> {
         return fetch(this.postPath)
             .then(res => res.json())
             .then(data => data.brushless);
     }
+
 
     public set brushless(brushless: boolean) {
         fetch(this.postPath, {

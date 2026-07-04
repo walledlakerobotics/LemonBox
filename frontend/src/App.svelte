@@ -12,8 +12,10 @@
 
   let isTableConnected: boolean = $state(false);
 
-  let selectedMotors: (string | undefined)[] = $derived(
-    tabs.map((t) => t.selectedMotor?.id),
+  let selectedIds = $derived(
+    tabs
+      .map((t) => t.selectedMotor?.id)
+      .filter((id): id is string => id !== undefined),
   );
 
   setInterval(async () => {
@@ -96,7 +98,7 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors as motor}
+      {#each motors.filter((m) => selectedIds.includes(m.id)) as motor}
         <MotorTile
           {motor}
           onOpen={() => {

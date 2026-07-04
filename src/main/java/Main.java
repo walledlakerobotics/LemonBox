@@ -58,8 +58,6 @@ public class Main {
                 DisplayEndpoint.ESTOP_BTN.setEnabled(false);
             });
 
-            // DisplayEndpoint.FRAME.setVisible(false);
-
             try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
                 // configures local host routes

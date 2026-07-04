@@ -23,6 +23,7 @@ import io.javalin.Javalin;
 public class Main {
 
     // TODO: make opends headless and make it automatically enable the robot.
+    // TODO: make motor ease into the speed.
 
     public static void main(String[] args) throws IOException, InterruptedException {
 

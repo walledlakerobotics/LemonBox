@@ -2,7 +2,7 @@ export class Motor {
     private _disabled: boolean = $state(true);
 
     constructor(
-        public readonly id: string,
+        public readonly id: number,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
 
@@ -135,6 +135,6 @@ export class Motor {
         const res = await fetch("/api/motors");
         const data = await res.json() as Record<string, any>;
 
-        return Object.keys(data).map(id => new Motor(id));
+        return Object.keys(data).map(id => new Motor(Number.parseInt(id)));
     }
 }

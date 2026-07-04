@@ -12,11 +12,9 @@
 
   let isTableConnected: boolean = $state(false);
 
-  let selectedIds = $derived(
-    tabs
-      .map((t) => t.selectedMotor?.id)
-      .filter((id): id is string => id !== undefined),
-  );
+  let selectedIds: (number | undefined)[] = $state([]);
+
+  $effect(() => console.log(selectedIds));
 
   setInterval(async () => {
     const res = await fetch("/api/connected");
@@ -31,7 +29,13 @@
   });
 
   $effect(() => {
-    currentMotors = Motor.getMotors();
+    selectedIds = tabs
+      .map((t) => t.selectedMotor?.id)
+      .filter((id): id is number => id !== undefined);
+
+    currentMotors = Motor.getMotors().then((motors) =>
+      motors.filter((m) => !selectedIds.includes(m.id)),
+    );
   });
 
   addTab();
@@ -98,7 +102,7 @@
   <div id="motor-grid">
     {#await currentMotors then motors}
       <!-- need to check if this filter algorithm work UwU -->
-      {#each motors.filter((m) => selectedIds.includes(m.id)) as motor}
+      {#each motors as motor}
         <MotorTile
           {motor}
           onOpen={() => {

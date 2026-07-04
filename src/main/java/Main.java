@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.opencv.core.Core;
 
 import com.boomaa.opends.display.DisplayEndpoint;
+import com.boomaa.opends.display.MainJDEC;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.wpi.first.cscore.CameraServerJNI;
@@ -44,6 +45,7 @@ public class Main {
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
+            // TODO: issues with passing --headless into args
             DisplayEndpoint.main(args);
             DisplayEndpoint.TEAM_NUMBER.setText("308");
             DisplayEndpoint.IS_ENABLED.setEnabled(true);

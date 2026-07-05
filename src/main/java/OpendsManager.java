@@ -47,6 +47,7 @@ public class OpendsManager implements Runnable {
         try {
             outputStream.write(cmd.getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
+
         } catch (Exception e) {
 
         }

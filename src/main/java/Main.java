@@ -41,12 +41,13 @@ public class Main {
 
         final NetworkTable lemonTable = inst.getTable("LemonBox");
 
-        int connectionListener = inst.addConnectionListener(false, (event) -> {
-            String input = "h\n 308\n p\n a\n";
-            System.setIn(new ByteArrayInputStream(input.getBytes()));
+        // makes sure that it pends for input.
+        final OpendsManager opends = new OpendsManager();
+        opends.setTeam("308");
+        opends.togglEnable();
 
-            DisplayEndpoint.main(new String[] { "--headless" });
-        });
+        // opends will run on a seprate thread.
+        new Thread(() -> opends.run());
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
 

@@ -8,7 +8,6 @@ import com.boomaa.opends.display.DisplayEndpoint;
 public class OpendsManager implements Runnable {
 
     private PipedOutputStream outputStream;
-    private boolean enabled = false;
 
     public OpendsManager() {
         outputStream = new PipedOutputStream();
@@ -25,12 +24,11 @@ public class OpendsManager implements Runnable {
     }
 
     public void togglEnable() {
-        this.enabled = !this.enabled;
         send("a\n");
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return DisplayEndpoint.IS_ENABLED.isEnabled();
     }
 
     public void refreshDisplay() {

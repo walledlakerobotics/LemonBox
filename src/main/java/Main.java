@@ -43,7 +43,7 @@ public class Main {
         final OpendsManager opends = new OpendsManager();
 
         // opends will run on a seprate thread.
-        new Thread(() -> {
+        Thread opendsThread = new Thread(() -> {
             opends.run();
             opends.setTeam("308");
             opends.togglEnable();
@@ -95,6 +95,7 @@ public class Main {
                 });
 
                 app.start(7070);
+                opendsThread.join();
             }
         } catch (Exception e) {
             e.printStackTrace();

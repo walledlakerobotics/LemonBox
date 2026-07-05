@@ -39,15 +39,14 @@ public class Main {
 
         final NetworkTable lemonTable = inst.getTable("LemonBox");
 
+        final OpendsManager opendsManager = new OpendsManager();
         // makes sure that it pends for input.
-        final OpendsManager opends = new OpendsManager();
-
-        // opends will run on a seprate thread.
         Thread opendsThread = new Thread(() -> {
-            opends.run();
-            opends.setTeam("308");
-            opends.togglEnable();
+            opendsManager.setTeam("308");
+            opendsManager.run();
         });
+
+        opendsThread.start();
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
@@ -92,10 +91,24 @@ public class Main {
                             motor.setBrushless(json.get("brushless").asBoolean());
 
                     });
+
+                    config.routes.get("/api/enabled", ctx -> {
+                        ctx.json(opendsManager.isEnabled());
+                    });
+
+                    config.routes.post("/api/enabled", ctx -> {
+                        opendsManager.togglEnable();
+                        ctx.json(opendsManager.isEnabled());
+                    });
+
+                    config.events.serverStopped(() -> {
+                        opendsManager.quit();
+                        opendsThread.join();
+                    });
                 });
 
                 app.start(7070);
-                opendsThread.join();
+
             }
         } catch (Exception e) {
             e.printStackTrace();

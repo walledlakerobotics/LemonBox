@@ -8,6 +8,7 @@ import com.boomaa.opends.display.DisplayEndpoint;
 public class OpendsManager implements Runnable {
 
     private PipedOutputStream outputStream;
+    private boolean enabled = false;
 
     public OpendsManager() {
         outputStream = new PipedOutputStream();
@@ -24,7 +25,12 @@ public class OpendsManager implements Runnable {
     }
 
     public void togglEnable() {
+        this.enabled = !this.enabled;
         send("a\n");
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void refreshDisplay() {
@@ -43,7 +49,11 @@ public class OpendsManager implements Runnable {
         send("c\n");
     }
 
-    private synchronized void send(String cmd) {
+    public void quit() {
+        send("q\n");
+    }
+
+    private void send(String cmd) {
         try {
             outputStream.write(cmd.getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
@@ -54,7 +64,7 @@ public class OpendsManager implements Runnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         DisplayEndpoint.main(new String[] { "--headless" });
     }
 

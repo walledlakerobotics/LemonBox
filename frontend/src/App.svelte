@@ -18,6 +18,15 @@
     const data = await res.json();
 
     isTableConnected = data;
+
+    const enableRes = await fetch("/api/enabled");
+    const enableData = await enableRes.json();
+
+    if (isTableConnected && !enableData) {
+      fetch("/api/enabled", {
+        method: "POST",
+      });
+    }
   }, 300);
 
   $effect(() => {

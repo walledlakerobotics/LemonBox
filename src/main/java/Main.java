@@ -1,11 +1,9 @@
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
 
-import com.boomaa.opends.display.DisplayEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.wpi.first.cscore.CameraServerJNI;

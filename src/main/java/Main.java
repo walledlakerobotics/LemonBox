@@ -43,11 +43,13 @@ public class Main {
 
         // makes sure that it pends for input.
         final OpendsManager opends = new OpendsManager();
-        opends.setTeam("308");
-        opends.togglEnable();
 
         // opends will run on a seprate thread.
-        new Thread(() -> opends.run());
+        new Thread(() -> {
+            opends.run();
+            opends.setTeam("308");
+            opends.togglEnable();
+        });
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
 

@@ -19,7 +19,7 @@ public class OpendsManager implements Runnable {
     }
 
     public void setTeam(String teamNumber) {
-        String input = String.format("h\n %s\n", teamNumber);
+        String input = String.format("h\n%s\n", teamNumber);
         send(input);
     }
 

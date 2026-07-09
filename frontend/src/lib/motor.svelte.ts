@@ -5,11 +5,13 @@ export class Motor {
     public speedState: number = $state(0);
     public brushlessState: boolean = $state(false);
 
+    public ampsState: number = $state(0);
+    public voltageState: number = $state(0);
+
     constructor(
         public readonly id: number,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
-        this.load();
 
         $effect(() => {
             if (this.isLoaded) {
@@ -17,6 +19,13 @@ export class Motor {
                 this.brushless = this.brushlessState;
             } else {
                 console.error("error: motor wasn't loaded!");
+            }
+        });
+
+        $effect(() => {
+            async () => {
+                this.ampsState = await this.amps;
+                this.voltageState = await this.voltage;
             }
         });
     }
@@ -149,6 +158,7 @@ export class Motor {
 
         this.isLoaded = true;
     }
+
 
     /**
      * gets all the motors posted on the json.

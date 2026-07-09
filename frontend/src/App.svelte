@@ -49,7 +49,7 @@
 
   addTab();
 
-  function addTab() {
+  function addTab(): void {
     const tab: TabData = {
       uuid: crypto.randomUUID(),
       title: "Motors",
@@ -63,7 +63,7 @@
     tabs.push(tab);
   }
 
-  function removeTab(index: number) {
+  function removeTab(index: number): void {
     const tab = tabs[index];
 
     // cannot have zero tabs open.

@@ -1,11 +1,24 @@
 export class Motor {
+    public isLoaded: boolean = false;
     private _disabled: boolean = $state(true);
+
+    public speedState: number = $state(0);
+    public brushlessState: boolean = $state(false);
 
     constructor(
         public readonly id: number,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
+        this.load();
 
+        $effect(() => {
+            if (this.isLoaded) {
+                this.speed = this.speedState;
+                this.brushless = this.brushlessState;
+            } else {
+                console.error("error: motor wasn't loaded!");
+            }
+        });
     }
 
     public get speed(): Promise<number> {
@@ -127,6 +140,14 @@ export class Motor {
             default:
                 return "assets/imgs/placeHolder.png";
         }
+    }
+
+    // this will get the orginal properties, before updateing the motor.
+    public async load() {
+        this.speedState = await this.speed;
+        this.brushlessState = await this.brushless;
+
+        this.isLoaded = true;
     }
 
     /**

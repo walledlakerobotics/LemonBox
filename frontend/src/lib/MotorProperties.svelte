@@ -3,9 +3,6 @@
   import type { Motor } from "./motor.svelte.ts";
   let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
-  let speed: number = $state(0);
-  let brushless: boolean = $state(false);
-
   let amps: number = $state(0);
   let voltage: number = $state(0);
 
@@ -13,11 +10,6 @@
     amps = await motor.amps;
     voltage = await motor.voltage;
   }, 300);
-
-  $effect(() => {
-    motor.speed = speed;
-    motor.brushless = brushless;
-  });
 </script>
 
 <div id="dashboard-container">
@@ -60,14 +52,14 @@
 
 <div id="control-container">
   <div id="controls">
-    <p>Speed: <br /> <b>{speed}</b></p>
+    <p>Speed: <br /> <b>{motor.speedState}</b></p>
     <input
       id="speed-slider"
       type="range"
       step="0.01"
       min="-1"
       max="1"
-      bind:value={speed}
+      bind:value={motor.speedState}
     />
 
     <div id="check-boxes">
@@ -107,7 +99,7 @@
       id="brushless-checkbox"
       title="brushless"
       type="checkbox"
-      bind:checked={brushless}
+      bind:checked={motor.brushlessState}
     />
   </div>
 {/snippet}

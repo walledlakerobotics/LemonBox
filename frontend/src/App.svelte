@@ -14,20 +14,18 @@
 
   let selectedIds: number[] = $state([]);
 
-  $effect(() => {
-    (async () => {
-      const [connected, enabled] = await Promise.all([
-        networkConnected(),
-        dsEnabled(),
-      ]);
+  setInterval(async () => {
+    const [connected, enabled] = await Promise.all([
+      networkConnected(),
+      dsEnabled(),
+    ]);
 
-      if (connected && !enabled) {
-        await fetch("/api/enabled", {
-          method: "POST",
-        });
-      }
-    })();
-  });
+    if (connected && !enabled) {
+      await fetch("/api/enabled", {
+        method: "POST",
+      });
+    }
+  }, 300);
 
   $effect(() => {
     // clears the effect and then applies the effect to the selected tab.

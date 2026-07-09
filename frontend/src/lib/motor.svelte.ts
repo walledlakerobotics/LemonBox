@@ -23,10 +23,10 @@ export class Motor {
         });
 
         $effect(() => {
-            async () => {
+            (async () => {
                 this.ampsState = await this.amps;
                 this.voltageState = await this.voltage;
-            }
+            })();
         });
     }
 

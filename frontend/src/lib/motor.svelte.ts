@@ -1,5 +1,8 @@
 export class Motor {
-    public isLoaded: boolean = false;
+    // need to test...
+
+
+    private _isLoaded: boolean = false;
     private _disabled: boolean = $state(true);
 
     public speedState: number = $state(0);
@@ -14,18 +17,26 @@ export class Motor {
     ) {
 
         $effect(() => {
-            if (this.isLoaded) {
+            if (this._isLoaded) {
                 this.speed = this.speedState;
                 this.brushless = this.brushlessState;
             } else {
-                console.error("error: motor wasn't loaded!");
+                console.error(`error: motor ${id}, wasn't loaded!`);
             }
         });
 
         $effect(() => {
+            const amps: Promise<number> = this.amps;
+            const voltage: Promise<number> = this.voltage;
+
             (async () => {
-                this.ampsState = await this.amps;
-                this.voltageState = await this.voltage;
+                const [ampsState, voltageState] = await Promise.all([
+                    amps,
+                    voltage
+                ]);
+
+                this.ampsState = ampsState;
+                this.voltageState = voltageState;
             })();
         });
     }
@@ -110,11 +121,14 @@ export class Motor {
     }
 
     public set disabled(disabled: boolean) {
-
         if (disabled)
             this.speed = 0;
 
         this._disabled = disabled;
+    }
+
+    public get loaded(): boolean {
+        return this._isLoaded;
     }
 
     public async getDisplayName(): Promise<string> {
@@ -158,7 +172,7 @@ export class Motor {
         this.speedState = await this.speed;
         this.brushlessState = await this.brushless;
 
-        this.isLoaded = true;
+        this._isLoaded = true;
     }
 
 

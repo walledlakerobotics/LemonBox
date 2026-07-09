@@ -6,28 +6,28 @@
   import type { TabData } from "./lib/tabdata.svelte";
   import Warning from "./lib/Warning.svelte";
 
+  const tabLimit: number = 12;
+
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
   let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
 
-  let isTableConnected: boolean = $state(false);
   let selectedIds: number[] = $state([]);
 
-  setInterval(async () => {
-    const res = await fetch("/api/connected");
-    const data = await res.json();
+  $effect(() => {
+    (async () => {
+      const [connected, enabled] = await Promise.all([
+        networkConnected(),
+        dsEnabled(),
+      ]);
 
-    isTableConnected = data;
-
-    const enableRes = await fetch("/api/enabled");
-    const enableData = await enableRes.json();
-
-    if (isTableConnected && !enableData) {
-      fetch("/api/enabled", {
-        method: "POST",
-      });
-    }
-  }, 300);
+      if (connected && !enabled) {
+        await fetch("/api/enabled", {
+          method: "POST",
+        });
+      }
+    })();
+  });
 
   $effect(() => {
     // clears the effect and then applies the effect to the selected tab.
@@ -50,6 +50,8 @@
   addTab();
 
   function addTab(): void {
+    if (tabLimit <= tabs.length) return;
+
     const tab: TabData = {
       uuid: crypto.randomUUID(),
       title: "Motors",
@@ -79,11 +81,34 @@
 
     tabs.splice(index, 1);
   }
+
+  async function networkConnected(): Promise<boolean> {
+    const res = await fetch("/api/connected");
+    const data = await res.json();
+
+    return data;
+  }
+
+  async function dsEnabled(): Promise<boolean> {
+    const res = await fetch("/api/enabled");
+    const data = await res.json();
+
+    return data;
+  }
 </script>
 
-{#if !isTableConnected}
-  <Warning message="Network Tables are Disconnected!"></Warning>
-{/if}
+<!-- handling warnings ---------------------------- -->
+{#await networkConnected() then connected}
+  {#if !connected}
+    <Warning message="Network Tables are Disconnected!"></Warning>
+  {/if}
+{/await}
+
+{#await dsEnabled() then enabled}
+  {#if !enabled}
+    <Warning message="Opends Driver Station is not enabled!"></Warning>
+  {/if}
+{/await}
 
 <div id="tabs-container">
   <!-- creates tabs -->

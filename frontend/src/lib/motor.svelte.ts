@@ -151,7 +151,9 @@ export class Motor {
         }
     }
 
-    // this will get the orginal properties, before updateing the motor.
+    /**
+     * this will get the orginal properties, before updateing the motor.
+     */
     public async load() {
         this.speedState = await this.speed;
         this.brushlessState = await this.brushless;

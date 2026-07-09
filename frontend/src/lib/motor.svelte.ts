@@ -15,7 +15,7 @@ export class Motor {
                 this.speed = this.speedState;
                 this.brushless = this.brushlessState;
             } else {
-                console.error(`error: motor ${id}, wasn't loaded!`);
+                console.warn(`motor ${this.id}, wasn't loaded!`);
             }
         });
     }
@@ -28,7 +28,7 @@ export class Motor {
 
     public set speed(speed: number) {
         if (this.disabled) {
-            console.log("warning motor is disabled");
+            console.warn(`motor ${this.id} is disabled!`);
 
             // postes the speed to zero if disabled.
             fetch(this.postPath, {

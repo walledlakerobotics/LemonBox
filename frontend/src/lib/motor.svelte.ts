@@ -48,13 +48,11 @@ export class Motor {
         }
     }
 
-
     public get brushless(): Promise<boolean> {
         return fetch(this.postPath)
             .then(res => res.json())
             .then(data => data.brushless);
     }
-
 
     public set brushless(brushless: boolean) {
         fetch(this.postPath, {
@@ -153,7 +151,6 @@ export class Motor {
 
         this._isLoaded = true;
     }
-
 
     /**
      * gets all the motors posted on the json.

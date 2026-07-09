@@ -96,17 +96,21 @@
 </script>
 
 <!-- handling warnings ---------------------------- -->
-{#await networkConnected() then connected}
-  {#if !connected}
-    <Warning message="Network Tables are Disconnected!"></Warning>
-  {/if}
-{/await}
+{#key networkConnected()}
+  {#await networkConnected() then connected}
+    {#if !connected}
+      <Warning message="Network Tables are Disconnected!"></Warning>
+    {/if}
+  {/await}
+{/key}
 
-{#await dsEnabled() then enabled}
-  {#if !enabled}
-    <Warning message="Opends Driver Station is not enabled!"></Warning>
-  {/if}
-{/await}
+{#key dsEnabled()}
+  {#await dsEnabled() then enabled}
+    {#if !enabled}
+      <Warning message="Opends Driver Station is not enabled!"></Warning>
+    {/if}
+  {/await}
+{/key}
 
 <div id="tabs-container">
   <!-- creates tabs -->

@@ -41,11 +41,15 @@
 
   <div id="electrical-container">
     {#key motor.voltage}
-      <p>Applied Voltage: {motor.voltageState}</p>
+      {#await motor.voltage then v}
+        <p>Applied Voltage: {v}</p>
+      {/await}
     {/key}
 
     {#key motor.amps}
-      <p>Amps: {motor.ampsState}</p>
+      {#await motor.amps then a}
+        <p>Amps: {a}</p>
+      {/await}
     {/key}
   </div>
 </div>

@@ -1,21 +1,15 @@
 export class Motor {
     // need to test...
-
-
     private _isLoaded: boolean = false;
     private _disabled: boolean = $state(true);
 
     public speedState: number = $state(0);
     public brushlessState: boolean = $state(false);
 
-    public ampsState: number = $state(0);
-    public voltageState: number = $state(0);
-
     constructor(
         public readonly id: number,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
-
         $effect(() => {
             if (this._isLoaded) {
                 this.speed = this.speedState;
@@ -23,21 +17,6 @@ export class Motor {
             } else {
                 console.error(`error: motor ${id}, wasn't loaded!`);
             }
-        });
-
-        $effect(() => {
-            const amps: Promise<number> = this.amps;
-            const voltage: Promise<number> = this.voltage;
-
-            (async () => {
-                const [ampsState, voltageState] = await Promise.all([
-                    amps,
-                    voltage
-                ]);
-
-                this.ampsState = ampsState;
-                this.voltageState = voltageState;
-            })();
         });
     }
 

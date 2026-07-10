@@ -40,13 +40,12 @@ public class Main {
         final NetworkTable lemonTable = inst.getTable("LemonBox");
 
         final OpendsManager opendsManager = new OpendsManager();
+
         // makes sure that it pends for input.
         Thread opendsThread = new Thread(() -> {
             opendsManager.setTeam("308");
             opendsManager.run();
         });
-
-        opendsThread.start();
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
 
@@ -101,9 +100,13 @@ public class Main {
                         ctx.json(opendsManager.isEnabled());
                     });
 
-                    config.events.serverStopped(() -> {
+                    config.events.serverStopping(() -> {
                         opendsManager.quit();
                         opendsThread.join();
+                    });
+
+                    config.events.serverStarting(() -> {
+                        opendsThread.start();
                     });
                 });
 

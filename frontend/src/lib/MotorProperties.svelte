@@ -4,7 +4,9 @@
   let { motor = $bindable(), onClose }: { motor: Motor; onClose: () => void } =
     $props();
 
-  motor.load();
+  (async () => {
+    await motor.load();
+  })();
 </script>
 
 <div id="dashboard-container">

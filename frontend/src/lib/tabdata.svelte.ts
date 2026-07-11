@@ -1,13 +1,17 @@
 import type { Motor } from "./motor.svelte";
+export class TabData {
+    public readonly uuid: string = crypto.randomUUID();
+    public title: string = "Motors";
+    public selectedMotor: Motor | null = null;
+    public selected: boolean = false;
 
-export type TabData = {
-    uuid: string;
-    title: string;
-    selectedMotor: Motor | null;
-    selected: boolean;
-    onOpen: () => void;
-    onClose: () => void;
-};
+    constructor(
+        public readonly onOpen: () => void,
+        public readonly onClose: () => void) {
+    }
+
+
+}
 
 
 /**

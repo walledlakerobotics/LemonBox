@@ -4,7 +4,7 @@
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
-  import type { TabData } from "./lib/tabdata.svelte";
+  import { TabData } from "./lib/tabdata.svelte";
   import Warning from "./lib/Warning.svelte";
 
   const tabLimit: number = 12;
@@ -20,8 +20,8 @@
 
   setInterval(async () => {
     const [connected, enabled] = await Promise.all([
-      networkConnected(),
-      dsEnabled(),
+      getNetworkConnected(),
+      getEnabled(),
     ]);
 
     isconnected = connected;
@@ -48,20 +48,14 @@
 
   addTab();
 
-  // the add and remove tab disables all motors when called.
-
   function addTab(): void {
     if (tabLimit <= tabs.length) return;
 
-    const tab: TabData = {
-      uuid: crypto.randomUUID(),
-      title: "Motors",
-      selected: false,
-      selectedMotor: null,
-      onOpen: () =>
-        (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
-      onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
-    };
+    const index: number = tabs.findIndex((t) => t.uuid == tab.uuid);
+    const tab = new TabData(
+      () => (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
+      () => removeTab(index),
+    );
 
     tabs.push(tab);
   }
@@ -72,28 +66,33 @@
     // cannot have zero tabs open.
     if (tabs.length <= 1) return;
 
-    if (tab.selectedMotor != null) {
-      tab.selectedMotor.disabled = true;
-    }
-
     tabs.splice(index, 1);
 
     // if current tab is closed while being in it, it will go to the one backward.
     if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
   }
 
-  async function networkConnected(): Promise<boolean> {
+  async function getNetworkConnected(): Promise<boolean> {
     const res = await fetch("/api/");
     const data = await res.json();
 
     return data.connected;
   }
 
-  async function dsEnabled(): Promise<boolean> {
+  async function getEnabled(): Promise<boolean> {
     const res = await fetch("/api/");
     const data = await res.json();
 
     return data.enabled;
+  }
+
+  function setEnabled(enabled: boolean) {
+    fetch("/api/", {
+      method: "POST",
+      body: JSON.stringify({
+        enabled: enabled,
+      }),
+    });
   }
 </script>
 
@@ -105,14 +104,7 @@
 {#if !isenabled}
   <ActionWarning
     message="Opends is not Enabled, please press the warning to enable DS!"
-    onEnable={() => {
-      fetch("/api/", {
-        method: "POST",
-        body: JSON.stringify({
-          enabled: true,
-        }),
-      });
-    }}
+    onEnable={() => setEnabled(true)}
   ></ActionWarning>
 {/if}
 
@@ -131,11 +123,6 @@
   <MotorProperties
     motor={m}
     onClose={() => {
-      if (activeTab.selectedMotor != null)
-        activeTab.selectedMotor.disabled = true;
-
-      activeTab.selectedMotor = null;
-
       activeTab.title = "Motors";
     }}
   ></MotorProperties>

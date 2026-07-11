@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ActionWarning from "./lib/ActionWarning.svelte";
   import { Motor } from "./lib/motor.svelte";
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
@@ -22,12 +23,6 @@
       networkConnected(),
       dsEnabled(),
     ]);
-
-    if (connected && !enabled) {
-      await fetch("/api/enabled", {
-        method: "POST",
-      });
-    }
 
     isconnected = connected;
     isenabled = enabled;
@@ -108,7 +103,14 @@
 {/if}
 
 {#if !isenabled}
-  <Warning message="Opends Driver Station is not enabled!"></Warning>
+  <ActionWarning
+    message="Opends is not Enabled, please press the warning to enable DS!"
+    onEnable={() => {
+      fetch("/api/enabled", {
+        method: "POST",
+      });
+    }}
+  ></ActionWarning>
 {/if}
 
 <div id="tabs-container">

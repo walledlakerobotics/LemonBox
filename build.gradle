@@ -1,3 +1,7 @@
+
+System.setProperty("os.name", "linux")
+System.setProperty("os.arch", "arm64")
+
 plugins {
     id "java"
     id "application"

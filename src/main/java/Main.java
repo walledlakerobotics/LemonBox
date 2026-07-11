@@ -38,7 +38,6 @@ public class Main {
         inst.startClient4("LemonClient");
 
         final NetworkTable lemonTable = inst.getTable("LemonBox");
-
         final OpendsManager opendsManager = new OpendsManager();
 
         // makes sure that it pends for input.

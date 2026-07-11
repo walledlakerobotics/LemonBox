@@ -5,22 +5,25 @@
 </script>
 
 <button id="motor-tile" onclick={onOpen}>
-  {#await motor.getImageDir()}
-    <img src="assets/imgs/placeHolder.png" alt="" />
-  {:then dir}
-    <img src={dir} alt="" />
-  {:catch}
-    <img src="assets/imgs/placeHolder.png" alt="" />
-  {/await}
+  {#key motor.getImageDir()}
+    {#await motor.getImageDir()}
+      <img src="assets/imgs/placeHolder.png" alt="" />
+    {:then dir}
+      <img src={dir} alt="" />
+    {:catch}
+      <img src="assets/imgs/placeHolder.png" alt="" />
+    {/await}
+  {/key}
 
-  {#await motor.getDisplayName()}
-    <h1>Loading...</h1>
-  {:then display}
-    <h1>{display}</h1>
-  {:catch}
-    <h1>Unknown</h1>
-  {/await}
-
+  {#key motor.getDisplayName()}
+    {#await motor.getDisplayName()}
+      <h1>Loading...</h1>
+    {:then display}
+      <h1>{display}</h1>
+    {:catch}
+      <h1>Unknown</h1>
+    {/await}
+  {/key}
   <h2>{motor.id}</h2>
 </button>
 

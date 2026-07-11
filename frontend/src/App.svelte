@@ -83,17 +83,17 @@
   }
 
   async function networkConnected(): Promise<boolean> {
-    const res = await fetch("/api/connected");
+    const res = await fetch("/api/");
     const data = await res.json();
 
-    return data;
+    return data.connected;
   }
 
   async function dsEnabled(): Promise<boolean> {
-    const res = await fetch("/api/enabled");
+    const res = await fetch("/api/");
     const data = await res.json();
 
-    return data;
+    return data.enabled;
   }
 </script>
 
@@ -106,8 +106,11 @@
   <ActionWarning
     message="Opends is not Enabled, please press the warning to enable DS!"
     onEnable={() => {
-      fetch("/api/enabled", {
+      fetch("/api/", {
         method: "POST",
+        body: JSON.stringify({
+          enabled: true,
+        }),
       });
     }}
   ></ActionWarning>

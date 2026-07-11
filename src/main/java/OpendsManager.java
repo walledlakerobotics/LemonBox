@@ -8,7 +8,6 @@ import com.boomaa.opends.display.DisplayEndpoint;
 public class OpendsManager implements Runnable {
 
     private PipedOutputStream outputStream;
-    private boolean pastEnabled = false;
 
     public OpendsManager() {
         outputStream = new PipedOutputStream();
@@ -19,27 +18,17 @@ public class OpendsManager implements Runnable {
         }
     }
 
-    public void setTeam(String teamNumber) {
+    public synchronized void setTeam(String teamNumber) {
         String input = String.format("h\n%s\n", teamNumber);
         send(input);
     }
 
-    public void togglEnable() {
-
-        pastEnabled = DisplayEndpoint.IS_ENABLED.isEnabled();
-
-        send("a\n");
-
-        if (DisplayEndpoint.IS_ENABLED.isEnabled() && !pastEnabled)
-            yes();
+    public synchronized void setEnable(boolean enabled) {
+        DisplayEndpoint.IS_ENABLED.setSelected(enabled);
     }
 
-    public boolean isEnabled() {
-        return DisplayEndpoint.IS_ENABLED.isEnabled();
-    }
-
-    public void refreshDisplay() {
-        send("p\n");
+    public synchronized boolean isEnabled() {
+        return DisplayEndpoint.IS_ENABLED.isSelected();
     }
 
     public void estop() {
@@ -56,14 +45,6 @@ public class OpendsManager implements Runnable {
 
     public void quit() {
         send("q\n");
-    }
-
-    public void no() {
-        send("n\n");
-    }
-
-    public void yes() {
-        send("y\n");
     }
 
     private synchronized void send(String cmd) {

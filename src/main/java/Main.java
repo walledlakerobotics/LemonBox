@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
@@ -86,14 +87,25 @@ public class Main {
 
                     });
 
-                    config.routes.get("/api/enabled", ctx -> {
-                        ctx.json(opendsManager.isEnabled());
+                    config.routes.get("/api/", ctx -> {
+                        HashMap<String, Object> json = new HashMap<>();
+
+                        json.put("connected", inst.isConnected());
+                        json.put("enabled", opendsManager.isEnabled());
+
+                        ctx.json(json);
+
                     });
 
-                    config.routes.post("/api/enabled", ctx -> {
-                        opendsManager.togglEnable();
+                    config.routes.post("/api/", ctx -> {
+                        JsonNode json = ctx.bodyAsClass(JsonNode.class);
 
-                        ctx.json(opendsManager.isEnabled());
+                        if (json.has("enabled"))
+                            opendsManager.setEnable(json.get("enabled").asBoolean());
+
+                        if (json.has("connected")) {
+                            // put something here.
+                        }
                     });
 
                     config.events.serverStopping(() -> {

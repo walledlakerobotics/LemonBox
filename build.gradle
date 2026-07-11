@@ -1,4 +1,9 @@
 
+buildscript {
+    System.setProperty("os.name", "linux")
+    System.setProperty("os.arch", "arm64")
+}
+
 plugins {
     id "java"
     id "application"
@@ -7,9 +12,6 @@ plugins {
     id "edu.wpi.first.WpilibTools" version "2.1.0"
     id "com.github.node-gradle.node" version "7.1.0"
 }
-
-System.setProperty("os.name", "linux")
-System.setProperty("os.arch", "arm64")
 
 
 // node {

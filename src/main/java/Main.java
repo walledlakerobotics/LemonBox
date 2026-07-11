@@ -93,8 +93,6 @@ public class Main {
                     config.routes.post("/api/enabled", ctx -> {
                         opendsManager.togglEnable();
 
-                        System.out.println(opendsManager.isEnabled());
-
                         ctx.json(opendsManager.isEnabled());
                     });
 

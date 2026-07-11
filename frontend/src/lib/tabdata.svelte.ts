@@ -3,18 +3,13 @@ import type { Motor } from "./motor.svelte";
 /**
  * Holds the data required to create a tab. 
  */
-export class TabData {
-    public readonly uuid: string = crypto.randomUUID();
-    public title: string = "Motors";
-    public selectedMotor: Motor | null = null;
-    public selected: boolean = false;
-
-    constructor(
-        public readonly onOpen: () => void,
-        public readonly onClose: () => void) {
-    }
-
-
+export type TabData = {
+    uuid: string;
+    title: string;
+    selectedMotor: Motor | null;
+    selected: boolean;
+    onOpen: () => void;
+    onClose: () => void;
 }
 
 

@@ -1,8 +1,7 @@
 <script lang="ts">
   import FaultMessage from "./FaultMessage.svelte";
   import { Motor } from "./motor.svelte";
-  let { motor = $bindable(), onClose }: { motor: Motor; onClose: () => void } =
-    $props();
+  let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
   $effect(() => {
     motor.speed = motor.speedState;

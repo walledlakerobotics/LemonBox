@@ -48,6 +48,12 @@ application {
     mainClass = 'Main'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 wpilibTools.deps.wpilibVersion = wpi.versions.wpilibVersion.get()
 
 def nativeConfigName = 'wpilibNatives'
@@ -94,7 +100,7 @@ shadowJar {
     archiveBaseName = "LemonBox"
     archiveVersion = ""
     exclude("module-info.class")
-    archiveClassifier.set(wpilibTools.currentPlatform.platformName)
+    archiveClassifier.set('linux-arm64')
 
     manifest {
         attributes(

@@ -9,7 +9,17 @@
         {tabData.title}
     </button>
 
-    <button id="remove-button" onclick={tabData.onClose} aria-label="Close tab">
+    <button
+        id="remove-button"
+        onclick={() => {
+            if (tabData.selectedMotor != null) {
+                tabData.selectedMotor.disabled = true;
+            }
+
+            tabData.onClose();
+        }}
+        aria-label="Close tab"
+    >
         ×
     </button>
 </div>

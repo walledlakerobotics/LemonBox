@@ -54,7 +54,6 @@ public class Main {
 
                     // this is directing the root to the html index file.
                     config.routes.get("/", ctx -> ctx.redirect("index.html"));
-                    config.routes.get("/api/connected", ctx -> ctx.json(inst.isConnected()));
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {

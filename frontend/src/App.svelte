@@ -53,6 +53,8 @@
 
   addTab();
 
+  // the add and remove tab disables all motors when called.
+
   function addTab(): void {
     if (tabLimit <= tabs.length) return;
 
@@ -77,11 +79,10 @@
 
     if (tab.selectedMotor != null) {
       tab.selectedMotor.disabled = true;
-      tab.selectedMotor = null;
     }
 
-    // if current tab is closed while being in it, it will go to the one backward.
-    if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
+    // // if current tab is closed while being in it, it will go to the one backward.
+    // if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
 
     tabs.splice(index, 1);
   }

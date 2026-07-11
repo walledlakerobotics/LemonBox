@@ -33,15 +33,11 @@ public class Main {
 
         // inits network table :3
         final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-
-        inst.setServer("roboRIO-308-FRC");
-        inst.startClient4("LemonClient");
-
         final NetworkTable lemonTable = inst.getTable("LemonBox");
         final OpendsManager opendsManager = new OpendsManager();
 
         // makes sure that it pends for input.
-        Thread opendsThread = new Thread(() -> {
+        final Thread opendsThread = new Thread(() -> {
             opendsManager.setTeam("308");
             opendsManager.run();
         });
@@ -105,9 +101,13 @@ public class Main {
                     config.events.serverStopping(() -> {
                         opendsManager.quit();
                         opendsThread.join();
+
+                        inst.stopClient();
                     });
 
                     config.events.serverStarting(() -> {
+                        inst.setServer("roboRIO-308-FRC");
+                        inst.startClient4("LemonClient");
                         opendsThread.start();
                     });
                 });

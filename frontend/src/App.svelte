@@ -81,10 +81,10 @@
       tab.selectedMotor.disabled = true;
     }
 
-    // // if current tab is closed while being in it, it will go to the one backward.
-    // if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
-
     tabs.splice(index, 1);
+
+    // if current tab is closed while being in it, it will go to the one backward.
+    if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
   }
 
   async function networkConnected(): Promise<boolean> {

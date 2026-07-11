@@ -58,6 +58,10 @@ public class OpendsManager implements Runnable {
         send("q\n");
     }
 
+    public void no() {
+        send("n\n");
+    }
+
     public void yes() {
         send("y\n");
     }

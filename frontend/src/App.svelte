@@ -4,7 +4,7 @@
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
-  import { TabData } from "./lib/tabdata.svelte";
+  import type { TabData } from "./lib/tabdata.svelte";
   import Warning from "./lib/Warning.svelte";
 
   const tabLimit: number = 12;
@@ -30,7 +30,11 @@
 
   $effect(() => {
     // clears the effect and then applies the effect to the selected tab.
-    tabs.forEach((t) => (t.selected = false));
+
+    tabs.forEach((t) => {
+      if (t.selectedMotor != null) t.selectedMotor.disabled = true;
+      t.selected = false;
+    });
     activeTab.selected = true;
   });
 
@@ -50,12 +54,16 @@
 
   function addTab(): void {
     if (tabLimit <= tabs.length) return;
-
-    const index: number = tabs.findIndex((t) => t.uuid == tab.uuid);
-    const tab = new TabData(
-      () => (activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab),
-      () => removeTab(index),
-    );
+    const tab: TabData = {
+      uuid: crypto.randomUUID(),
+      title: "Motors",
+      selectedMotor: null,
+      selected: false,
+      onOpen: () => {
+        activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
+      },
+      onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
+    };
 
     tabs.push(tab);
   }
@@ -67,9 +75,6 @@
     if (tabs.length <= 1) return;
 
     tabs.splice(index, 1);
-
-    // if current tab is closed while being in it, it will go to the one backward.
-    if (activeTab.uuid == tab.uuid) activeTab = tabs[index - 1];
   }
 
   async function getNetworkConnected(): Promise<boolean> {
@@ -123,6 +128,7 @@
   <MotorProperties
     motor={m}
     onClose={() => {
+      activeTab.selectedMotor = null;
       activeTab.title = "Motors";
     }}
   ></MotorProperties>

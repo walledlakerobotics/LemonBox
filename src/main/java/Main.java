@@ -48,8 +48,6 @@ public class Main {
             try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
 
-                // configures local host routes
-
                 final Javalin app = Javalin.create(config -> {
                     config.staticFiles.enableWebjars();
                     config.staticFiles.add("/dist");

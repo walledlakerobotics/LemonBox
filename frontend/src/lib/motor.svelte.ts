@@ -1,23 +1,17 @@
 export class Motor {
-    // need to test...
-    private _isLoaded: boolean = false;
-    private _disabled: boolean = $state(true);
+    private _disabled: boolean = true;
 
     public speedState: number = $state(0);
     public brushlessState: boolean = $state(false);
+
+    public ampsState: number = $state(0);
+    public voltageState: number = $state(0);
 
     constructor(
         public readonly id: number,
         private readonly postPath: string = `/api/motors/${id}`
     ) {
-        $effect(() => {
-            if (this._isLoaded) {
-                this.speed = this.speedState;
-                this.brushless = this.brushlessState;
-            } else {
-                console.warn(`motor ${this.id}, wasn't loaded!`);
-            }
-        });
+
     }
 
     public get speed(): Promise<number> {
@@ -104,10 +98,6 @@ export class Motor {
         this._disabled = disabled;
     }
 
-    public get loaded(): boolean {
-        return this._isLoaded;
-    }
-
     public async getDisplayName(): Promise<string> {
         switch (await this.type) {
             case "sparkmax":
@@ -140,16 +130,6 @@ export class Motor {
             default:
                 return "assets/imgs/placeHolder.png";
         }
-    }
-
-    /**
-     * this will get the orginal properties, before updateing the motor.
-     */
-    public async load() {
-        this.speedState = await this.speed;
-        this.brushlessState = await this.brushless;
-
-        this._isLoaded = true;
     }
 
     /**

@@ -14,6 +14,9 @@
 
   let selectedIds: number[] = $state([]);
 
+  let isconnected: boolean = $state(false);
+  let isenabled: boolean = $state(false);
+
   setInterval(async () => {
     const [connected, enabled] = await Promise.all([
       networkConnected(),
@@ -25,6 +28,9 @@
         method: "POST",
       });
     }
+
+    isconnected = connected;
+    isenabled = enabled;
   }, 300);
 
   $effect(() => {
@@ -96,21 +102,13 @@
 </script>
 
 <!-- handling warnings ---------------------------- -->
-{#key networkConnected()}
-  {#await networkConnected() then connected}
-    {#if !connected}
-      <Warning message="Network Tables are Disconnected!"></Warning>
-    {/if}
-  {/await}
-{/key}
+{#if !isconnected}
+  <Warning message="Network Tables are Disconnected!"></Warning>
+{/if}
 
-{#key dsEnabled()}
-  {#await dsEnabled() then enabled}
-    {#if !enabled}
-      <Warning message="Opends Driver Station is not enabled!"></Warning>
-    {/if}
-  {/await}
-{/key}
+{#if !isenabled}
+  <Warning message="Opends Driver Station is not enabled!"></Warning>
+{/if}
 
 <div id="tabs-container">
   <!-- creates tabs -->

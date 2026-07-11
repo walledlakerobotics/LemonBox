@@ -1,12 +1,18 @@
 <script lang="ts">
   import FaultMessage from "./FaultMessage.svelte";
-  import type { Motor } from "./motor.svelte.ts";
+  import { Motor } from "./motor.svelte";
   let { motor = $bindable(), onClose }: { motor: Motor; onClose: () => void } =
     $props();
 
-  (async () => {
-    await motor.load();
-  })();
+  $effect(() => {
+    motor.speed = motor.speedState;
+    motor.brushless = motor.brushlessState;
+  });
+
+  setInterval(async () => {
+    motor.ampsState = await motor.amps;
+    motor.voltageState = await motor.voltage;
+  }, 300);
 </script>
 
 <div id="dashboard-container">
@@ -42,17 +48,8 @@
   </div>
 
   <div id="electrical-container">
-    {#key motor.voltage}
-      {#await motor.voltage then v}
-        <p>Applied Voltage: {v}</p>
-      {/await}
-    {/key}
-
-    {#key motor.amps}
-      {#await motor.amps then a}
-        <p>Amps: {a}</p>
-      {/await}
-    {/key}
+    <p>Applied Voltage: {motor.voltageState}</p>
+    <p>Amps: {motor.ampsState}</p>
   </div>
 </div>
 

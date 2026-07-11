@@ -1,4 +1,8 @@
 import type { Motor } from "./motor.svelte";
+
+/**
+ * Holds the data required to create a tab. 
+ */
 export class TabData {
     public readonly uuid: string = crypto.randomUUID();
     public title: string = "Motors";

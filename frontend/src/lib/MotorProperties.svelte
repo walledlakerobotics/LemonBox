@@ -9,10 +9,12 @@
   });
 
   $effect(() => {
-    const update: () => Promise<void> = async () => {
-      motor.ampsState = await motor.amps;
-      motor.voltageState = await motor.voltage;
-    };
+    const m: Motor = motor;
+
+    async function update() {
+      m.ampsState = await m.amps;
+      m.voltageState = await m.voltage;
+    }
 
     update();
   });

@@ -37,8 +37,10 @@
   });
 
   $effect(() => {
+    const ms: Promise<Motor[]> = Motor.getMotors();
+
     const update: () => Promise<void> = async () => {
-      motors = await Motor.getMotors();
+      motors = await ms;
       dsEnabled = await getEnabled();
       ntConnected = await getNetworkConnected();
     };

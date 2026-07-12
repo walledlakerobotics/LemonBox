@@ -44,8 +44,7 @@ public class Main {
         });
 
         try (MotorManager manager = new MotorManager(lemonTable)) {
-
-            try (final MultiSubscriber subscriber = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
+            try (final MultiSubscriber _ = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
 
                 final Javalin app = Javalin.create(config -> {

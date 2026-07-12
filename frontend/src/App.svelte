@@ -11,43 +11,39 @@
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
-  let currentMotors: Promise<Motor[]> = $state(Motor.getMotors());
 
-  let selectedIds: number[] = $state([]);
+  let selectedIds: number[] = $derived(
+    tabs
+      .map((t) => t.selectedMotor?.id)
+      .filter((id): id is number => id !== undefined),
+  );
 
-  let isconnected: boolean = $state(false);
-  let isenabled: boolean = $state(false);
+  let motors: Motor[] = $state([]);
+  let currentMotors: Motor[] = $derived(
+    motors.filter((m) => !selectedIds.includes(m.id)),
+  );
 
-  setInterval(async () => {
-    const [connected, enabled] = await Promise.all([
-      getNetworkConnected(),
-      getEnabled(),
-    ]);
-
-    isconnected = connected;
-    isenabled = enabled;
-  }, 300);
+  let ntConnected: boolean = $state(false);
+  let dsEnabled: boolean = $state(false);
 
   $effect(() => {
     // clears the effect and then applies the effect to the selected tab.
-
     tabs.forEach((t) => {
       if (t.selectedMotor != null) t.selectedMotor.disabled = true;
       t.selected = false;
     });
+
     activeTab.selected = true;
   });
 
   $effect(() => {
-    // gets all the tabs selected motor ids, and filters the undefined ones.
-    selectedIds = tabs
-      .map((t) => t.selectedMotor?.id)
-      .filter((id): id is number => id !== undefined);
+    const update: () => Promise<void> = async () => {
+      motors = await Motor.getMotors();
+      dsEnabled = await getEnabled();
+      ntConnected = await getNetworkConnected();
+    };
 
-    // updates the current motors and filters them by which motors are selected.
-    currentMotors = Motor.getMotors().then((motors) =>
-      motors.filter((m) => !selectedIds.includes(m.id)),
-    );
+    update();
   });
 
   addTab();
@@ -69,8 +65,6 @@
   }
 
   function removeTab(index: number): void {
-    const tab = tabs[index];
-
     // cannot have zero tabs open.
     if (tabs.length <= 1) return;
 
@@ -91,7 +85,7 @@
     return data.enabled;
   }
 
-  function setEnabled(enabled: boolean) {
+  function setEnabled(enabled: boolean): void {
     fetch("/api/", {
       method: "POST",
       body: JSON.stringify({
@@ -102,15 +96,16 @@
 </script>
 
 <!-- handling warnings ---------------------------- -->
-{#if !isconnected}
-  <Warning message="Network Tables are Disconnected!"></Warning>
+
+{#if !ntConnected}
+  <Warning message="Network Tables are Disconnected!" />
 {/if}
 
-{#if !isenabled}
+{#if !dsEnabled}
   <ActionWarning
-    message="Opends is not Enabled, please press the warning to enable DS!"
+    message="OpenDS is not Enabled, please press the warning to enable DS!"
     onEnable={() => setEnabled(true)}
-  ></ActionWarning>
+  />
 {/if}
 
 <div id="tabs-container">
@@ -172,7 +167,7 @@
 
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 30px;
+    height: 40px;
 
     scrollbar-width: thin;
     scrollbar-color: var(--border-color) transparent;

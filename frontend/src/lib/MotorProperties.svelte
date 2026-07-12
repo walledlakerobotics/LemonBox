@@ -8,10 +8,14 @@
     motor.brushless = motor.brushlessState;
   });
 
-  setInterval(async () => {
-    motor.ampsState = await motor.amps;
-    motor.voltageState = await motor.voltage;
-  }, 300);
+  $effect(() => {
+    const update: () => Promise<void> = async () => {
+      motor.ampsState = await motor.amps;
+      motor.voltageState = await motor.voltage;
+    };
+
+    update();
+  });
 </script>
 
 <div id="dashboard-container">

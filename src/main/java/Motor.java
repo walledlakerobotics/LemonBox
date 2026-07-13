@@ -76,8 +76,8 @@ public class Motor implements AutoCloseable {
 
         props.put("speed", m_speedEntry.get());
         props.put("brushless", m_brushlessEntry.get());
-        props.put("amps", m_ampSub.get());
-        props.put("voltage", m_voltageSub.get());
+        props.put("amps", Math.floor(m_ampSub.get()));
+        props.put("voltage", Math.floor(m_voltageSub.get()));
         props.put("type", m_typeSub.get());
         props.put("faults", m_faultsSub.get());
         props.put("clearFaults", m_clearFaultsEntry.get());

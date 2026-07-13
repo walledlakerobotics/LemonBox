@@ -6,7 +6,6 @@
 
     (backend)
         brushless event handler not configureration the sparkmax, and clear listener (idk why the eventListeners are not working)
-        talonfx post faults (this is due to the awful way talonfx's handle faults)
 
     
     (Respberry PI)

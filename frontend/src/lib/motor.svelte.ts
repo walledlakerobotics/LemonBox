@@ -1,8 +1,3 @@
-
-let currentMotors: Promise<Motor[]> = fetch("/api/motors")
-    .then(res => res.json() as Record<string, any>)
-    .then(data => Object.keys(data).map(id => new Motor(Number.parseInt(id))));
-
 export class Motor {
     private _disabled: boolean = true;
     private _speed: number = $state(0);
@@ -159,14 +154,23 @@ export class Motor {
      * @returns Motors posted. 
      */
     public static async getMotors(): Promise<Motor[]> {
-        currentMotors = fetch("/api/motors")
-            .then(res => res.json() as Record<string, any>)
-            .then(data => Object.keys(data).map(id => new Motor(Number.parseInt(id))));
-
         return currentMotors;
+    }
+
+    public static async refresh(): Promise<void> {
+        currentMotors = this.getRefreshMotors();
+    }
+
+    public static async getRefreshMotors(): Promise<Motor[]> {
+        const res = await fetch("/api/motors");
+        const data = await res.json() as Record<string, any>;
+
+        return Object.keys(data).map(id => new Motor(Number.parseInt(id)));
     }
 
     public static async getMotor(id: number): Promise<Motor | Motor[]> {
         return currentMotors.then(motors => motors.filter(m => m.id == id));
     }
 }
+
+let currentMotors: Promise<Motor[]> = $derived(Motor.getRefreshMotors());

@@ -30,6 +30,8 @@
         flex-direction: row;
         color: var(--border-color);
 
+        font-size: 1em;
+
         background-color: var(--button-color);
         border: solid;
         border-color: var(--border-color);

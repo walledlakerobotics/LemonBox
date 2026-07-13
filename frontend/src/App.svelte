@@ -46,6 +46,8 @@
 
   addTab();
 
+  let pastConnect = false;
+
   async function updateState() {
     const [motorsResult, enabled, connected] = await Promise.all([
       Motor.getMotors(),
@@ -56,6 +58,11 @@
     motors = motorsResult;
     dsEnabled = enabled;
     ntConnected = connected;
+
+    if ((connected && !pastConnect) || (!connected && pastConnect))
+      Motor.refresh();
+
+    pastConnect = connected;
   }
 
   function addTab(): void {
@@ -114,7 +121,9 @@
 {#if !dsEnabled}
   <ActionWarning
     message="OpenDS is not Enabled, please press the warning to enable DS!"
-    onEnable={() => setEnabled(true)}
+    onEnable={() => {
+      setEnabled(true);
+    }}
   />
 {/if}
 

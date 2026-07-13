@@ -20,7 +20,7 @@ public class Motor implements AutoCloseable {
     private DoubleSubscriber m_voltageSub;
     private StringSubscriber m_typeSub;
     private StringArraySubscriber m_faultsSub;
-    private StringArraySubscriber m_stickySub;
+    private BooleanEntry m_clearFaultsEntry;
 
     /**
      * 
@@ -35,7 +35,7 @@ public class Motor implements AutoCloseable {
         m_voltageSub = subTable.getDoubleTopic("voltage").subscribe(0);
         m_typeSub = subTable.getStringTopic("type").subscribe("unknown");
         m_faultsSub = subTable.getStringArrayTopic("faults").subscribe(new String[0]);
-        m_stickySub = subTable.getStringArrayTopic("stickyFaults").subscribe(new String[0]);
+        m_clearFaultsEntry = subTable.getBooleanTopic("clearFaults").getEntry(false);
     }
 
     /**
@@ -45,6 +45,10 @@ public class Motor implements AutoCloseable {
      */
     public void setSpeed(double speed) {
         m_speedEntry.set(speed);
+    }
+
+    public void setClearFaults(boolean clear) {
+        m_clearFaultsEntry.set(clear);
     }
 
     /**
@@ -76,7 +80,7 @@ public class Motor implements AutoCloseable {
         props.put("voltage", m_voltageSub.get());
         props.put("type", m_typeSub.get());
         props.put("faults", m_faultsSub.get());
-        props.put("stickyFaults", m_stickySub.get());
+        props.put("clearFaults", m_clearFaultsEntry.get());
 
         return props;
     }
@@ -89,7 +93,8 @@ public class Motor implements AutoCloseable {
         m_voltageSub.close();
         m_typeSub.close();
         m_faultsSub.close();
-        m_stickySub.close();
+        m_clearFaultsEntry.close();
+
     }
 
     /**

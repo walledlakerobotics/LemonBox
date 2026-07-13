@@ -81,6 +81,9 @@ public class Main {
                         if (json.has("brushless"))
                             motor.setBrushless(json.get("brushless").asBoolean());
 
+                        if (json.has("clearFaults"))
+                            motor.setClearFaults(json.get("clearFaults").asBoolean());
+
                     });
 
                     config.routes.get("/api/", ctx -> {

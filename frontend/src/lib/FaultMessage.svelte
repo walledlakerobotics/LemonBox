@@ -3,6 +3,7 @@
 </script>
 
 <div id="fault">
+    <p>fault | sticky fault</p>
     <p>{fault}</p>
 </div>
 
@@ -10,6 +11,8 @@
     #fault {
         display: flex;
         flex-direction: column;
+
+        gap: 1px;
 
         text-align: center;
 

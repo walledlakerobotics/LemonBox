@@ -133,27 +133,31 @@ export class Motor {
         }
     }
 
-    public async updateEletricalData() {
+    public async updateData() {
         const data = await this.getData();
-        const [amps, voltage] = await Promise.all([data.amps, data.voltage]);
+        const [amps, voltage, faults, stickyFaults] = await Promise.all([data.amps, data.voltage, data.faults, data.stickyFaults]);
 
         this._amps = amps;
         this._voltage = voltage;
-    }
-
-    public async updateFaultsData() {
-        const data = await this.getData();
-        const [faults, stickyFaults] = await Promise.all([data.faults, data.stickyFaults]);
-
         this._fault = faults;
         this._stickFault = stickyFaults;
     }
+
 
     private async getData() {
         const res: Response = await fetch(this.postPath);
         const data: any = await res.json();
 
         return data;
+    }
+
+    public clearFaults() {
+        fetch(this.postPath, {
+            method: "POST",
+            body: JSON.stringify({
+                clearFault: true,
+            }),
+        });
     }
 
     /**

@@ -7,18 +7,12 @@
   let amps: number = $derived(motor.amps);
   let voltage: number = $derived(motor.voltage);
   let faults: string[] = $derived(motor.faults);
-  let stickyFaults: string[] = $derived(motor.stickyFaults);
-
-  $effect(() => {
-    amps;
-    voltage;
-    motor.updateEletricalData();
-  });
 
   $effect(() => {
     faults;
-    stickyFaults;
-    motor.updateFaultsData();
+    amps;
+    voltage;
+    motor.updateData();
   });
 </script>
 
@@ -50,12 +44,13 @@
         <FaultMessage {fault}></FaultMessage>
       {/each}
     </div>
-  </div>
 
-  <div class="stickyFaults">
-    {#each stickyFaults as fault}
-      <FaultMessage {fault}></FaultMessage>
-    {/each}
+    <button
+      id="faults-clear"
+      onclick={() => {
+        motor.clearFaults();
+      }}>Clear</button
+    >
   </div>
 
   <div id="electrical-container">
@@ -119,6 +114,16 @@
 {/snippet}
 
 <style>
+  #faults-clear {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    text-align: center;
+  }
+
   .checkbox-option {
     display: flex;
     flex-direction: column;

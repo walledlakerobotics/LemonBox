@@ -12,12 +12,14 @@
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
 
+  // selected motors to filter
   let selectedIds: number[] = $derived(
     tabs
       .map((t) => t.selectedMotor?.id)
       .filter((id): id is number => id !== undefined),
   );
 
+  // gets current motors loaded and filters the selected ones.
   let motors: Motor[] = $state([]);
   let currentMotors: Motor[] = $derived(
     motors.filter((m) => !selectedIds.includes(m.id)),
@@ -37,18 +39,24 @@
   });
 
   $effect(() => {
-    const ms: Promise<Motor[]> = Motor.getMotors();
+    currentMotors;
 
-    const update: () => Promise<void> = async () => {
-      motors = await ms;
-      dsEnabled = await getEnabled();
-      ntConnected = await getNetworkConnected();
-    };
-
-    update();
+    updateState();
   });
 
   addTab();
+
+  async function updateState() {
+    const [motorsResult, enabled, connected] = await Promise.all([
+      Motor.getMotors(),
+      getEnabled(),
+      getNetworkConnected(),
+    ]);
+
+    motors = motorsResult;
+    dsEnabled = enabled;
+    ntConnected = connected;
+  }
 
   function addTab(): void {
     if (tabLimit <= tabs.length) return;

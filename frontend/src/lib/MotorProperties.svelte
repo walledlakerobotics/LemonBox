@@ -7,17 +7,6 @@
     motor.speed = motor.speedState;
     motor.brushless = motor.brushlessState;
   });
-
-  $effect(() => {
-    const m: Motor = motor;
-
-    async function update() {
-      m.ampsState = await m.amps;
-      m.voltageState = await m.voltage;
-    }
-
-    update();
-  });
 </script>
 
 <div id="dashboard-container">
@@ -44,12 +33,16 @@
 
   <div id="faults-container">
     <div class="faults">
-      {#await motor.faults then faults}
-        {#each faults as f}
-          <FaultMessage fault={f}></FaultMessage>
-        {/each}
-      {/await}
+      {#each motor.faultState as fault}
+        <FaultMessage {fault}></FaultMessage>
+      {/each}
     </div>
+  </div>
+
+  <div class="stickyFaults">
+    {#each motor.stickFaultState as fault}
+      <FaultMessage {fault}></FaultMessage>
+    {/each}
   </div>
 
   <div id="electrical-container">

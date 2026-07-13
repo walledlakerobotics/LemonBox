@@ -1,11 +1,18 @@
+
+let currentMotors: Promise<Motor[]> = $derived(fetch("/api/motors")
+    .then(res => res.json() as Record<string, any>)
+    .then(data => Object.keys(data).map(id => new Motor(Number.parseInt(id)))));
+
 export class Motor {
     private _disabled: boolean = true;
-
     public speedState: number = $state(0);
     public brushlessState: boolean = $state(false);
 
     public ampsState: number = $state(0);
     public voltageState: number = $state(0);
+
+    public faultState: string[] = $state([]);
+    public stickFaultState: string[] = $state([]);
 
     constructor(
         public readonly id: number,
@@ -132,14 +139,24 @@ export class Motor {
         }
     }
 
+    public async refreshData() {
+        const [amps, voltage, faults, sticky] = await Promise.all([this.amps, this.voltage, this.faults, this.stickyFaults]);
+
+        this.ampsState = amps;
+        this.voltageState = voltage;
+        this.faultState = faults;
+        this.stickFaultState = sticky;
+    }
+
     /**
      * gets all the motors posted on the json.
      * @returns Motors posted. 
      */
     public static async getMotors(): Promise<Motor[]> {
-        const res = await fetch("/api/motors");
-        const data = await res.json() as Record<string, any>;
+        return currentMotors;
+    }
 
-        return Object.keys(data).map(id => new Motor(Number.parseInt(id)));
+    public static async getMotor(id: number): Promise<Motor | Motor[]> {
+        return currentMotors.then(motors => motors.filter(m => m.id == id));
     }
 }

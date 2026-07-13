@@ -16,7 +16,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.networktables.NetworkTableEvent.Kind;
 import edu.wpi.first.util.CombinedRuntimeLoader;
 import edu.wpi.first.util.WPIUtilJNI;
 import io.javalin.Javalin;

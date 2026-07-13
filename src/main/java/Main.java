@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.networktables.PubSubOption;
+import edu.wpi.first.networktables.NetworkTableEvent.Kind;
 import edu.wpi.first.util.CombinedRuntimeLoader;
 import edu.wpi.first.util.WPIUtilJNI;
 import io.javalin.Javalin;
@@ -57,7 +59,7 @@ public class Main {
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {
 
-                        
+                        manager.refresh();
 
                         ctx.json(manager.getMotors().stream()
                                 .collect(Collectors.toMap(Motor::getId, Motor::getId)));
@@ -121,6 +123,7 @@ public class Main {
                         inst.setServer("roboRIO-308-FRC");
                         inst.startClient4("LemonClient");
                         opendsThread.start();
+
                     });
                 });
 

@@ -25,7 +25,6 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception
      */
     public synchronized Collection<Motor> getMotors() throws Exception {
-        this.refresh();
         return m_currentMotors;
     }
 
@@ -49,7 +48,7 @@ public class MotorManager implements AutoCloseable {
      * 
      * @throws Exception
      */
-    private synchronized void refresh() throws Exception {
+    public synchronized void refresh() throws Exception {
         this.close();
         m_currentMotors = Motor.getMotors(k_table);
     }

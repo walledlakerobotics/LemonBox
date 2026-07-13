@@ -1,7 +1,7 @@
 
-let currentMotors: Promise<Motor[]> = $derived(fetch("/api/motors")
+let currentMotors: Promise<Motor[]> = fetch("/api/motors")
     .then(res => res.json() as Record<string, any>)
-    .then(data => Object.keys(data).map(id => new Motor(Number.parseInt(id)))));
+    .then(data => Object.keys(data).map(id => new Motor(Number.parseInt(id))));
 
 export class Motor {
     private _disabled: boolean = true;
@@ -159,6 +159,10 @@ export class Motor {
      * @returns Motors posted. 
      */
     public static async getMotors(): Promise<Motor[]> {
+        currentMotors = fetch("/api/motors")
+            .then(res => res.json() as Record<string, any>)
+            .then(data => Object.keys(data).map(id => new Motor(Number.parseInt(id))));
+
         return currentMotors;
     }
 

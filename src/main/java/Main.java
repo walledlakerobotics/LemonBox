@@ -56,6 +56,9 @@ public class Main {
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {
+
+                        
+
                         ctx.json(manager.getMotors().stream()
                                 .collect(Collectors.toMap(Motor::getId, Motor::getId)));
                     });

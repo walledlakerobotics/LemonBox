@@ -12,7 +12,6 @@ export class Motor {
     private _voltage: number = $state(0);
 
     private _fault: string[] = $state([]);
-    private _stickFault: string[] = $state([]);
 
     constructor(
         public readonly id: number,
@@ -84,10 +83,6 @@ export class Motor {
         return this._fault;
     }
 
-    public get stickyFaults(): string[] {
-        return this._stickFault;
-    }
-
     public get disabled(): boolean {
         return this._disabled;
     }
@@ -135,12 +130,11 @@ export class Motor {
 
     public async updateData() {
         const data = await this.getData();
-        const [amps, voltage, faults, stickyFaults] = await Promise.all([data.amps, data.voltage, data.faults, data.stickyFaults]);
+        const [amps, voltage, faults] = await Promise.all([data.amps, data.voltage, data.faults]);
 
         this._amps = amps;
         this._voltage = voltage;
         this._fault = faults;
-        this._stickFault = stickyFaults;
     }
 
 

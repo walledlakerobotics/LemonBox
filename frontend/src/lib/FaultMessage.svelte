@@ -12,8 +12,6 @@
         display: flex;
         flex-direction: column;
 
-        gap: 1px;
-
         text-align: center;
 
         background-color: var(--warning-bg);

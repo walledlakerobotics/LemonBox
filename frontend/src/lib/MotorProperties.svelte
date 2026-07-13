@@ -1,11 +1,24 @@
 <script lang="ts">
   import FaultMessage from "./FaultMessage.svelte";
   import { Motor } from "./motor.svelte";
-  let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
+  let { motor = $bindable(), onClose }: { motor: Motor; onClose: () => void } =
+    $props();
+
+  let amps: number = $derived(motor.amps);
+  let voltage: number = $derived(motor.voltage);
+  let faults: string[] = $derived(motor.faults);
+  let stickyFaults: string[] = $derived(motor.stickyFaults);
 
   $effect(() => {
-    motor.speed = motor.speedState;
-    motor.brushless = motor.brushlessState;
+    amps;
+    voltage;
+    motor.updateEletricalData();
+  });
+
+  $effect(() => {
+    faults;
+    stickyFaults;
+    motor.updateFaultsData();
   });
 </script>
 
@@ -33,34 +46,34 @@
 
   <div id="faults-container">
     <div class="faults">
-      {#each motor.faultState as fault}
+      {#each faults as fault}
         <FaultMessage {fault}></FaultMessage>
       {/each}
     </div>
   </div>
 
   <div class="stickyFaults">
-    {#each motor.stickFaultState as fault}
+    {#each stickyFaults as fault}
       <FaultMessage {fault}></FaultMessage>
     {/each}
   </div>
 
   <div id="electrical-container">
-    <p>Applied Voltage: {motor.voltageState}</p>
-    <p>Amps: {motor.ampsState}</p>
+    <p>Applied Voltage: {voltage}</p>
+    <p>Amps: {amps}</p>
   </div>
 </div>
 
 <div id="control-container">
   <div id="controls">
-    <p>Speed: <br /> <b>{motor.speedState}</b></p>
+    <p>Speed: <br /> <b>{motor.speed}</b></p>
     <input
       id="speed-slider"
       type="range"
       step="0.01"
       min="-1"
       max="1"
-      bind:value={motor.speedState}
+      bind:value={motor.speed}
     />
 
     <div id="check-boxes">
@@ -100,7 +113,7 @@
       id="brushless-checkbox"
       title="brushless"
       type="checkbox"
-      bind:checked={motor.brushlessState}
+      bind:checked={motor.brushless}
     />
   </div>
 {/snippet}

@@ -5,14 +5,14 @@ let currentMotors: Promise<Motor[]> = $derived(fetch("/api/motors")
 
 export class Motor {
     private _disabled: boolean = true;
-    public speedState: number = $state(0);
-    public brushlessState: boolean = $state(false);
+    private _speed: number = $state(0);
+    private _brushless: boolean = $state(false);
 
-    public ampsState: number = $state(0);
-    public voltageState: number = $state(0);
+    private _amps: number = $state(0);
+    private _voltage: number = $state(0);
 
-    public faultState: string[] = $state([]);
-    public stickFaultState: string[] = $state([]);
+    private _fault: string[] = $state([]);
+    private _stickFault: string[] = $state([]);
 
     constructor(
         public readonly id: number,
@@ -21,10 +21,8 @@ export class Motor {
 
     }
 
-    public get speed(): Promise<number> {
-        return fetch(this.postPath)
-            .then(res => res.json())
-            .then(data => data.speed);
+    public get speed(): number {
+        return this._speed;
     }
 
     public set speed(speed: number) {
@@ -46,13 +44,15 @@ export class Motor {
                     speed: speed,
                 }),
             });
+
+            this._speed = speed;
         }
+
+
     }
 
-    public get brushless(): Promise<boolean> {
-        return fetch(this.postPath)
-            .then(res => res.json())
-            .then(data => data.brushless);
+    public get brushless(): boolean {
+        return this._brushless
     }
 
     public set brushless(brushless: boolean) {
@@ -62,6 +62,8 @@ export class Motor {
                 brushless: brushless,
             }),
         });
+
+        this._brushless = brushless;
     }
 
     public get type(): Promise<string> {
@@ -70,28 +72,20 @@ export class Motor {
             .then(data => data.type);
     }
 
-    public get voltage(): Promise<number> {
-        return fetch(this.postPath)
-            .then(res => res.json())
-            .then(data => data.voltage);
+    public get voltage(): number {
+        return this._voltage;
     }
 
-    public get amps(): Promise<number> {
-        return fetch(this.postPath)
-            .then(res => res.json())
-            .then(data => data.amps);
+    public get amps(): number {
+        return this._amps;
     }
 
-    public get faults(): Promise<string[]> {
-        return fetch(this.postPath)
-            .then(res => res.json())
-            .then(data => data.faults);
+    public get faults(): string[] {
+        return this._fault;
     }
 
-    public get stickyFaults(): Promise<string[]> {
-        return fetch(this.postPath)
-            .then(res => res.json())
-            .then(data => data.stickyFaults);
+    public get stickyFaults(): string[] {
+        return this._stickFault;
     }
 
     public get disabled(): boolean {
@@ -139,13 +133,27 @@ export class Motor {
         }
     }
 
-    public async refreshData() {
-        const [amps, voltage, faults, sticky] = await Promise.all([this.amps, this.voltage, this.faults, this.stickyFaults]);
+    public async updateEletricalData() {
+        const data = await this.getData();
+        const [amps, voltage] = await Promise.all([data.amps, data.voltage]);
 
-        this.ampsState = amps;
-        this.voltageState = voltage;
-        this.faultState = faults;
-        this.stickFaultState = sticky;
+        this._amps = amps;
+        this._voltage = voltage;
+    }
+
+    public async updateFaultsData() {
+        const data = await this.getData();
+        const [faults, stickyFaults] = await Promise.all([data.faults, data.stickyFaults]);
+
+        this._fault = faults;
+        this._stickFault = stickyFaults;
+    }
+
+    private async getData() {
+        const res: Response = await fetch(this.postPath);
+        const data: any = await res.json();
+
+        return data;
     }
 
     /**

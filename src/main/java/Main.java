@@ -1,7 +1,10 @@
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+import java.awt.Desktop;
 
 import org.opencv.core.Core;
 
@@ -21,7 +24,7 @@ import io.javalin.Javalin;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);
         WPIUtilJNI.Helper.setExtractOnStaticLoad(false);
@@ -36,6 +39,9 @@ public class Main {
         final NetworkTableInstance inst = NetworkTableInstance.getDefault();
         final NetworkTable lemonTable = inst.getTable("LemonBox");
         final OpendsManager opendsManager = new OpendsManager();
+
+        final Desktop desktop = Desktop.getDesktop();
+        final URI uri = new URI("http://localhost:7070/");
 
         // makes sure that it pends for input.
         final Thread opendsThread = new Thread(() -> {
@@ -116,6 +122,7 @@ public class Main {
                         inst.startClient4("LemonClient");
                         opendsThread.start();
 
+                        desktop.browse(uri);
                     });
                 });
 

@@ -7,11 +7,13 @@
   let amps: number = $derived(motor.amps);
   let voltage: number = $derived(motor.voltage);
   let faults: string[] = $derived(motor.faults);
+  let cleared: boolean = $derived(motor.faultsCleared);
 
   $effect(() => {
     faults;
     amps;
     voltage;
+    cleared;
     motor.updateData();
   });
 </script>
@@ -46,6 +48,7 @@
     </div>
 
     <button
+      class:cleared
       id="faults-clear"
       onclick={() => {
         motor.clearFaults();
@@ -114,16 +117,6 @@
 {/snippet}
 
 <style>
-  #faults-clear {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    position: relative;
-    padding-bottom: 1vh;
-    padding-top: 1vh;
-    text-align: center;
-  }
-
   .checkbox-option {
     display: flex;
     flex-direction: column;
@@ -268,5 +261,21 @@
   #speed-slider {
     flex: 1;
     min-width: 0;
+  }
+
+  .cleared {
+    background-color: var(--border-color);
+  }
+
+  #faults-clear {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    text-align: center;
+
+    transition: 0.2s;
   }
 </style>

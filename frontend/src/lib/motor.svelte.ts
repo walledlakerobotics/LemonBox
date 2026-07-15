@@ -7,6 +7,7 @@ export class Motor {
     private _voltage: number = $state(0);
 
     private _fault: string[] = $state([]);
+    private _faultsCleared: boolean = $state(false);
 
     constructor(
         public readonly id: number,
@@ -89,6 +90,10 @@ export class Motor {
         this._disabled = disabled;
     }
 
+    public get faultsCleared() {
+        return this._faultsCleared;
+    }
+
     public async getDisplayName(): Promise<string> {
         switch (await this.type) {
             case "sparkmax":
@@ -125,11 +130,12 @@ export class Motor {
 
     public async updateData() {
         const data = await this.getData();
-        const [amps, voltage, faults] = await Promise.all([data.amps, data.voltage, data.faults]);
+        const [amps, voltage, faults, cleared] = await Promise.all([data.amps, data.voltage, data.faults, data.clearFaults]);
 
         this._amps = amps;
         this._voltage = voltage;
         this._fault = faults;
+        this._faultsCleared = cleared;
     }
 
 

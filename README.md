@@ -1,9 +1,9 @@
 (bugs)
     (backend)
-        brushless might work (untested)
+        brushless might work (untested).
 
     
-    (Respberry PI)
+     (Respberry PI)
         get better ethernet cable, or make connect over USB. 
 
 

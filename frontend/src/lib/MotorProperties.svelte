@@ -265,6 +265,7 @@
 
   .cleared {
     background-color: var(--border-color);
+    color: var(--button-color);
   }
 
   #faults-clear {

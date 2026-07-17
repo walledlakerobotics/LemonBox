@@ -165,13 +165,15 @@
 {/snippet}
 
 <div id="content">
-  {#if activeTab.selectedMotor != null}
+  <!-- {#if activeTab.selectedMotor != null}
     {@render motorProperties(activeTab.selectedMotor)}
   {/if}
 
   {#if activeTab.selectedMotor == null}
     {@render Motors()}
-  {/if}
+  {/if} -->
+
+  {@render motorProperties(new Motor(0))}
 </div>
 
 <style>

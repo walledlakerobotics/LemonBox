@@ -77,7 +77,7 @@
     <div id="check-boxes">
       {#await motor.type then t}
         {#if t == "sparkmax"}
-          {@render brushlessSnip()}
+          {@render brushlessState()}
         {/if}
       {/await}
 
@@ -104,7 +104,7 @@
   >
 </div>
 
-{#snippet brushlessSnip()}
+{#snippet brushlessState()}
   <div class="checkbox-option">
     <label for="brushless-checkbox">brushless</label>
     <input
@@ -180,6 +180,8 @@
     max-height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
+
+    scrollbar-width: none;
   }
   #electrical-container {
     display: flex;
@@ -200,7 +202,6 @@
     display: flex;
     flex-direction: column;
 
-    flex: 2;
     box-sizing: border-box;
     max-height: 112px;
     min-height: 112px;

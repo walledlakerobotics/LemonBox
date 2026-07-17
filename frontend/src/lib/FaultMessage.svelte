@@ -21,5 +21,7 @@
         border-width: 1px;
         border-radius: 5px;
         border-color: var(--warning-border);
+
+        position: relative;
     }
 </style>

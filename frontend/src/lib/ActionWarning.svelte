@@ -9,16 +9,20 @@
 
 <style>
     #warning {
-        color: var(--warning-text);
+        display: flex;
+        flex-direction: column;
+
+        text-align: center;
+
         background-color: var(--warning-bg);
+        color: var(--warning-text);
+
         border: solid;
         border-width: 1px;
+        border-radius: 5px;
         border-color: var(--warning-border);
 
         position: relative;
-        text-align: center;
-
-        transition: 0.2s;
     }
 
     #warning:active {

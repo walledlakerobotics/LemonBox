@@ -25,8 +25,8 @@
     position: relative;
   }
   #warning p {
-    font-size: 1.5dvh;
-    margin: 10px;
+    font-size: 2.5dvh;
+    margin: 5px;
   }
 
   #warning:active {

@@ -1,6 +1,6 @@
 (bugs)
     (backend)
-        brushless might work (untested).
+        brushless might work (untested). <- this most likely works. 
 
     
      (Respberry PI)
@@ -9,5 +9,5 @@
 
 (improvements)
     make backend look clean.
-    css make scalable. 
+    make custom charting system. 
 

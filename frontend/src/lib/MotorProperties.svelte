@@ -204,7 +204,7 @@
 
     box-sizing: border-box;
     max-height: 112px;
-    min-height: 112px;
+    min-height: fit-content;
     background-color: var(--fg-color);
     border: solid;
     border-color: var(--border-color);

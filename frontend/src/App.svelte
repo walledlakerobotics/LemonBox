@@ -211,7 +211,7 @@
     transition: 0.2s;
 
     margin-left: auto;
-    height: 30px;
+    height: 100%;
     aspect-ratio: 1;
 
     position: sticky;

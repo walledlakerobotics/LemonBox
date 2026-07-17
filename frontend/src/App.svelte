@@ -4,7 +4,7 @@
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
-  import type { TabData } from "./lib/tabdata.svelte";
+  import type { TabData } from "./lib/tabData.svelte";
   import Warning from "./lib/Warning.svelte";
 
   const tabLimit: number = 12;
@@ -165,15 +165,15 @@
 {/snippet}
 
 <div id="content">
-  <!-- {#if activeTab.selectedMotor != null}
+  {#if activeTab.selectedMotor != null}
     {@render motorProperties(activeTab.selectedMotor)}
   {/if}
 
   {#if activeTab.selectedMotor == null}
     {@render Motors()}
-  {/if} -->
+  {/if}
 
-  {@render motorProperties(new Motor(0))}
+  <!-- {@render motorProperties(new Motor(0))} -->
 </div>
 
 <style>

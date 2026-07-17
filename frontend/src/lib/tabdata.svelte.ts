@@ -12,7 +12,6 @@ export type TabData = {
     onClose: () => void;
 }
 
-
 /**
  * uuid: random id given to the tab. 
  * title: title displayed by the tab.

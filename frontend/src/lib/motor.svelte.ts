@@ -1,13 +1,18 @@
+
 export class Motor {
     private _disabled: boolean = true;
-    private _speed: number = $state(0);
-    private _brushless: boolean = $state(false);
+    private _speed: number = 0;
+    private _brushless: boolean = false;
 
-    private _amps: number = $state(0);
-    private _voltage: number = $state(0);
+    private _amps: number = 0;
+    private _voltage: number = 0;
 
-    private _fault: string[] = $state([]);
-    private _faultsCleared: boolean = $state(false);
+    // update time
+    private _lastTime: number = 0;
+    private _dt: number = 0;
+
+    private _fault: string[] = [];
+    private _faultsCleared: boolean = false;
 
     constructor(
         public readonly id: number,
@@ -75,6 +80,11 @@ export class Motor {
         return this._amps;
     }
 
+    public get updateDelta(): number {
+        return this._dt;
+    }
+
+
     public get faults(): string[] {
         return this._fault;
     }
@@ -136,8 +146,12 @@ export class Motor {
         this._voltage = voltage;
         this._fault = faults;
         this._faultsCleared = cleared;
-    }
 
+
+        const currentTime: number = Date.now();
+        this._dt = currentTime - this._lastTime;
+        this._lastTime = currentTime;
+    }
 
     private async getData() {
         const res: Response = await fetch(this.postPath);

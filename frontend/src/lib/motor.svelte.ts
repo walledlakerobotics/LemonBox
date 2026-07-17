@@ -164,10 +164,10 @@ export class Motor {
     }
 
     public static async refresh(): Promise<void> {
-        currentMotors = this.getRefreshMotors();
+        currentMotors = this.getUpdatedMotors();
     }
 
-    public static async getRefreshMotors(): Promise<Motor[]> {
+    public static async getUpdatedMotors(): Promise<Motor[]> {
         const res = await fetch("/api/motors");
         const data = await res.json() as Record<string, any>;
 
@@ -179,4 +179,4 @@ export class Motor {
     }
 }
 
-let currentMotors: Promise<Motor[]> = $derived(Motor.getRefreshMotors());
+let currentMotors: Promise<Motor[]> = $derived(Motor.getUpdatedMotors());

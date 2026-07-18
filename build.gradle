@@ -81,6 +81,8 @@ shadowJar {
     exclude("module-info.class")
     archiveClassifier.set('linux-arm64')
 
+    archiveFileName = "lemon"
+
     manifest {
         attributes(
             'Main-Class': 'Main'

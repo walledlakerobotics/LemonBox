@@ -40,8 +40,8 @@ public class Main {
         final NetworkTable lemonTable = inst.getTable("LemonBox");
         final OpendsManager opendsManager = new OpendsManager();
 
-        final Desktop desktop = Desktop.getDesktop();
-        final URI uri = new URI("http://localhost:7070/");
+        // final Desktop desktop = Desktop.getDesktop();
+        // final URI uri = new URI("http://localhost:7070/");
 
         // makes sure that it pends for input.
         final Thread opendsThread = new Thread(() -> {
@@ -122,7 +122,7 @@ public class Main {
                         inst.startClient4("LemonClient");
                         opendsThread.start();
 
-                        desktop.browse(uri);
+                        // desktop.browse(uri);
                     });
                 });
 

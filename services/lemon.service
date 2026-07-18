@@ -1,0 +1,12 @@
+[Unit]
+Description=LemonBox
+
+[Service]
+Type=simple
+WorkingDirectory=/lemon/LemonBox
+ExecStart= /bin/java -jar lemon.jar
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

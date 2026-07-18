@@ -4,7 +4,7 @@
   import MotorProperties from "./lib/MotorProperties.svelte";
   import MotorTile from "./lib/MotorTile.svelte";
   import Tab from "./lib/Tab.svelte";
-  import type { TabData } from "./lib/tabData.svelte";
+  import type { TabData } from "./lib/tabData";
   import Warning from "./lib/Warning.svelte";
 
   const tabLimit: number = 12;
@@ -25,8 +25,8 @@
     motors.filter((m) => !selectedIds.includes(m.id)),
   );
 
-  let ntConnected: boolean = $state(false);
-  let dsEnabled: boolean = $state(false);
+  let connected: boolean = $state(false);
+  let enabled: boolean = $state(false);
 
   $effect(() => {
     // clears the effect and then applies the effect to the selected tab.
@@ -38,32 +38,27 @@
     activeTab.selected = true;
   });
 
-  $effect(() => {
-    currentMotors;
+  let pastConnect = false;
 
-    updateState();
+  $effect(() => {
+    Promise.all([Motor.getMotors(), getEnabled(), getNetworkConnected()]).then(
+      (data) => {
+        const [m, e, c] = data;
+        motors = m;
+        enabled = e;
+        connected = c;
+
+        if (c !== pastConnect) {
+          Motor.refresh();
+        }
+
+        connected = c;
+        pastConnect = c;
+      },
+    );
   });
 
   addTab();
-
-  let pastConnect = false;
-
-  async function updateState() {
-    const [motorsResult, enabled, connected] = await Promise.all([
-      Motor.getMotors(),
-      getEnabled(),
-      getNetworkConnected(),
-    ]);
-
-    motors = motorsResult;
-    dsEnabled = enabled;
-    ntConnected = connected;
-
-    if ((connected && !pastConnect) || (!connected && pastConnect))
-      Motor.refresh();
-
-    pastConnect = connected;
-  }
 
   function addTab(): void {
     if (tabLimit <= tabs.length) return;
@@ -114,11 +109,11 @@
 
 <!-- handling warnings ---------------------------- -->
 
-{#if !ntConnected}
+{#if !connected}
   <Warning message="Network Tables are Disconnected!" />
 {/if}
 
-{#if !dsEnabled}
+{#if !enabled}
   <ActionWarning
     message="OpenDS is not Enabled, please press the warning to enable DS!"
     onEnable={() => {

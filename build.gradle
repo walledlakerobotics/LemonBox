@@ -1,6 +1,7 @@
 
 buildscript {
-
+    System.setProperty("os.name", "linux")
+    System.setProperty("os.arch", "arm64")
 }
 
 plugins {
@@ -48,8 +49,6 @@ nativeConfig.dependencies.add wpilibTools.deps.wpilib("cscore")
 nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
-    System.setProperty("os.name", "linux")
-    System.setProperty("os.arch", "arm64")
 
     implementation wpilibTools.deps.wpilibJava("wpiutil")
     implementation wpilibTools.deps.wpilibJava("wpimath")

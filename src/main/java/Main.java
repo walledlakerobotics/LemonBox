@@ -49,7 +49,7 @@ public class Main {
             opendsManager.run();
         });
 
-        try (MotorManager manager = new MotorManager(lemonTable)) {
+        try (final MotorManager manager = new MotorManager(lemonTable)) {
             try (final MultiSubscriber _ = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
 

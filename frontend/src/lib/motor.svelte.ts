@@ -183,9 +183,9 @@ export class Motor {
 
     public static async getUpdatedMotors(): Promise<Motor[]> {
         const res = await fetch("/api/motors");
-        const data = await res.json() as Record<string, any>;
+        const data: string[] = await res.json();
 
-        return Object.keys(data).map(id => new Motor(Number.parseInt(id)));
+        return data.map(id => new Motor(Number.parseInt(id)));
     }
 
     public static async getMotor(id: number): Promise<Motor | Motor[]> {

@@ -1,11 +1,7 @@
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.stream.Collectors;
-import java.awt.Desktop;
-
 import org.opencv.core.Core;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -62,8 +58,7 @@ public class Main {
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {
-                        ctx.json(manager.getMotors().stream()
-                                .collect(Collectors.toMap(Motor::getId, Motor::getId)));
+                        ctx.json(manager.getMotors().stream().map(m -> m.getId()).toList());
                     });
 
                     config.routes.get("/api/motors/{id}", ctx -> {

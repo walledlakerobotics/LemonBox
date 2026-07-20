@@ -38,12 +38,12 @@
     activeTab.selected = true;
   });
 
-  let pastConnect = false;
-
   $effect(() => {
     motors;
     connected;
     enabled;
+
+    console.log("update values!");
 
     Promise.all([Motor.getMotors(), getEnabled(), getNetworkConnected()]).then(
       (data) => {
@@ -53,12 +53,17 @@
         connected = c;
       },
     );
+  });
 
+  let pastConnect = false;
+
+  $effect(() => {
     if (connected !== pastConnect) {
       Motor.refresh();
-    }
 
-    pastConnect = connected;
+      console.log("refreshed");
+      pastConnect = connected;
+    }
   });
 
   addTab();

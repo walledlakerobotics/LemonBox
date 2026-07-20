@@ -1,6 +1,6 @@
 
 export class Motor {
-    private _disabled: boolean = $state(true);
+    private _disabled: boolean = true;
     private _speed: number = $state(0);
     private _brushless: boolean = $state(false);
 
@@ -182,14 +182,20 @@ export class Motor {
     }
 
     public static async getUpdatedMotors(): Promise<Motor[]> {
-        const res = await fetch("/api/motors");
-        const data: string[] = await res.json();
+        const motors: string[] = await this.getUpdatedMotorIDs();
 
-        return data.map(id => new Motor(Number.parseInt(id)));
+        return motors.map(id => new Motor(Number.parseInt(id)));
     }
 
     public static async getMotor(id: number): Promise<Motor | Motor[]> {
         return currentMotors.then(motors => motors.filter(m => m.id == id));
+    }
+
+    public static async getUpdatedMotorIDs(): Promise<string[]> {
+        const res = await fetch("/api/motors");
+        const data: string[] = await res.json();
+
+        return data.sort((a, b) => Number.parseInt(a) - Number.parseInt(b));
     }
 }
 

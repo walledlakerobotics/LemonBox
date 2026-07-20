@@ -1,6 +1,7 @@
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Comparator;
 import java.util.HashMap;
 import org.opencv.core.Core;
 
@@ -46,7 +47,7 @@ public class Main {
         });
 
         try (final MotorManager manager = new MotorManager(lemonTable)) {
-            try (final MultiSubscriber _ = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
+            try (final MultiSubscriber sub = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
 
                 final Javalin app = Javalin.create(config -> {

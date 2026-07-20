@@ -1,18 +1,18 @@
 
 export class Motor {
     private _disabled: boolean = true;
-    private _speed: number = 0;
-    private _brushless: boolean = false;
+    private _speed: number = $state(0);
+    private _brushless: boolean = $state(false);
 
-    private _amps: number = 0;
-    private _voltage: number = 0;
+    private _amps: number = $state(0);
+    private _voltage: number = $state(0);
 
     // update time
-    private _lastTime: number = 0;
-    private _dt: number = 0;
+    private _lastTime: number = $state(0);
+    private _dt: number = $state(0);
 
-    private _fault: string[] = [];
-    private _faultsCleared: boolean = false;
+    private _fault: string[] = $state([]);
+    private _faultsCleared: boolean = $state(false);
 
     constructor(
         public readonly id: number,

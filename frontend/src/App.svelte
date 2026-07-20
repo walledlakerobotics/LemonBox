@@ -41,21 +41,24 @@
   let pastConnect = false;
 
   $effect(() => {
+    motors;
+    connected;
+    enabled;
+
     Promise.all([Motor.getMotors(), getEnabled(), getNetworkConnected()]).then(
       (data) => {
         const [m, e, c] = data;
         motors = m;
         enabled = e;
         connected = c;
-
-        if (c !== pastConnect) {
-          Motor.refresh();
-        }
-
-        connected = c;
-        pastConnect = c;
       },
     );
+
+    if (connected !== pastConnect) {
+      Motor.refresh();
+    }
+
+    pastConnect = connected;
   });
 
   addTab();

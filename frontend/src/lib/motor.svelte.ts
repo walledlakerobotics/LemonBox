@@ -1,6 +1,6 @@
 
 export class Motor {
-    private _disabled: boolean = true;
+    private _disabled: boolean = $state(true);
     private _speed: number = $state(0);
     private _brushless: boolean = $state(false);
 

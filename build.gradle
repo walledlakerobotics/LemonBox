@@ -1,3 +1,9 @@
+
+buildscript {
+    System.setProperty("os.name", "linux")
+    System.setProperty("os.arch", "arm64")
+}
+
 plugins {
     id "java"
     id "application"
@@ -8,11 +14,7 @@ plugins {
 //    id("org.wpilib.WPILibRepositoriesPlugin") version "2025.0"
 }
 
-def buildOs = System.getProperty("os.name")
-def buildArch = System.getProperty("os.arch")
 
-System.setProperty("os.name", buildOs)
-System.setProperty("os.arch", buildArch)
 
 node {
     download = true
@@ -31,11 +33,7 @@ java {
     }
 }
 
-def binOs = "linux"
-def binArch = "arm64"
 
-System.setProperty("os.name", binOs)
-System.setProperty("os.arch", binArch)
 
 wpilibTools.deps.wpilibVersion = wpi.versions.wpilibVersion.get()
 

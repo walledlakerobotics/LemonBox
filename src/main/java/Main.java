@@ -75,8 +75,12 @@ public class Main {
 
                         Motor motor = manager.getMotor(id);
 
-                        if (json.has("speed"))
-                            motor.setSpeed(json.get("speed").asDouble());
+                        if (json.has("speed")) {
+
+                            double speed = json.get("speed").asDouble();
+
+                            motor.setSpeed(speed);
+                        }
 
                         if (json.has("brushless"))
                             motor.setBrushless(json.get("brushless").asBoolean());

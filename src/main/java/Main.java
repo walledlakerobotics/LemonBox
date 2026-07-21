@@ -43,6 +43,7 @@ public class Main {
         final Thread opendsThread = new Thread(() -> {
             opendsManager.setTeam("308");
             opendsManager.run();
+
         });
 
         try (final MotorManager manager = new MotorManager(lemonTable)) {
@@ -72,6 +73,9 @@ public class Main {
                         String id = ctx.pathParam("id");
 
                         Motor motor = manager.getMotor(id);
+
+                        if (!opendsManager.isEnabled())
+                            opendsManager.setEnable(true);
 
                         if (json.has("speed"))
                             motor.setSpeed(json.get("speed").asDouble());
@@ -117,7 +121,7 @@ public class Main {
                         inst.setServer("roboRIO-308-FRC");
                         inst.startClient4("LemonClient");
                         opendsThread.start();
-                        // desktop.browse(uri);
+
                     });
                 });
 

@@ -1,6 +1,8 @@
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 import edu.wpi.first.networktables.NetworkTable;
 
 public class MotorManager implements AutoCloseable {
@@ -45,7 +47,7 @@ public class MotorManager implements AutoCloseable {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Motor ID: %s, is Null!", id)));
     }
 
-    public synchronized String[] getMotorIDs() throws Exception {
+    public synchronized Set<String> getMotorIDs() throws Exception {
         this.refresh();
 
         return Motor.getMotorIDs(k_table);

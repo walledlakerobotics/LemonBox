@@ -1,8 +1,11 @@
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import edu.wpi.first.networktables.BooleanEntry;
@@ -105,12 +108,15 @@ public class Motor implements AutoCloseable {
      * @return Motors that exist.
      */
     public static Collection<Motor> getMotors(NetworkTable table) {
-        return table.getSubTables().stream().map(name -> new Motor(name, table.getSubTable(name)))
+        return getMotorIDs(table).stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
     }
 
-    public static String[] getMotorIDs(NetworkTable table) {
-        return table.getEntry("motorIDs").getStringArray(new String[0]);
+    public static Set<String> getMotorIDs(NetworkTable table) {
+
+        String[] motorsIds = table.getEntry("motorIDs").getStringArray(new String[0]);
+
+        return new HashSet<>(Arrays.asList(motorsIds));
     }
 
 }

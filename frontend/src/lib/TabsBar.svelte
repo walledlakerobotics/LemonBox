@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { Motor } from "./motor.svelte";
     import Tab from "./Tab.svelte";
     import type { TabData } from "./tabData";
 

@@ -117,14 +117,6 @@ public class Main {
                         inst.setServer("roboRIO-308-FRC");
                         inst.startClient4("LemonClient");
                         opendsThread.start();
-
-                        // inst.addConnectionListener(false, e -> {
-                        // if (!inst.isConnected())
-                        // opendsManager.setEnable(false);
-                        // else
-                        // opendsManager.setEnable(true);
-                        // });
-
                         // desktop.browse(uri);
                     });
                 });

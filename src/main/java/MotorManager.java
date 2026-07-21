@@ -45,7 +45,7 @@ public class MotorManager implements AutoCloseable {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Motor ID: %s, is Null!", id)));
     }
 
-    public synchronized List<String> getMotorIDs() throws Exception {
+    public synchronized String[] getMotorIDs() throws Exception {
         this.refresh();
 
         return Motor.getMotorIDs(k_table);

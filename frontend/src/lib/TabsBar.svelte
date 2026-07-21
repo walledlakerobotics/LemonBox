@@ -41,6 +41,10 @@
         // cannot have zero tabs open.
         if (tabs.length <= 1) return;
 
+        if (activeTab === tabs[index] && index > 0) {
+            activeTab = tabs[index - 1];
+        }
+
         tabs.splice(index, 1);
     }
 </script>

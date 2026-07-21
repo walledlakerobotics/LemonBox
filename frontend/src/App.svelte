@@ -21,8 +21,6 @@
   let connected: boolean = $state(false);
   let enabled: boolean = $state(false);
 
-  // effect fix
-
   setInterval(async () => {
     connected = await getNetworkConnected();
     enabled = await getEnabled();
@@ -31,7 +29,10 @@
       Motor.refresh();
       motors = await Motor.getMotors();
     }
-  }, 500);
+
+    const motor: Motor | null = activeTab.selectedMotor;
+    if (motor != null) motor.updateData();
+  }, 300);
 </script>
 
 <!-- handling warnings ---------------------------- -->
@@ -49,7 +50,7 @@
   />
 {/if}
 
-<TabsBar {tabs} {activeTab} />
+<TabsBar bind:tabs bind:activeTab />
 
 <div id="content">
   {#if activeTab.selectedMotor != null}
@@ -61,9 +62,9 @@
   {/if}
 </div>
 
-{#snippet motorProperties(m: Motor)}
+{#snippet motorProperties(motor: Motor)}
   <MotorProperties
-    motor={m}
+    {motor}
     onClose={() => {
       activeTab.selectedMotor = null;
       activeTab.title = "Motors";

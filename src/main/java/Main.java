@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+
 import org.opencv.core.Core;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -107,6 +109,7 @@ public class Main {
                     });
 
                     config.events.serverStopping(() -> {
+                        opendsManager.setEnable(false);
                         opendsManager.quit();
                         opendsThread.join();
 
@@ -117,6 +120,13 @@ public class Main {
                         inst.setServer("roboRIO-308-FRC");
                         inst.startClient4("LemonClient");
                         opendsThread.start();
+
+                        // inst.addConnectionListener(false, e -> {
+                        // if (!inst.isConnected())
+                        // opendsManager.setEnable(false);
+                        // else
+                        // opendsManager.setEnable(true);
+                        // });
 
                         // desktop.browse(uri);
                     });

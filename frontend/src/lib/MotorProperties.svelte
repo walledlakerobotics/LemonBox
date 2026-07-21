@@ -1,21 +1,12 @@
 <script lang="ts">
   import FaultMessage from "./FaultMessage.svelte";
   import { Motor } from "./motor.svelte";
-  let { motor = $bindable(), onClose }: { motor: Motor; onClose: () => void } =
-    $props();
+  let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
 
   let amps: number = $derived(motor.amps);
   let voltage: number = $derived(motor.voltage);
   let faults: string[] = $derived(motor.faults);
   let cleared: boolean = $derived(motor.faultsCleared);
-
-  $effect(() => {
-    faults;
-    amps;
-    voltage;
-    cleared;
-    motor.updateData();
-  });
 </script>
 
 <div id="dashboard-container">

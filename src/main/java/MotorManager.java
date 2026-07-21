@@ -1,4 +1,5 @@
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import edu.wpi.first.networktables.NetworkTable;
 
@@ -42,6 +43,12 @@ public class MotorManager implements AutoCloseable {
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Motor ID: %s, is Null!", id)));
+    }
+
+    public synchronized List<String> getMotorIDs() throws Exception {
+        this.refresh();
+
+        return Motor.getMotorIDs(k_table);
     }
 
     /**

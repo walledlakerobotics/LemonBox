@@ -1,118 +1,38 @@
 <script lang="ts">
   import ActionWarning from "./lib/ActionWarning.svelte";
+  import {
+    getEnabled,
+    getNetworkConnected,
+    setEnabled,
+  } from "./lib/driverStation";
   import { Motor } from "./lib/motor.svelte";
   import MotorProperties from "./lib/MotorProperties.svelte";
-  import MotorTile from "./lib/MotorTile.svelte";
-  import Tab from "./lib/Tab.svelte";
+  import Motors from "./lib/Motors.svelte";
   import type { TabData } from "./lib/tabData";
-  import Warning from "./lib/Warning.svelte";
+  import TabsBar from "./lib/TabsBar.svelte";
 
-  const tabLimit: number = 12;
+  import Warning from "./lib/Warning.svelte";
 
   let tabs: TabData[] = $state([]);
   let activeTab: TabData = $derived(tabs[0]);
 
-  // selected motors to filter
-  let selectedIds: number[] = $derived(
-    tabs
-      .map((t) => t.selectedMotor?.id)
-      .filter((id): id is number => id !== undefined),
-  );
-
-  // gets current motors loaded and filters the selected ones.
   let motors: Motor[] = $state([]);
-  let currentMotors: Motor[] = $derived(
-    motors.filter((m) => !selectedIds.includes(m.id)),
-  );
 
   let connected: boolean = $state(false);
   let enabled: boolean = $state(false);
 
-  $effect(() => {
-    // clears the effect and then applies the effect to the selected tab.
-    tabs.forEach((t) => {
-      if (t.selectedMotor != null) t.selectedMotor.disabled = true;
-      t.selected = false;
-    });
+  setInterval(async () => {
+    connected = await getNetworkConnected();
+    enabled = await getEnabled();
 
-    activeTab.selected = true;
-  });
-
-  $effect(() => {
-    motors;
-    connected;
-    enabled;
-
-    console.log("update values!");
-
-    Promise.all([Motor.getMotors(), getEnabled(), getNetworkConnected()]).then(
-      (data) => {
-        const [m, e, c] = data;
-        motors = m;
-        enabled = e;
-        connected = c;
-      },
-    );
-  });
-
-  let pastConnect = false;
-
-  $effect(() => {
-    if (connected !== pastConnect) {
+    if (motors.length != (await Motor.getUpdatedMotorIDs()).length) {
       Motor.refresh();
-
-      console.log("refreshed");
-      pastConnect = connected;
+      motors = await Motor.getMotors();
     }
-  });
 
-  addTab();
-
-  function addTab(): void {
-    if (tabLimit <= tabs.length) return;
-    const tab: TabData = {
-      uuid: crypto.randomUUID(),
-      title: "Motors",
-      selectedMotor: null,
-      selected: false,
-      onOpen: () => {
-        activeTab = tabs.find((t) => t.uuid == tab.uuid) ?? activeTab;
-      },
-      onClose: () => removeTab(tabs.findIndex((t) => t.uuid == tab.uuid)),
-    };
-
-    tabs.push(tab);
-  }
-
-  function removeTab(index: number): void {
-    // cannot have zero tabs open.
-    if (tabs.length <= 1) return;
-
-    tabs.splice(index, 1);
-  }
-
-  async function getNetworkConnected(): Promise<boolean> {
-    const res = await fetch("/api/");
-    const data = await res.json();
-
-    return data.connected;
-  }
-
-  async function getEnabled(): Promise<boolean> {
-    const res = await fetch("/api/");
-    const data = await res.json();
-
-    return data.enabled;
-  }
-
-  function setEnabled(enabled: boolean): void {
-    fetch("/api/", {
-      method: "POST",
-      body: JSON.stringify({
-        enabled: enabled,
-      }),
-    });
-  }
+    const motor: Motor | null = activeTab.selectedMotor;
+    if (motor != null) motor.updateData();
+  }, 300);
 </script>
 
 <!-- handling warnings ---------------------------- -->
@@ -130,42 +50,7 @@
   />
 {/if}
 
-<div id="tabs-container">
-  <!-- creates tabs -->
-  <div class="tabs">
-    {#each tabs as data}
-      <Tab tabData={data} />
-    {/each}
-
-    <button id="add-button" onclick={addTab}>+</button>
-  </div>
-</div>
-
-{#snippet motorProperties(m: Motor)}
-  <MotorProperties
-    motor={m}
-    onClose={() => {
-      activeTab.selectedMotor = null;
-      activeTab.title = "Motors";
-    }}
-  ></MotorProperties>
-{/snippet}
-
-{#snippet Motors()}
-  <div id="motor-grid">
-    {#await currentMotors then motors}
-      {#each motors as motor}
-        <MotorTile
-          {motor}
-          onOpen={() => {
-            activeTab.selectedMotor = motor;
-            activeTab.title = `Motor: ${motor.id}`;
-          }}
-        ></MotorTile>
-      {/each}
-    {/await}
-  </div>
-{/snippet}
+<TabsBar bind:tabs bind:activeTab />
 
 <div id="content">
   {#if activeTab.selectedMotor != null}
@@ -173,81 +58,25 @@
   {/if}
 
   {#if activeTab.selectedMotor == null}
-    {@render Motors()}
+    {@render motorGrid(activeTab, tabs)}
   {/if}
-
-  <!-- {@render motorProperties(new Motor(0))} -->
 </div>
 
+{#snippet motorProperties(motor: Motor)}
+  <MotorProperties
+    {motor}
+    onClose={() => {
+      activeTab.selectedMotor = null;
+      activeTab.title = "Motors";
+    }}
+  ></MotorProperties>
+{/snippet}
+
+{#snippet motorGrid(activeTab: TabData, tabs: TabData[])}
+  <Motors {activeTab} {tabs} {motors}></Motors>
+{/snippet}
+
 <style>
-  .tabs {
-    background-color: var(--fg-color);
-
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-
-    padding: 5px 5px 5px 10px;
-
-    overflow-x: scroll;
-    overflow-y: hidden;
-    height: 40px;
-
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-    scroll-behavior: smooth;
-  }
-
-  #add-button {
-    background-color: var(--button-color);
-    border: solid;
-    border-radius: 5px;
-    border-width: 1px;
-
-    padding-left: 1vw;
-    padding-right: 1vw;
-
-    color: var(--text-color);
-
-    border-color: var(--border-color);
-
-    transition: 0.2s;
-
-    margin-left: auto;
-    height: 100%;
-    aspect-ratio: 1;
-
-    position: sticky;
-    z-index: 100;
-    right: 0;
-    box-shadow: 0px 0px 5px 10px var(--fg-color);
-  }
-
-  #add-button:active {
-    background-color: var(--border-color);
-    color: var(--button-color);
-  }
-
-  #tabs-container {
-    position: relative;
-    margin: 0;
-    padding: 0;
-  }
-
-  #motor-grid {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    flex-grow: 1;
-    width: 100%;
-    padding: 5px;
-
-    overflow-x: scroll;
-    overflow-y: hidden;
-    scrollbar-width: none;
-  }
-
   #content {
     padding: 5px;
     gap: 1vw;

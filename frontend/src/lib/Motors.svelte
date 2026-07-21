@@ -20,20 +20,6 @@
     let currentMotors: Motor[] = $derived(
         motors.filter((m) => !selectedIds.includes(m.id)),
     );
-
-    // need to use an effect instead of an interval.
-
-    setInterval(async () => {
-        const newMotorLength: number = (await Motor.getUpdatedMotorIDs())
-            .length;
-
-        if (motors.length != newMotorLength) updateMotors();
-    }, 500);
-
-    async function updateMotors() {
-        Motor.refresh();
-        motors = await Motor.getMotors();
-    }
 </script>
 
 <div id="motor-grid">

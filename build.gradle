@@ -1,9 +1,4 @@
 
-buildscript {
-    System.setProperty("os.name", "linux")
-    System.setProperty("os.arch", "arm64")
-}
-
 plugins {
     id "java"
     id "application"
@@ -13,8 +8,6 @@ plugins {
     id "com.github.node-gradle.node" version "7.1.0"
 //    id("org.wpilib.WPILibRepositoriesPlugin") version "2025.0"
 }
-
-
 
 node {
     download = true
@@ -82,7 +75,6 @@ dependencies {
 shadowJar {
     archiveBaseName = "LemonBox"
     archiveVersion = "1.0"
-    archiveClassifier = String.format("%s-%s", binOs, binArch)
     archiveFileName = "lemon.jar"
 
     exclude("module-info.class")

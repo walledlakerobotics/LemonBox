@@ -112,8 +112,7 @@ public class Motor implements AutoCloseable {
                 .collect(Collectors.toSet());
     }
 
-    public static Set<String> getMotorIDs(NetworkTable table) {
-
+    public static Collection<String> getMotorIDs(NetworkTable table) {
         String[] motorsIds = table.getEntry("motorIDs").getStringArray(new String[0]);
 
         return new HashSet<>(Arrays.asList(motorsIds));

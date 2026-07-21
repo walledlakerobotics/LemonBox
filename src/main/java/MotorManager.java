@@ -28,7 +28,6 @@ public class MotorManager implements AutoCloseable {
      * @throws Exception
      */
     public synchronized Collection<Motor> getMotors() throws Exception {
-        this.refresh();
         return m_currentMotors;
     }
 
@@ -47,19 +46,14 @@ public class MotorManager implements AutoCloseable {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Motor ID: %s, is Null!", id)));
     }
 
-    public synchronized Set<String> getMotorIDs() throws Exception {
-        this.refresh();
-
-        return Motor.getMotorIDs(k_table);
-    }
-
     /**
      * updates the cached motor on the network table
      * 
      * @throws Exception
      */
-    private synchronized void refresh() throws Exception {
+    public synchronized void refresh() throws Exception {
         this.close();
+
         m_currentMotors = Motor.getMotors(k_table);
     }
 

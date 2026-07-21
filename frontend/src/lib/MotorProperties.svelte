@@ -1,7 +1,8 @@
 <script lang="ts">
   import FaultMessage from "./FaultMessage.svelte";
   import { Motor } from "./motor.svelte";
-  let { motor, onClose }: { motor: Motor; onClose: () => void } = $props();
+  let { motor = $bindable(), onClose }: { motor: Motor; onClose: () => void } =
+    $props();
 
   let amps: number = $derived(motor.amps);
   let voltage: number = $derived(motor.voltage);

@@ -74,9 +74,6 @@ public class Main {
 
                         Motor motor = manager.getMotor(id);
 
-                        if (!opendsManager.isEnabled())
-                            opendsManager.setEnable(true);
-
                         if (json.has("speed"))
                             motor.setSpeed(json.get("speed").asDouble());
 

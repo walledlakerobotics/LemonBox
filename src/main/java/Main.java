@@ -119,8 +119,8 @@ public class Main {
                     });
 
                     config.events.serverStarting(() -> {
-                        inst.setServer("roboRIO-308-FRC");
-                        inst.startClient4("LemonClient");
+                        inst.setServer("roborio-308-FRC.local");
+                        inst.startClient4("lemon-client");
                         opendsThread.start();
 
                     });

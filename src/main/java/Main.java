@@ -20,24 +20,28 @@ import io.javalin.Javalin;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
-
+    static {
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);
         WPIUtilJNI.Helper.setExtractOnStaticLoad(false);
         EigenJNI.Helper.setExtractOnStaticLoad(false);
         CameraServerJNI.Helper.setExtractOnStaticLoad(false);
         OpenCvLoader.Helper.setExtractOnStaticLoad(false);
 
-        CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
-                Core.NATIVE_LIBRARY_NAME, "cscorejni");
+        try {
+            CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
+                    Core.NATIVE_LIBRARY_NAME, "cscorejni");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
         // inits network table :3
         final NetworkTableInstance inst = NetworkTableInstance.getDefault();
         final NetworkTable lemonTable = inst.getTable("LemonBox");
         final OpendsManager opendsManager = new OpendsManager();
-
-        // final Desktop desktop = Desktop.getDesktop();
-        // final URI uri = new URI("http://localhost:7070/");
 
         // makes sure that it pends for input.
         final Thread opendsThread = new Thread(() -> {

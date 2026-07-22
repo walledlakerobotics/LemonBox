@@ -1,5 +1,3 @@
-
-
 plugins {
     id "java"
     id "application"
@@ -7,15 +5,20 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2025.1.1"
     id "edu.wpi.first.WpilibTools" version "2.1.0"
     id "com.github.node-gradle.node" version "7.1.0"
-    // id("org.wpilib.WPILibRepositoriesPlugin") version "2025.0"
+//    id("org.wpilib.WPILibRepositoriesPlugin") version "2025.0"
 }
 
+def buildOs = System.getProperty("os.name")
+def buildArch = System.getProperty("os.arch")
+
+System.setProperty("os.name", buildOs)
+System.setProperty("os.arch", buildArch)
 
 node {
     download = true
+
     version = "22.12.0"
     npmVersion = "9.6.7"
-
 }
 
 application {
@@ -28,31 +31,30 @@ java {
     }
 }
 
+def binOs = "linux"
+def binArch = "arm64"
+
+System.setProperty("os.name", binOs)
+System.setProperty("os.arch", binArch)
+
 wpilibTools.deps.wpilibVersion = wpi.versions.wpilibVersion.get()
 
-def nativeConfig = configurations.create("wpilibNatives")
+def nativeConfigName = 'wpilibNatives'
+def nativeConfig = configurations.create(nativeConfigName)
 
 def nativeTasks = wpilibTools.createExtractionTasks {
-    configurationName = "wpilibNatives"
+    configurationName = nativeConfigName
 }
 
-nativeTasks.addToSourceSetResources(sourceSets.main) [
-    "wpimath",
-    "wpinet",
-    "wpiutil",
-    "ntcore",
-    "cscore"
-].each {
-    nativeConfig.dependencies.add wpilibTools.deps.wpilib(it)
-}
 
-nativeConfig.dependencies.add(
-    wpilibTools.deps.wpilibOpenCv(
-        "frc${wpi.frcYear.get()}",
-        wpi.versions.opencvVersion.get()
-    )
-)
+nativeTasks.addToSourceSetResources(sourceSets.main)
 
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpimath")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpinet")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpiutil")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("ntcore")
+nativeConfig.dependencies.add wpilibTools.deps.wpilib("cscore")
+nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
 
@@ -62,10 +64,7 @@ dependencies {
     implementation wpilibTools.deps.wpilibJava("ntcore")
     implementation wpilibTools.deps.wpilibJava("cscore")
     implementation wpilibTools.deps.wpilibJava("cameraserver")
-    implementation wpilibTools.deps.wpilibOpenCvJava(
-        "frc${wpi.frcYear.get()}",
-        wpi.versions.opencvVersion.get()
-    )
+    implementation wpilibTools.deps.wpilibOpenCvJava("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
     implementation group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: wpi.versions.jacksonVersion.get()
     implementation group: "com.fasterxml.jackson.core", name: "jackson-core", version: wpi.versions.jacksonVersion.get()
@@ -85,6 +84,7 @@ dependencies {
 shadowJar {
     archiveBaseName = "LemonBox"
     archiveVersion = "1.0"
+    archiveClassifier = String.format("%s-%s", binOs, binArch)
     archiveFileName = "lemon.jar"
 
     exclude("module-info.class")
@@ -97,7 +97,7 @@ shadowJar {
 }
 
 wrapper {
-    gradleVersion = '8.11'
+    gradleVersion = '9.1.0'
 }
 
 tasks.register("installFrontend", NpmTask) {

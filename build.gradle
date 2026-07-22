@@ -33,38 +33,33 @@ def nativeTasks = wpilibTools.createExtractionTasks {
     configurationName = nativeConfigName
 }
 
-
 nativeTasks.addToSourceSetResources(sourceSets.main)
 
-nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpimath")
-nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpinet")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpiutil")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("ntcore")
+// nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpimath")
+// nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpinet")
 // nativeConfig.dependencies.add wpilibTools.deps.wpilib("cscore")
 // nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
-
     implementation wpilibTools.deps.wpilibJava("wpiutil")
-    implementation wpilibTools.deps.wpilibJava("wpimath")
-    implementation wpilibTools.deps.wpilibJava("wpinet")
     implementation wpilibTools.deps.wpilibJava("ntcore")
+    // implementation wpilibTools.deps.wpilibJava("wpimath")
+    // implementation wpilibTools.deps.wpilibJava("wpinet")
     // implementation wpilibTools.deps.wpilibJava("cscore")
     // implementation wpilibTools.deps.wpilibJava("cameraserver")
     // implementation wpilibTools.deps.wpilibOpenCvJava("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
-    implementation "com.fasterxml.jackson.core:jackson-core:${wpi.versions.jacksonVersion.get()}"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${wpi.versions.jacksonVersion.get()}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${wpi.versions.jacksonVersion.get()}"
-
-
-    implementation group: "org.ejml", name: "ejml-simple", version: wpi.versions.ejmlVersion.get()
-    implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get()
 
     // Javalin
     implementation 'io.javalin:javalin:7.2.2'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
     implementation 'org.webjars.npm:bootstrap:5.3.3'
+
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.0.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.0.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
 
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 }

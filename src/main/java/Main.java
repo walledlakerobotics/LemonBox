@@ -24,8 +24,7 @@ public class Main {
             CombinedRuntimeLoader.loadLibraries(
                     Main.class,
                     "wpiutiljni",
-                    "ntcorejni",
-                    "wpimath");
+                    "ntcorejni");
         } catch (IOException e) {
             e.printStackTrace();
         }

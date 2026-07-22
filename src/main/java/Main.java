@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.lang.module.Configuration;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
@@ -26,7 +27,8 @@ public class Main {
                     "wpiutiljni",
                     "ntcorejni");
         } catch (IOException e) {
-            e.printStackTrace();
+
+
         }
     }
 

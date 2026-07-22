@@ -42,14 +42,11 @@ def libs = [
     // "cscore",
 ]
 
-libs.each { lib ->
-    nativeConfig.dependencies.add wpilibTools.deps.wpilib(lib)
-}
-
 // nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
-    libs.each {lib -> 
+    libs.each {lib ->
+        nativeConfig.dependencies.add wpilibTools.deps.wpilib(lib)
         implementation wpilibTools.deps.wpilibJava(lib)
     }
 

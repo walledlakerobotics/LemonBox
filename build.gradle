@@ -5,7 +5,6 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2025.1.1"
     id "edu.wpi.first.WpilibTools" version "2.1.0"
     id "com.github.node-gradle.node" version "7.1.0"
-//    id("org.wpilib.WPILibRepositoriesPlugin") version "2025.0"
 }
 
 def buildOs = System.getProperty("os.name")

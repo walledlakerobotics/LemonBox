@@ -7,17 +7,10 @@ plugins {
     id "com.github.node-gradle.node" version "7.1.0"
 }
 
-def buildOs = System.getProperty("os.name")
-def buildArch = System.getProperty("os.arch")
-
-System.setProperty("os.name", buildOs)
-System.setProperty("os.arch", buildArch)
 
 node {
     download = true
-
     version = "22.12.0"
-    npmVersion = "9.6.7"
 }
 
 application {
@@ -30,11 +23,6 @@ java {
     }
 }
 
-def binOs = "linux"
-def binArch = "arm64"
-
-System.setProperty("os.name", binOs)
-System.setProperty("os.arch", binArch)
 
 wpilibTools.deps.wpilibVersion = wpi.versions.wpilibVersion.get()
 
@@ -52,8 +40,8 @@ nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpimath")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpinet")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("wpiutil")
 nativeConfig.dependencies.add wpilibTools.deps.wpilib("ntcore")
-nativeConfig.dependencies.add wpilibTools.deps.wpilib("cscore")
-nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
+// nativeConfig.dependencies.add wpilibTools.deps.wpilib("cscore")
+// nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
 
@@ -61,13 +49,14 @@ dependencies {
     implementation wpilibTools.deps.wpilibJava("wpimath")
     implementation wpilibTools.deps.wpilibJava("wpinet")
     implementation wpilibTools.deps.wpilibJava("ntcore")
-    implementation wpilibTools.deps.wpilibJava("cscore")
-    implementation wpilibTools.deps.wpilibJava("cameraserver")
-    implementation wpilibTools.deps.wpilibOpenCvJava("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
+    // implementation wpilibTools.deps.wpilibJava("cscore")
+    // implementation wpilibTools.deps.wpilibJava("cameraserver")
+    // implementation wpilibTools.deps.wpilibOpenCvJava("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
-    implementation group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: wpi.versions.jacksonVersion.get()
-    implementation group: "com.fasterxml.jackson.core", name: "jackson-core", version: wpi.versions.jacksonVersion.get()
-    implementation group: "com.fasterxml.jackson.core", name: "jackson-databind", version: wpi.versions.jacksonVersion.get()
+    implementation "com.fasterxml.jackson.core:jackson-core:${wpi.versions.jacksonVersion.get()}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${wpi.versions.jacksonVersion.get()}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${wpi.versions.jacksonVersion.get()}"
+
 
     implementation group: "org.ejml", name: "ejml-simple", version: wpi.versions.ejmlVersion.get()
     implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get()
@@ -83,7 +72,6 @@ dependencies {
 shadowJar {
     archiveBaseName = "LemonBox"
     archiveVersion = "1.0"
-    archiveClassifier = String.format("%s-%s", binOs, binArch)
     archiveFileName = "lemon.jar"
 
     exclude("module-info.class")
@@ -96,7 +84,7 @@ shadowJar {
 }
 
 wrapper {
-    gradleVersion = '9.1.0'
+    gradleVersion = "8.11.1"
 }
 
 tasks.register("installFrontend", NpmTask) {

@@ -2,13 +2,9 @@
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import org.opencv.core.Core;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import edu.wpi.first.cscore.CameraServerJNI;
-import edu.wpi.first.cscore.OpenCvLoader;
-import edu.wpi.first.math.jni.EigenJNI;
 import edu.wpi.first.networktables.MultiSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -23,15 +19,14 @@ public class Main {
     static {
         NetworkTablesJNI.Helper.setExtractOnStaticLoad(false);
         WPIUtilJNI.Helper.setExtractOnStaticLoad(false);
-        EigenJNI.Helper.setExtractOnStaticLoad(false);
-        CameraServerJNI.Helper.setExtractOnStaticLoad(false);
-        OpenCvLoader.Helper.setExtractOnStaticLoad(false);
 
         try {
-            CombinedRuntimeLoader.loadLibraries(Main.class, "wpiutiljni", "wpimathjni", "ntcorejni",
-                    Core.NATIVE_LIBRARY_NAME, "cscorejni");
+            CombinedRuntimeLoader.loadLibraries(
+                    Main.class,
+                    "wpiutiljni",
+                    "ntcorejni",
+                    "wpimath");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

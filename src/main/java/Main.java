@@ -28,7 +28,6 @@ public class Main {
                     "ntcorejni");
         } catch (IOException e) {
 
-
         }
     }
 
@@ -120,6 +119,7 @@ public class Main {
                     });
 
                     config.events.serverStarting(() -> {
+                        // inst.setServer("roborio-308-FRC.local");
                         inst.setServer("roborio-308-FRC.local");
                         inst.startClient4("lemon-client");
                         opendsThread.start();

@@ -1,3 +1,8 @@
+buildscript {
+    System.setProperty("os.name", "linux")
+    System.setProperty("os.arch", "arm64") 
+}
+
 plugins {
     id "java"
     id "application"
@@ -8,10 +13,10 @@ plugins {
 }
 
 
-node {
-    download = true
-    version = "22.12.0"
-}
+// node {
+//     download = true
+//     version = "22.12.0"
+// }
 
 application {
     mainClass = 'Main'
@@ -37,17 +42,18 @@ nativeTasks.addToSourceSetResources(sourceSets.main)
 def libs = [
     "wpiutil",
     "ntcore",
-    // "wpimath",
-    // "wpinet",
-    // "cscore",
+    "wpimath",
+    "wpinet",
+    "cscore",
 ]
 
-// nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
+nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
     libs.each {lib ->
         nativeConfig.dependencies.add wpilibTools.deps.wpilib(lib)
         implementation wpilibTools.deps.wpilibJava(lib)
+        implementation wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
     }
 
     // Javalin
@@ -80,23 +86,23 @@ wrapper {
     gradleVersion = "8.11.1"
 }
 
-tasks.register("installFrontend", NpmTask) {
-    workingDir = file("frontend")
-    args = ["install"]
-}
+// tasks.register("installFrontend", NpmTask) {
+//     workingDir = file("frontend")
+//     args = ["install"]
+// }
 
-tasks.register("buildFrontend", NpmTask) {
-    dependsOn("installFrontend")
-    workingDir = file("frontend")
+// tasks.register("buildFrontend", NpmTask) {
+//     dependsOn("installFrontend")
+//     workingDir = file("frontend")
 
-    args = ["run", "build"]
-}
+//     args = ["run", "build"]
+// }
 
 
-processResources {
-    dependsOn("buildFrontend")
+// processResources {
+//     dependsOn("buildFrontend")
 
-    from("frontend/dist") {
-        into("dist")
-    }
-}
+//     from("frontend/dist") {
+//         into("dist")
+//     }
+// }

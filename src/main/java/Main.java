@@ -93,10 +93,6 @@ public class Main {
                             boolean clear = json.get("clearFaults").asBoolean();
                             motor.setClearFaults(clear);
                         }
-
-                        motorSockets.get(id).forEach(c -> {
-                            c.send("changed");
-                        });
                     });
 
                     config.routes.get("/api/", ctx -> {

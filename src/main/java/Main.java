@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.lang.module.Configuration;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
@@ -22,6 +21,7 @@ public class Main {
         WPIUtilJNI.Helper.setExtractOnStaticLoad(false);
 
         try {
+
             CombinedRuntimeLoader.loadLibraries(
                     Main.class,
                     "wpiutiljni",

@@ -75,8 +75,7 @@
         overflow-y: hidden;
         height: 40px;
 
-        scrollbar-width: thin;
-        scrollbar-color: var(--border-color);
+        scrollbar-color: var(--border-color) transparent;
         scroll-behavior: smooth;
     }
 

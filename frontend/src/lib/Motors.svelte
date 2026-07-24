@@ -48,5 +48,6 @@
         overflow-y: hidden;
         scroll-behavior: smooth;
         scrollbar-color: var(--border-color) transparent;
+        scrollbar-arrow-color: transparent;
     }
 </style>

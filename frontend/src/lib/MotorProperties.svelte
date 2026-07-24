@@ -176,6 +176,7 @@
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--warning-border) transparent;
+    scrollbar-arrow-color: transparent;
   }
   #electrical-container {
     display: flex;

@@ -78,6 +78,7 @@
         scrollbar-color: var(--border-color) transparent;
         scrollbar-width: thin;
         scroll-behavior: smooth;
+        scrollbar-arrow-color: transparent;
     }
 
     #add-button {

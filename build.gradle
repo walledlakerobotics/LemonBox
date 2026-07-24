@@ -52,6 +52,9 @@ def libs = [
     // "cscore",
 ]
 
+def srcOs = System.getProperty("os.name")
+def srcArch = System.getProperty("os.arch")
+
 // nativeConfig.dependencies.add wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
 dependencies {
@@ -67,6 +70,9 @@ dependencies {
             }
         }
     }
+
+    // System.setProperty("os.name", srcOs)
+    // System.setProperty("os.arch", srcArch)
 
     // implementation wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 

@@ -76,7 +76,7 @@
         height: 40px;
 
         scrollbar-width: thin;
-        scrollbar-color: var(--border-color) transparent;
+        scrollbar-color: var(--border-color);
         scroll-behavior: smooth;
     }
 

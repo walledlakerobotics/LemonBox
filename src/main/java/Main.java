@@ -75,17 +75,19 @@ public class Main {
                         Motor motor = manager.getMotor(id);
 
                         if (json.has("speed")) {
-
                             double speed = json.get("speed").asDouble();
-
                             motor.setSpeed(speed);
                         }
 
-                        if (json.has("brushless"))
-                            motor.setBrushless(json.get("brushless").asBoolean());
+                        if (json.has("brushless")) {
+                            boolean brushless = json.get("brushless").asBoolean();
+                            motor.setBrushless(brushless);
+                        }
 
-                        if (json.has("clearFaults"))
-                            motor.setClearFaults(json.get("clearFaults").asBoolean());
+                        if (json.has("clearFaults")) {
+                            boolean clear = json.get("clearFaults").asBoolean();
+                            motor.setClearFaults(clear);
+                        }
 
                     });
 
@@ -119,11 +121,15 @@ public class Main {
                     });
 
                     config.events.serverStarting(() -> {
-                        // inst.setServer("roborio-308-FRC.local");
                         inst.setServer("roborio-308-FRC.local");
                         inst.startClient4("lemon-client");
                         opendsThread.start();
+                    });
 
+                    config.events.serverStarted(() -> {
+                        inst.addConnectionListener(false, e -> {
+                            opendsManager.setEnable(inst.isConnected());
+                        });
                     });
                 });
 

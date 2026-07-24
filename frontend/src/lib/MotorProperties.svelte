@@ -173,7 +173,8 @@
     overflow-y: scroll;
     overflow-x: hidden;
 
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color);
   }
   #electrical-container {
     display: flex;

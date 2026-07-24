@@ -60,19 +60,22 @@ def srcArch = System.getProperty("os.arch")
 dependencies {
     libs.each {lib ->
         archs.each {a ->
-            System.setProperty("os.arch", a)
-
             platforms.each {platform ->
-                System.setProperty("os.name", platform)
-                def dep =  wpilibTools.deps.wpilib(lib, "2025.1.1")
-                nativeConfig.dependencies.add dep
-                implementation wpilibTools.deps.wpilibJava(lib)
+                try {
+                    System.setProperty("os.arch", a)
+                    System.setProperty("os.name", platform)
+                    def dep =  wpilibTools.deps.wpilib(lib, "2025.1.1")
+                    nativeConfig.dependencies.add dep
+                    implementation wpilibTools.deps.wpilibJava(lib)
+                } finally {
+                    System.setProperty("os.name", srcOs)
+                    System.setProperty("os.arch", srcArch)
+                }
             }
         }
     }
 
-    // System.setProperty("os.name", srcOs)
-    // System.setProperty("os.arch", srcArch)
+
 
     // implementation wpilibTools.deps.wpilibOpenCv("frc" + wpi.frcYear.get(), wpi.versions.opencvVersion.get())
 
@@ -117,7 +120,6 @@ tasks.register("buildFrontend", NpmTask) {
 
     args = ["run", "build"]
 }
-
 
 processResources {
     dependsOn("buildFrontend")

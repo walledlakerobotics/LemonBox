@@ -21,18 +21,24 @@
   let connected: boolean = $state(false);
   let enabled: boolean = $state(false);
 
-  setInterval(async () => {
+  const networkSocket = new WebSocket("/api/");
+  const motorsSocket = new WebSocket("/api/motors");
+
+  networkSocket.addEventListener("message", async () => {
     connected = await getNetworkConnected();
     enabled = await getEnabled();
 
+    console.log("network updated");
+  });
+
+  motorsSocket.addEventListener("message", async () => {
     if (motors.length != (await Motor.getUpdatedMotorIDs()).length) {
       Motor.refresh();
       motors = await Motor.getMotors();
-    }
 
-    const motor: Motor | null = activeTab.selectedMotor;
-    if (motor != null) motor.updateData();
-  }, 300);
+      console.log("updated motors");
+    }
+  });
 </script>
 
 <!-- handling warnings ---------------------------- -->

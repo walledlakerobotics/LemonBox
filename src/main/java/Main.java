@@ -98,7 +98,6 @@ public class Main {
                         json.put("enabled", opendsManager.isEnabled());
 
                         ctx.json(json);
-
                     });
 
                     config.routes.post("/api/", ctx -> {
@@ -110,6 +109,7 @@ public class Main {
                         if (json.has("connected")) {
                             // put something here.
                         }
+
                     });
 
                     config.events.serverStopping(() -> {
@@ -127,7 +127,7 @@ public class Main {
                     });
 
                     config.events.serverStarted(() -> {
-                        inst.addConnectionListener(false, e -> {
+                        inst.addConnectionListener(true, e -> {
                             opendsManager.setEnable(inst.isConnected());
                         });
                     });

@@ -46,6 +46,8 @@
 
         overflow-x: scroll;
         overflow-y: hidden;
-        scrollbar-width: none;
+        scrollbar-width: thin;
+
+        scrollbar-color: var(--border-color);
     }
 </style>

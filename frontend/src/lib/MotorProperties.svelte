@@ -174,6 +174,7 @@
     overflow-x: hidden;
 
     scroll-behavior: smooth;
+    scrollbar-width: thin;
     scrollbar-color: var(--warning-border) transparent;
   }
   #electrical-container {

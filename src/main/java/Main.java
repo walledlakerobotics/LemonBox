@@ -2,6 +2,9 @@
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -13,6 +16,7 @@ import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.util.CombinedRuntimeLoader;
 import edu.wpi.first.util.WPIUtilJNI;
 import io.javalin.Javalin;
+import io.javalin.websocket.WsContext;
 
 public class Main {
 
@@ -66,6 +70,7 @@ public class Main {
                         String id = ctx.pathParam("id");
 
                         ctx.json(manager.getMotor(id).getProperties());
+
                     });
 
                     config.routes.post("/api/motors/{id}", ctx -> {
@@ -89,6 +94,9 @@ public class Main {
                             motor.setClearFaults(clear);
                         }
 
+                        motorSockets.get(id).forEach(c -> {
+                            c.send("changed");
+                        });
                     });
 
                     config.routes.get("/api/", ctx -> {

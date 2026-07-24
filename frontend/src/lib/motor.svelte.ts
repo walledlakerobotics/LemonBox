@@ -16,13 +16,8 @@ export class Motor {
     constructor(
         public readonly id: number,
         private readonly postPath: string = `/api/motors/${id}`,
-        motorSocket: WebSocket = new WebSocket(postPath),
     ) {
-        motorSocket.addEventListener("message", async () => {
-            this.updateData();
 
-            console.log("data updated")
-        });
     }
 
     public get speed(): number {

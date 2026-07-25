@@ -1,13 +1,19 @@
 [Unit]
 Description=Chromium Kiosk
-After=graphical.target
+After=graphical.target network-online.target
 
 [Service]
-User=definition
-Environment=XAUTHORITY=/home/user/.Xauthority
+User=lemon
 Environment=DISPLAY=:0
-ExecStart=/usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk http://localhost:7070/ 
-Restart=on-abort
+Environment=XAUTHORITY=/home/lemon/.Xauthority
+ExecStart=/usr/bin/chromium \
+    --kiosk \
+    --no-first-run \
+    --disable-infobars \
+    --disable-session-crashed-bubble \
+    http://localhost:7070/
+Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=graphical.target

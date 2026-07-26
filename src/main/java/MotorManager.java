@@ -13,7 +13,7 @@ public class MotorManager implements AutoCloseable {
      * @param table the network table where the motors are being posted
      * @throws Exception
      */
-    public MotorManager(NetworkTable table) throws Exception {
+    MotorManager(NetworkTable table) throws Exception {
         this.k_table = table;
         refresh();
     }
@@ -24,7 +24,7 @@ public class MotorManager implements AutoCloseable {
      * @return cached Motors.
      * @throws Exception
      */
-    public synchronized Collection<Motor> getMotors() throws Exception {
+    synchronized Collection<Motor> getMotors() throws Exception {
         return m_currentMotors;
     }
 
@@ -36,7 +36,7 @@ public class MotorManager implements AutoCloseable {
      * @return
      * @throws Exception
      */
-    public synchronized Motor getMotor(String id) throws Exception {
+    synchronized Motor getMotor(String id) throws Exception {
         return m_currentMotors.stream()
                 .filter(m -> Objects.equals(m.getId(), id))
                 .findFirst()
@@ -48,7 +48,7 @@ public class MotorManager implements AutoCloseable {
      * 
      * @throws Exception
      */
-    public synchronized void refresh() throws Exception {
+    synchronized void refresh() throws Exception {
         this.close();
 
         m_currentMotors = Motor.getMotors(k_table);

@@ -28,8 +28,6 @@
     if (motors.length != (await Motor.getUpdatedMotorIDs()).length) {
       Motor.refresh();
       motors = await Motor.getMotors();
-
-      console.log("updated motors");
     }
 
     if (activeTab.selectedMotor != null) activeTab.selectedMotor.updateData();

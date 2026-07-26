@@ -1,10 +1,9 @@
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashSet;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -35,7 +34,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
+    static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
         // inits network table :3
         final NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -50,7 +49,7 @@ public class Main {
         });
 
         try (final MotorManager manager = new MotorManager(lemonTable)) {
-            try (final MultiSubscriber sub = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
+            try (final MultiSubscriber _ = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
                     PubSubOption.topicsOnly(true))) {
 
                 final Javalin app = Javalin.create(config -> {
@@ -59,6 +58,8 @@ public class Main {
 
                     // this is directing the root to the html index file.
                     config.routes.get("/", ctx -> ctx.redirect("index.html"));
+
+                    // motors --------------------------------------------------------------
 
                     // returns all motors that are connected to the networktables.
                     config.routes.get("/api/motors", ctx -> {
@@ -94,6 +95,8 @@ public class Main {
                             motor.setClearFaults(clear);
                         }
                     });
+
+                    // api ----------------------------------------------------------------
 
                     config.routes.get("/api/", ctx -> {
                         HashMap<String, Object> json = new HashMap<>();

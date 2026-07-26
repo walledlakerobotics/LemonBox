@@ -13,7 +13,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.StringArraySubscriber;
 import edu.wpi.first.networktables.StringSubscriber;
 
-public class Motor implements AutoCloseable {
+class Motor implements AutoCloseable {
 
     private Integer m_id;
     private DoubleEntry m_speedEntry;
@@ -29,7 +29,7 @@ public class Motor implements AutoCloseable {
      * @param id       motor can id
      * @param subTable subtable of the motor
      */
-    public Motor(String id, NetworkTable subTable) {
+    Motor(String id, NetworkTable subTable) {
         this.m_id = Integer.parseInt(id);
         m_speedEntry = subTable.getDoubleTopic("speed").getEntry(0);
         m_brushlessEntry = subTable.getBooleanTopic("brushless").getEntry(false);
@@ -45,11 +45,11 @@ public class Motor implements AutoCloseable {
      * 
      * @param speed
      */
-    public void setSpeed(double speed) {
+    void setSpeed(double speed) {
         m_speedEntry.set(speed);
     }
 
-    public void setClearFaults(boolean clear) {
+    void setClearFaults(boolean clear) {
         m_clearFaultsEntry.set(clear);
     }
 
@@ -58,11 +58,11 @@ public class Motor implements AutoCloseable {
      * 
      * @param brushless
      */
-    public void setBrushless(boolean brushless) {
+    void setBrushless(boolean brushless) {
         m_brushlessEntry.set(brushless);
     }
 
-    public String getId() {
+    String getId() {
         return m_id.toString();
     }
 
@@ -71,7 +71,7 @@ public class Motor implements AutoCloseable {
      * 
      * @return propertie map
      */
-    public Map<String, Object> getProperties() {
+    Map<String, Object> getProperties() {
         Map<String, Object> props = new HashMap<>();
 
         // the get function will return a new subscriber
@@ -105,12 +105,12 @@ public class Motor implements AutoCloseable {
      * @param mainTable main table in the network
      * @return Motors that exist.
      */
-    public static Collection<Motor> getMotors(NetworkTable table) {
+    static Collection<Motor> getMotors(NetworkTable table) {
         return getMotorIDs(table).stream().map(name -> new Motor(name, table.getSubTable(name)))
                 .collect(Collectors.toSet());
     }
 
-    public static Collection<String> getMotorIDs(NetworkTable table) {
+    static Collection<String> getMotorIDs(NetworkTable table) {
         String[] motorsIds = table.getEntry("motorIDs").getStringArray(new String[0]);
 
         return new HashSet<>(Arrays.asList(motorsIds));

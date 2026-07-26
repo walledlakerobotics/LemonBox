@@ -9,7 +9,7 @@ public class OpendsManager implements Runnable {
 
     private PipedOutputStream outputStream;
 
-    public OpendsManager() {
+    OpendsManager() {
         outputStream = new PipedOutputStream();
 
         try {
@@ -18,32 +18,32 @@ public class OpendsManager implements Runnable {
         }
     }
 
-    public synchronized void setTeam(String teamNumber) {
+    synchronized void setTeam(String teamNumber) {
         String input = String.format("h\n%s\n", teamNumber);
         send(input);
     }
 
-    public synchronized void setEnable(boolean enabled) {
+    synchronized void setEnable(boolean enabled) {
         DisplayEndpoint.IS_ENABLED.setSelected(enabled);
     }
 
-    public synchronized boolean isEnabled() {
+    synchronized boolean isEnabled() {
         return DisplayEndpoint.IS_ENABLED.isSelected();
     }
 
-    public void estop() {
+    void estop() {
         send("e\n");
     }
 
-    public void restartRIO() {
+    void restartRIO() {
         send("d\n");
     }
 
-    public void restartRobotCode() {
+    void restartRobotCode() {
         send("c\n");
     }
 
-    public void quit() {
+    void quit() {
         send("q\n");
     }
 

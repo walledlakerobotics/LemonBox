@@ -1,10 +1,7 @@
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-
 import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.wpi.first.networktables.MultiSubscriber;
@@ -15,7 +12,6 @@ import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.util.CombinedRuntimeLoader;
 import edu.wpi.first.util.WPIUtilJNI;
 import io.javalin.Javalin;
-import io.javalin.websocket.WsContext;
 
 public class Main {
 

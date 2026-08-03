@@ -93,6 +93,9 @@ export class Motor {
             });
         }
 
+        console.log(this.speed)
+        console.log(disabled);
+
         this._disabled = disabled;
     }
 

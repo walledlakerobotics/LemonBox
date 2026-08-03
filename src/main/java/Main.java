@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -30,7 +29,7 @@ public class Main {
         }
     }
 
-    static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
+    static void main(String[] args) throws Exception {
 
         // inits network table :3
         final NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -45,102 +44,95 @@ public class Main {
         });
 
         try (final MotorManager manager = new MotorManager(lemonTable)) {
-            try (final MultiSubscriber _ = new MultiSubscriber(inst, new String[] { "/LemonBox/" },
-                    PubSubOption.topicsOnly(true))) {
+            final Javalin app = Javalin.create(config -> {
+                config.staticFiles.enableWebjars();
+                config.staticFiles.add("/dist");
 
-                final Javalin app = Javalin.create(config -> {
-                    config.staticFiles.enableWebjars();
-                    config.staticFiles.add("/dist");
+                // this is directing the root to the html index file.
+                config.routes.get("/", ctx -> ctx.redirect("index.html"));
 
-                    // this is directing the root to the html index file.
-                    config.routes.get("/", ctx -> ctx.redirect("index.html"));
+                // motors --------------------------------------------------------------
 
-                    // motors --------------------------------------------------------------
-
-                    // returns all motors that are connected to the networktables.
-                    config.routes.get("/api/motors", ctx -> {
-                        manager.refresh();
-                        ctx.json(manager.getMotors().stream().map(m -> m.getId()).toList());
-                    });
-
-                    config.routes.get("/api/motors/{id}", ctx -> {
-                        String id = ctx.pathParam("id");
-
-                        ctx.json(manager.getMotor(id).getProperties());
-
-                    });
-
-                    config.routes.post("/api/motors/{id}", ctx -> {
-                        JsonNode json = ctx.bodyAsClass(JsonNode.class);
-                        String id = ctx.pathParam("id");
-
-                        Motor motor = manager.getMotor(id);
-
-                        if (json.has("speed")) {
-                            double speed = json.get("speed").asDouble();
-                            motor.setSpeed(speed);
-                        }
-
-                        if (json.has("brushless")) {
-                            boolean brushless = json.get("brushless").asBoolean();
-                            motor.setBrushless(brushless);
-                        }
-
-                        if (json.has("clearFaults")) {
-                            boolean clear = json.get("clearFaults").asBoolean();
-                            motor.setClearFaults(clear);
-                        }
-                    });
-
-                    // api ----------------------------------------------------------------
-
-                    config.routes.get("/api/", ctx -> {
-                        HashMap<String, Object> json = new HashMap<>();
-
-                        json.put("connected", inst.isConnected());
-                        json.put("enabled", opendsManager.isEnabled());
-
-                        ctx.json(json);
-                    });
-
-                    config.routes.post("/api/", ctx -> {
-                        JsonNode json = ctx.bodyAsClass(JsonNode.class);
-
-                        if (json.has("enabled"))
-                            opendsManager.setEnable(json.get("enabled").asBoolean());
-
-                        if (json.has("connected")) {
-                            // put something here.
-                        }
-
-                    });
-
-                    config.events.serverStopping(() -> {
-                        opendsManager.setEnable(false);
-                        opendsManager.quit();
-                        opendsThread.join();
-
-                        inst.stopClient();
-                    });
-
-                    config.events.serverStarting(() -> {
-                        inst.setServer("roborio-308-FRC.local");
-                        inst.startClient4("lemon-client");
-                        opendsThread.start();
-                    });
-
-                    config.events.serverStarted(() -> {
-                        inst.addConnectionListener(true, e -> {
-                            opendsManager.setEnable(inst.isConnected());
-                        });
-                    });
+                // returns all motors that are connected to the networktables.
+                config.routes.get("/api/motors", ctx -> {
+                    manager.refresh();
+                    ctx.json(manager.getMotors().stream().map(m -> m.getId()).toList());
                 });
 
-                app.start(7070);
+                config.routes.get("/api/motors/{id}", ctx -> {
+                    String id = ctx.pathParam("id");
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+                    ctx.json(manager.getMotor(id).getProperties());
+
+                });
+
+                config.routes.post("/api/motors/{id}", ctx -> {
+                    JsonNode json = ctx.bodyAsClass(JsonNode.class);
+                    String id = ctx.pathParam("id");
+
+                    Motor motor = manager.getMotor(id);
+
+                    if (json.has("speed")) {
+                        double speed = json.get("speed").asDouble();
+                        motor.setSpeed(speed);
+                    }
+
+                    if (json.has("brushless")) {
+                        boolean brushless = json.get("brushless").asBoolean();
+                        motor.setBrushless(brushless);
+                    }
+
+                    if (json.has("clearFaults")) {
+                        boolean clear = json.get("clearFaults").asBoolean();
+                        motor.setClearFaults(clear);
+                    }
+                });
+
+                // api ----------------------------------------------------------------
+
+                config.routes.get("/api/", ctx -> {
+                    HashMap<String, Object> json = new HashMap<>();
+
+                    json.put("connected", inst.isConnected());
+                    json.put("enabled", opendsManager.isEnabled());
+
+                    ctx.json(json);
+                });
+
+                config.routes.post("/api/", ctx -> {
+                    JsonNode json = ctx.bodyAsClass(JsonNode.class);
+
+                    if (json.has("enabled"))
+                        opendsManager.setEnable(json.get("enabled").asBoolean());
+
+                    if (json.has("connected")) {
+                        // put something here.
+                    }
+
+                });
+
+                config.events.serverStopping(() -> {
+                    opendsManager.setEnable(false);
+                    opendsManager.quit();
+                    opendsThread.join();
+
+                    inst.stopClient();
+                });
+
+                config.events.serverStarting(() -> {
+                    inst.setServer("roborio-308-FRC.local");
+                    inst.startClient4("lemon-client");
+                    opendsThread.start();
+                });
+
+                config.events.serverStarted(() -> {
+                    inst.addConnectionListener(true, e -> {
+                        opendsManager.setEnable(inst.isConnected());
+                    });
+                });
+            });
+
+            app.start(7070);
         }
     }
 }

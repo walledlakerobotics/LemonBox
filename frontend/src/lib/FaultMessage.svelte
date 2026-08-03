@@ -3,7 +3,7 @@
 </script>
 
 <div id="fault">
-    <p>fault | sticky fault</p>
+    <p>fault ------|------ sticky fault</p>
     <p>{fault}</p>
 </div>
 

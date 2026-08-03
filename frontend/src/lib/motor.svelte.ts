@@ -28,26 +28,18 @@ export class Motor {
         if (this.disabled) {
             console.warn(`motor ${this.id} is disabled!`);
 
-            // postes the speed to zero if disabled.
-            fetch(this.postPath, {
-                method: "POST",
-                body: JSON.stringify({
-                    speed: 0,
-                }),
-            });
-        } else {
-            // posts the speed
-            fetch(this.postPath, {
-                method: "POST",
-                body: JSON.stringify({
-                    speed: speed,
-                }),
-            });
-
-            this._speed = speed;
+            return;
         }
 
+        // posts the speed
+        fetch(this.postPath, {
+            method: "POST",
+            body: JSON.stringify({
+                speed: speed,
+            }),
+        });
 
+        this._speed = speed;
     }
 
     public get brushless(): boolean {
@@ -83,7 +75,6 @@ export class Motor {
         return this._dt;
     }
 
-
     public get faults(): string[] {
         return this._fault;
     }
@@ -93,8 +84,14 @@ export class Motor {
     }
 
     public set disabled(disabled: boolean) {
-        if (disabled)
-            this.speed = 0;
+        if (disabled) {
+            fetch(this.postPath, {
+                method: "POST",
+                body: JSON.stringify({
+                    speed: 0,
+                }),
+            });
+        }
 
         this._disabled = disabled;
     }
@@ -163,7 +160,7 @@ export class Motor {
         fetch(this.postPath, {
             method: "POST",
             body: JSON.stringify({
-                clearFault: true,
+                clearFaults: true,
             }),
         });
     }

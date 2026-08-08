@@ -45,11 +45,11 @@ class Motor implements AutoCloseable {
      * 
      * @param speed
      */
-    void setSpeed(double speed) {
+    synchronized void setSpeed(double speed) {
         m_speedEntry.set(speed);
     }
 
-    void setClearFaults(boolean clear) {
+    synchronized void setClearFaults(boolean clear) {
         m_clearFaultsEntry.set(clear);
     }
 
@@ -58,7 +58,7 @@ class Motor implements AutoCloseable {
      * 
      * @param brushless
      */
-    void setBrushless(boolean brushless) {
+    synchronized void setBrushless(boolean brushless) {
         m_brushlessEntry.set(brushless);
     }
 
@@ -86,6 +86,8 @@ class Motor implements AutoCloseable {
 
         return props;
     }
+
+    // when it goes out of scope it closes
 
     @Override
     public void close() {
